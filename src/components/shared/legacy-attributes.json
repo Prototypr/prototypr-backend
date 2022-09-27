@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_shared_legacy_attributes",
+  "info": {
+    "displayName": "legacyAttributes",
+    "icon": "globe"
+  },
+  "options": {},
+  "attributes": {
+    "link": {
+      "type": "string"
+    },
+    "imgUrl": {
+      "type": "string"
+    },
+    "ogImage": {
+      "type": "string"
+    },
+    "ogDescription": {
+      "type": "string"
+    },
+    "canonicalLink": {
+      "type": "string"
+    }
+  }
+}

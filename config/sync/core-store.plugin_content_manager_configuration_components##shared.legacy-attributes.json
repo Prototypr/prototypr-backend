@@ -1,0 +1,136 @@
+{
+  "key": "plugin_content_manager_configuration_components::shared.legacy-attributes",
+  "value": {
+    "uid": "shared.legacy-attributes",
+    "settings": {
+      "bulkable": true,
+      "filterable": true,
+      "searchable": true,
+      "pageSize": 10,
+      "mainField": "link",
+      "defaultSortBy": "link",
+      "defaultSortOrder": "ASC"
+    },
+    "metadatas": {
+      "id": {
+        "edit": {},
+        "list": {
+          "label": "Id",
+          "searchable": false,
+          "sortable": false
+        }
+      },
+      "link": {
+        "edit": {
+          "label": "Link",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "Link",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "imgUrl": {
+        "edit": {
+          "label": "ImgUrl",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "ImgUrl",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "ogImage": {
+        "edit": {
+          "label": "OgImage",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "OgImage",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "ogDescription": {
+        "edit": {
+          "label": "OgDescription",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "OgDescription",
+          "searchable": true,
+          "sortable": true
+        }
+      },
+      "canonicalLink": {
+        "edit": {
+          "label": "CanonicalLink",
+          "description": "",
+          "placeholder": "",
+          "visible": true,
+          "editable": true
+        },
+        "list": {
+          "label": "CanonicalLink",
+          "searchable": true,
+          "sortable": true
+        }
+      }
+    },
+    "layouts": {
+      "list": [
+        "id",
+        "link",
+        "imgUrl",
+        "ogImage"
+      ],
+      "edit": [
+        [
+          {
+            "name": "link",
+            "size": 6
+          },
+          {
+            "name": "imgUrl",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "ogImage",
+            "size": 6
+          },
+          {
+            "name": "ogDescription",
+            "size": 6
+          }
+        ],
+        [
+          {
+            "name": "canonicalLink",
+            "size": 6
+          }
+        ]
+      ],
+      "editRelations": []
+    },
+    "isComponent": true
+  },
+  "type": "object",
+  "environment": null,
+  "tag": null
+}

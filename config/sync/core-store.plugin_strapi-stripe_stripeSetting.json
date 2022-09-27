@@ -1,0 +1,17 @@
+{
+  "key": "plugin_strapi-stripe_stripeSetting",
+  "value": {
+    "isLiveMode": false,
+    "stripeLivePubKey": "pk_live_H0WgTj8pz2wZWbfUQhUhyseq",
+    "stripeLiveSecKey": "sk_live_M2o3HKctCufrg0Wj2Va4S8Eu",
+    "stripeTestPubKey": "pk_test_e36qNQFxVo8R1fINBemjBhf2",
+    "stripeTestSecKey": "sk_test_TcVnHJrNcW1ynAGjJWufRKhd",
+    "checkoutSuccessUrl": "http://localhost:3000/payment-success",
+    "checkoutCancelUrl": "http://localhost:3000/payment-failure",
+    "currency": "usd",
+    "paymentButtonText": "Book now"
+  },
+  "type": "object",
+  "environment": "development",
+  "tag": null
+}

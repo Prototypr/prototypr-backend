@@ -1,0 +1,219 @@
+{
+  "name": "Editor",
+  "code": "strapi-editor",
+  "description": "Editors can manage and publish contents including those of other users.",
+  "permissions": [
+    {
+      "action": "plugin::content-manager.explorer.create",
+      "subject": "api::post.post",
+      "properties": {
+        "fields": [
+          "content",
+          "date",
+          "excerpt",
+          "featuredImage",
+          "legacyAttributes.canonicalLink",
+          "legacyAttributes.imgUrl",
+          "legacyAttributes.link",
+          "legacyAttributes.ogDescription",
+          "legacyAttributes.ogImage",
+          "legacyFeaturedImage.mediaItemUrl",
+          "legacyFeaturedImage.medium",
+          "legacyFeaturedImage.srcSet",
+          "legacyFeaturedImage.thumb",
+          "legacyId",
+          "legacyMedia.featuredImage",
+          "legacyMedia.gallery.mediaItemUrl",
+          "legacyMedia.gallery.medium",
+          "legacyMedia.gallery.sourceUrl",
+          "legacyMedia.gallery.srcSet",
+          "legacyMedia.gallery.thumb",
+          "legacyMedia.imgUrl",
+          "legacyMedia.logoNew",
+          "legacyMedia.video",
+          "link",
+          "seo.canonical",
+          "seo.metaDesc",
+          "seo.metaRobotsNofollow",
+          "seo.metaRobotsNoindex",
+          "seo.opengraphDescription",
+          "seo.opengraphImage",
+          "seo.opengraphModifiedTime",
+          "seo.opengraphPublishedTime",
+          "seo.opengraphTitle",
+          "seo.opengraphUrl",
+          "seo.schemaSeo",
+          "seo.twitterDescription",
+          "seo.twitterImage",
+          "seo.twitterTitle",
+          "slug",
+          "status",
+          "title",
+          "type"
+        ],
+        "locales": [
+          "en"
+        ]
+      },
+      "conditions": []
+    },
+    {
+      "action": "plugin::content-manager.explorer.delete",
+      "subject": "api::post.post",
+      "properties": {
+        "locales": [
+          "en"
+        ]
+      },
+      "conditions": []
+    },
+    {
+      "action": "plugin::content-manager.explorer.publish",
+      "subject": "api::post.post",
+      "properties": {
+        "locales": [
+          "en"
+        ]
+      },
+      "conditions": []
+    },
+    {
+      "action": "plugin::content-manager.explorer.read",
+      "subject": "api::post.post",
+      "properties": {
+        "fields": [
+          "content",
+          "date",
+          "excerpt",
+          "featuredImage",
+          "legacyAttributes.canonicalLink",
+          "legacyAttributes.imgUrl",
+          "legacyAttributes.link",
+          "legacyAttributes.ogDescription",
+          "legacyAttributes.ogImage",
+          "legacyFeaturedImage.mediaItemUrl",
+          "legacyFeaturedImage.medium",
+          "legacyFeaturedImage.srcSet",
+          "legacyFeaturedImage.thumb",
+          "legacyId",
+          "legacyMedia.featuredImage",
+          "legacyMedia.gallery.mediaItemUrl",
+          "legacyMedia.gallery.medium",
+          "legacyMedia.gallery.sourceUrl",
+          "legacyMedia.gallery.srcSet",
+          "legacyMedia.gallery.thumb",
+          "legacyMedia.imgUrl",
+          "legacyMedia.logoNew",
+          "legacyMedia.video",
+          "link",
+          "seo.canonical",
+          "seo.metaDesc",
+          "seo.metaRobotsNofollow",
+          "seo.metaRobotsNoindex",
+          "seo.opengraphDescription",
+          "seo.opengraphImage",
+          "seo.opengraphModifiedTime",
+          "seo.opengraphPublishedTime",
+          "seo.opengraphTitle",
+          "seo.opengraphUrl",
+          "seo.schemaSeo",
+          "seo.twitterDescription",
+          "seo.twitterImage",
+          "seo.twitterTitle",
+          "slug",
+          "status",
+          "title",
+          "type"
+        ],
+        "locales": [
+          "en"
+        ]
+      },
+      "conditions": []
+    },
+    {
+      "action": "plugin::content-manager.explorer.update",
+      "subject": "api::post.post",
+      "properties": {
+        "fields": [
+          "content",
+          "date",
+          "excerpt",
+          "featuredImage",
+          "legacyAttributes.canonicalLink",
+          "legacyAttributes.imgUrl",
+          "legacyAttributes.link",
+          "legacyAttributes.ogDescription",
+          "legacyAttributes.ogImage",
+          "legacyFeaturedImage.mediaItemUrl",
+          "legacyFeaturedImage.medium",
+          "legacyFeaturedImage.srcSet",
+          "legacyFeaturedImage.thumb",
+          "legacyId",
+          "legacyMedia.featuredImage",
+          "legacyMedia.gallery.mediaItemUrl",
+          "legacyMedia.gallery.medium",
+          "legacyMedia.gallery.sourceUrl",
+          "legacyMedia.gallery.srcSet",
+          "legacyMedia.gallery.thumb",
+          "legacyMedia.imgUrl",
+          "legacyMedia.logoNew",
+          "legacyMedia.video",
+          "link",
+          "seo.canonical",
+          "seo.metaDesc",
+          "seo.metaRobotsNofollow",
+          "seo.metaRobotsNoindex",
+          "seo.opengraphDescription",
+          "seo.opengraphImage",
+          "seo.opengraphModifiedTime",
+          "seo.opengraphPublishedTime",
+          "seo.opengraphTitle",
+          "seo.opengraphUrl",
+          "seo.schemaSeo",
+          "seo.twitterDescription",
+          "seo.twitterImage",
+          "seo.twitterTitle",
+          "slug",
+          "status",
+          "title",
+          "type"
+        ],
+        "locales": [
+          "en"
+        ]
+      },
+      "conditions": []
+    },
+    {
+      "action": "plugin::upload.assets.copy-link",
+      "subject": null,
+      "properties": {},
+      "conditions": []
+    },
+    {
+      "action": "plugin::upload.assets.create",
+      "subject": null,
+      "properties": {},
+      "conditions": []
+    },
+    {
+      "action": "plugin::upload.assets.download",
+      "subject": null,
+      "properties": {},
+      "conditions": []
+    },
+    {
+      "action": "plugin::upload.assets.update",
+      "subject": null,
+      "properties": {},
+      "conditions": []
+    },
+    {
+      "action": "plugin::upload.read",
+      "subject": null,
+      "properties": {},
+      "conditions": []
+    }
+  ]
+}

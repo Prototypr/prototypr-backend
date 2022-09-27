@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_shared_legacy_galleries",
+  "info": {
+    "displayName": "legacyGallery",
+    "icon": "clone",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "medium": {
+      "type": "string"
+    },
+    "thumb": {
+      "type": "string"
+    },
+    "srcSet": {
+      "type": "text"
+    },
+    "mediaItemUrl": {
+      "type": "string"
+    },
+    "sourceUrl": {
+      "type": "string"
+    }
+  }
+}

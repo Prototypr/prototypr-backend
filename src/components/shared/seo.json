@@ -1,0 +1,53 @@
+{
+  "collectionName": "components_shared_seos",
+  "info": {
+    "displayName": "Seo",
+    "icon": "search",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "metaRobotsNoindex": {
+      "type": "string"
+    },
+    "metaRobotsNofollow": {
+      "type": "string"
+    },
+    "canonical": {
+      "type": "string"
+    },
+    "metaDesc": {
+      "type": "text"
+    },
+    "opengraphDescription": {
+      "type": "text"
+    },
+    "opengraphModifiedTime": {
+      "type": "datetime"
+    },
+    "opengraphPublishedTime": {
+      "type": "datetime"
+    },
+    "opengraphTitle": {
+      "type": "string"
+    },
+    "opengraphUrl": {
+      "type": "string"
+    },
+    "opengraphImage": {
+      "type": "string"
+    },
+    "twitterDescription": {
+      "type": "text"
+    },
+    "twitterImage": {
+      "type": "string"
+    },
+    "twitterTitle": {
+      "type": "string"
+    },
+    "schemaSeo": {
+      "type": "text"
+    }
+  }
+}

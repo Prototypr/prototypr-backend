@@ -1,0 +1,87 @@
+'use strict';
+const request = require('request')
+const axios = require('axios')
+// const fetch = require("node-fetch");
+const FormData = require('form-data');
+// const got = require('got');
+const relatedPosts = require('./prototypr/graphql/relatedPosts')
+const relatedArticles = require('./prototypr/graphql/relatedArticles')
+const relatedTools = require('./prototypr/graphql/relatedTools')
+const relatedNewsletters = require('./prototypr/graphql/relatedNewsletters')
+
+module.exports = {
+  /**
+   * An asynchronous register function that runs before
+   * your application is initialized.
+   *
+   * This gives you an opportunity to extend code.
+   */
+   register({ strapi }) {
+    const relatedPostsExtension = relatedPosts(strapi)
+    strapi.plugin("graphql").service("extension").use(relatedPostsExtension);
+    const relatedArticlesExtension = relatedArticles(strapi)
+    strapi.plugin("graphql").service("extension").use(relatedArticlesExtension);
+    const relatedToolsExtension = relatedTools(strapi)
+    strapi.plugin("graphql").service("extension").use(relatedToolsExtension);
+    const relatedNewslettersExtension = relatedNewsletters(strapi)
+    strapi.plugin("graphql").service("extension").use(relatedNewslettersExtension);
+  },
+  
+  //set user avatar after create for twitter
+  bootstrap({ strapi }) {
+    strapi.db.lifecycles.subscribe({
+      models: ['plugin::users-permissions.user'],
+
+      // your lifecycle hooks
+      async afterCreate(data) {
+
+        //clear password
+        await axios.put(`${process.env.STRAPI_URL}/api/users/${data.result.id}`, {data:{password:''}},{
+          headers: { 
+            'Authorization': `Bearer ${process.env.ADMIN_TOKEN}`
+          }
+        })
+
+       //insert twitter image
+        if((data.params?.data?.provider=='twitter' && data.params?.data?.image) && data.result?.id){
+
+          const fileData = new FormData()
+          fileData.append('files', request(data.params.data.image))
+          fileData.append('refId', data.result.id);            
+          fileData.append('ref', 'plugin::users-permissions.user');
+          fileData.append('source', 'users-permissions');
+          fileData.append('field', 'avatar');
+  
+          var config = {
+            method: 'post',
+            url: `${process.env.STRAPI_URL}/api/upload`,
+            headers: { 
+              'Authorization': `Bearer ${process.env.ADMIN_TOKEN}`,
+              ...fileData.getHeaders(),
+            },
+            data : fileData
+          };
+
+          axios(config)
+          .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            response=>response.json()
+          })
+          .catch(function (error) {
+            console.log(error.message);
+          });
+
+        }
+      },
+    })
+  },
+
+  /**
+   * An asynchronous bootstrap function that runs before
+   * your application gets started.
+   *
+   * This gives you an opportunity to set up your data model,
+   * run jobs, or perform some special logic.
+   */
+  // bootstrap(/*{ strapi }*/) {},
+};

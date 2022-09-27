@@ -1,0 +1,28 @@
+{
+  "collectionName": "components_shared_legacy_medias",
+  "info": {
+    "displayName": "legacyMedia",
+    "icon": "images",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "logoNew": {
+      "type": "string"
+    },
+    "video": {
+      "type": "string"
+    },
+    "imgUrl": {
+      "type": "string"
+    },
+    "featuredImage": {
+      "type": "string"
+    },
+    "gallery": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.legacy-gallery"
+    }
+  }
+}

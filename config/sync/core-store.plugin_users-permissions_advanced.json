@@ -1,0 +1,14 @@
+{
+  "key": "plugin_users-permissions_advanced",
+  "value": {
+    "unique_email": true,
+    "allow_register": true,
+    "email_confirmation": true,
+    "email_reset_password": null,
+    "email_confirmation_redirection": "http://localhost:3000/account",
+    "default_role": "authenticated"
+  },
+  "type": "object",
+  "environment": null,
+  "tag": null
+}

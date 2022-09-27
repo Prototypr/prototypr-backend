@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_shared_legacy_featured_images",
+  "info": {
+    "displayName": "legacyFeaturedImage",
+    "icon": "asterisk",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "mediaItemUrl": {
+      "type": "string"
+    },
+    "srcSet": {
+      "type": "text"
+    },
+    "medium": {
+      "type": "string"
+    },
+    "thumb": {
+      "type": "string"
+    }
+  }
+}
