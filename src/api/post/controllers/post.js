@@ -16,7 +16,7 @@ module.exports = createCoreController("api::post.post", ({ strapi }) => ({
     
       // Calling the default core action
       const { data, meta } = await super.find(ctx);
-        console.log(data)
+        // console.log(data)
       // some more custom logic
   
       return { data, meta };
