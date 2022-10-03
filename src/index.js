@@ -8,6 +8,7 @@ const relatedPosts = require('./prototypr/graphql/relatedPosts')
 const relatedArticles = require('./prototypr/graphql/relatedArticles')
 const relatedTools = require('./prototypr/graphql/relatedTools')
 const relatedNewsletters = require('./prototypr/graphql/relatedNewsletters')
+const userArticles = require('./prototypr/graphql/userArticles')
 
 module.exports = {
   /**
@@ -25,6 +26,12 @@ module.exports = {
     strapi.plugin("graphql").service("extension").use(relatedToolsExtension);
     const relatedNewslettersExtension = relatedNewsletters(strapi)
     strapi.plugin("graphql").service("extension").use(relatedNewslettersExtension);
+    // Going to be our custom query resolver to get all authors and their details.
+    const userArticlesExtension = userArticles(strapi)
+    strapi.plugin("graphql").service("extension").use(userArticlesExtension);
+   
+
+
   },
   
   //set user avatar after create for twitter
