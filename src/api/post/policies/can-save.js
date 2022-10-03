@@ -6,6 +6,11 @@
  */
 module.exports = async (policyContext, config, { strapi }) => {
 
+
+  if(!policyContext.state?.user?.id){
+    return false
+  }
+
   const id = policyContext.request.url.split("/").pop()
   //fetch post with user populated
   const post = await strapi.entityService.findOne('api::post.post',id, {
@@ -14,6 +19,8 @@ module.exports = async (policyContext, config, { strapi }) => {
   // return true
     // if post is a draft, only owner can read it
   if((post?.status=='draft' || post?.status=='pending') && policyContext.request.body?.data?.status=='publish'){
+    return false
+  }else if (!post?.status && policyContext.request.body?.data?.status=='publish'){
     return false
   }else{
     return true
