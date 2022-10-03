@@ -42,11 +42,11 @@ module.exports = createCoreRouter('api::post.post', {
         policies: ['api::post.can-read'],
         middlewares: [],
     },
-    // create: {
-    //     auth:true
-    // },
+    create: {
+      "policies": ['api::post.can-save']
+    },
     update: {
-        "policies": ['api::post.is-owner']
+        "policies": ['api::post.is-owner','api::post.can-save']
     },
     delete: {
         "policies": ['api::post.is-owner']
