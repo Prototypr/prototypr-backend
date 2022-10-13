@@ -9,6 +9,7 @@ const relatedArticles = require('./prototypr/graphql/relatedArticles')
 const relatedTools = require('./prototypr/graphql/relatedTools')
 const relatedNewsletters = require('./prototypr/graphql/relatedNewsletters')
 const userArticles = require('./prototypr/graphql/userArticles')
+const userArticle = require('./prototypr/graphql/userArticle')
 
 module.exports = {
   /**
@@ -29,6 +30,8 @@ module.exports = {
     // Going to be our custom query resolver to get all authors and their details.
     const userArticlesExtension = userArticles(strapi)
     strapi.plugin("graphql").service("extension").use(userArticlesExtension);
+    const userArticleExtension = userArticle(strapi)
+    strapi.plugin("graphql").service("extension").use(userArticleExtension);
    
 
 
@@ -48,6 +51,31 @@ module.exports = {
             'Authorization': `Bearer ${process.env.ADMIN_TOKEN}`
           }
         })
+
+
+        //welcome email
+        var emailConfig = {
+          method: 'post',
+          url: `${process.env.LETTER_API_URL}/auth/basicAuth`,
+          // headers: { 
+          //   'Authorization': `Bearer ${process.env.ADMIN_TOKEN}`,
+          //   ...fileData.getHeaders(),
+          // },
+          data : {
+            email:process.env.LETTER_USERNAME,
+            password:process.env.LETTER_PASSWORD
+          }
+        };
+
+        console.log('hi')
+        await axios(emailConfig)
+          .then(function (response) {
+            console.log(JSON.stringify(response.data));
+            response=>response.json()
+          })
+          .catch(function (error) {
+            console.log(error.message);
+          });
 
        //insert twitter image
         if((data.params?.data?.provider=='twitter' && data.params?.data?.image) && data.result?.id){

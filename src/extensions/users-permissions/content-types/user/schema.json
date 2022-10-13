@@ -394,6 +394,11 @@
     "slug": {
       "type": "uid",
       "targetField": "username"
+    },
+    "notifications": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.notifications"
     }
   }
 }
