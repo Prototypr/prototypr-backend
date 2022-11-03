@@ -1,6 +1,8 @@
 const { resendConfirmationEmail } = require("./resendConfirmationEmail");
 const { updateMe, deleteAvatar, uploadAvatar } = require("./updateMe");
 const { uploadImageToArticle } = require("./uploadBlogImage");
+const { fetchPlausibleStatsForUser } = require("./fetchPlausibleStats");
+
 // https://medium.com/@fabian.froeschl/add-updateme-route-to-strapi-4-0s-users-permissons-plugin-fc31798df295
 module.exports = (plugin) => {
   // https://javascript.plainenglish.io/add-a-customize-users-permissions-provider-for-strapi-v4-6aa78c642977
@@ -21,6 +23,11 @@ module.exports = (plugin) => {
   plugin.controllers.user.uploadImageToArticle = (ctx) => {
     ctx.params.id = ctx.state.user.id;
     return uploadImageToArticle(ctx);
+  };
+
+  plugin.controllers.user.fetchPlausibleStatsForUser = (ctx) => {
+    ctx.params.id = ctx.state.user.id;
+    return fetchPlausibleStatsForUser(ctx);
   };
 
   plugin.routes["content-api"].routes.push({
@@ -45,6 +52,13 @@ module.exports = (plugin) => {
     method: "POST",
     path: "/users/article/image/upload",
     handler: "user.uploadImageToArticle",
+  });
+
+  //fetch post analytics for user
+  plugin.routes["content-api"].routes.push({
+    method: "POST",
+    path: "/users/posts/stats",
+    handler: "user.fetchPlausibleStatsForUser",
   });
 
   plugin.controllers.user.resendConfirmationEmail = (ctx) => {
