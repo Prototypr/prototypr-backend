@@ -1,10 +1,10 @@
 module.exports = (strapi) => ({
   typeDefs: `
     type Query {
-      userPost(slug: String!): UserPost
+      userPostId(id: ID!): UserPost
     }
 
-    type UserPost {
+    type UserPostId {
       id: ID
       title: String
       slug: String
@@ -16,7 +16,7 @@ module.exports = (strapi) => ({
   `,
   resolvers: {
     Query: {
-      userPost: {
+      userPostId: {
         resolve: async (parent, args, context) => {
           const data = await strapi.entityService.findMany("api::post.post", {
             // fields: ['id', 'slug', 'title', 'date', 'status', 'content'],
@@ -26,7 +26,7 @@ module.exports = (strapi) => ({
               $and: [
                 {
                   // type:'article',
-                  slug: args.slug,
+                  id: args.id,
                 },
                 {
                   user: context.state.user?.id,
