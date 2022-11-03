@@ -25,7 +25,7 @@ checkNotification: async (url) => {
         method: 'get',
         url: plausibleEndpoint,
         headers: { 
-            'Authorization': `Bearer ${process.env.PLAUSIBLE_API_KEY}`
+            'Authorization': `Bearer ${process.env.PLAUSIBLE_KEY}`
         }
         };
 
