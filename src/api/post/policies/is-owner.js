@@ -8,6 +8,10 @@ module.exports = async(policyContext, config, { strapi }) => {
     populate: { user: true }
   });
     
+  //if admin role yes
+  if(policyContext?.state?.user?.role?.type=='admin'){
+    return true
+  }
   //only logged in user can access, or throw 401
   if (policyContext.state?.user?.id==post.user?.id){
     return true

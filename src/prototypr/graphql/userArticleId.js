@@ -18,9 +18,10 @@ module.exports = (strapi) => ({
     Query: {
       userPostId: {
         resolve: async (parent, args, context) => {
+          console.log(context)
           const data = await strapi.entityService.findMany("api::post.post", {
             // fields: ['id', 'slug', 'title', 'date', 'status', 'content'],
-            populate: ["localizations", "featuredImage"],
+            populate: ["localizations", "featuredImage", "user"],
             limit: 1,
             filters: {
               $and: [
@@ -28,22 +29,31 @@ module.exports = (strapi) => ({
                   // type:'article',
                   id: args.id,
                 },
-                {
-                  user: context.state.user?.id,
-                },
+                // {
+                //   user: context.state.user?.id,
+                // },
               ],
             },
           });
 
-          return {
-            id: data[0]?.id,
-            title: data[0].title,
-            slug: data[0].slug,
-            status: data[0].status,
-            date: data[0].date,
-            content: data[0].content,
-            localizations: data[0].localizations,
-          };
+
+          if(context.state.user?.id==data[0]?.user?.id || context.state.user.role.type === "admin"){
+            return {
+              id: data[0]?.id,
+              title: data[0].title,
+              slug: data[0].slug,
+              status: data[0].status,
+              date: data[0].date,
+              content: data[0].content,
+              localizations: data[0].localizations,
+            };
+          }else{
+            //not authorized - not post owner, not admin
+            return {
+              id:null
+            }
+          }
+
         },
       },
     },
