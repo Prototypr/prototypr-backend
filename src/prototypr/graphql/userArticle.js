@@ -1,5 +1,5 @@
 module.exports = (strapi) => ({
-    typeDefs:  `
+  typeDefs: `
     type Query {
       userPost(slug: String!): UserPost
     }
@@ -18,22 +18,21 @@ module.exports = (strapi) => ({
     Query: {
       userPost: {
         resolve: async (parent, args, context) => {
-          const data = await strapi.entityService.findMany('api::post.post',   {
-            
-              // fields: ['id', 'slug', 'title', 'date', 'status', 'content'],
-            populate:['localizations', 'featuredImage'],
+          const data = await strapi.entityService.findMany("api::post.post", {
+            // fields: ['id', 'slug', 'title', 'date', 'status', 'content'],
+            populate: ["localizations", "featuredImage"],
             limit: 1,
             filters: {
               $and: [
                 {
                   // type:'article',
-                  slug:args.slug
+                  slug: args.slug,
                 },
                 {
-                  user: context.state.user?.id
-                }
-              ]
-            }
+                  user: context.state.user?.id,
+                },
+              ],
+            },
           });
 
           return {
@@ -41,18 +40,17 @@ module.exports = (strapi) => ({
             title: data[0].title,
             slug: data[0].slug,
             status: data[0].status,
-            date:data[0].date,
-            content:data[0].content,
-            localizations:data[0].localizations
-          }
-
-        }
-      }
+            date: data[0].date,
+            content: data[0].content,
+            localizations: data[0].localizations,
+          };
+        },
+      },
     },
   },
   resolversConfig: {
     "Query.userPost": {
-      auth: true,//requires auth
+      auth: true, //requires auth
     },
   },
-  })
+});
