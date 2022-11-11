@@ -112,7 +112,12 @@
         console.log(id)
         console.log(userWithSameUsername.id)
       if (userWithSameUsername && userWithSameUsername.id != id) {
-        throw new ApplicationError('Username already taken');
+        return ctx.throw('Username already taken', 400);
+        // ctx.throw(400, 'name required');
+
+        // ctx.send()
+        // return false
+        throw new ApplicationError('Username already taken', {foo:'bar'});
       }
     }
 
