@@ -32,6 +32,9 @@ module.exports = {
     const token = await passwordless.fetchToken(loginToken);
 
     if (!token || !token.is_active) {
+      sentryService.sendError({desc:'token is valid?',token}, (scope, sentryInstance) => {
+        scope.setTag('debug_log', '11');
+      });
       return ctx.badRequest('token.invalid');
     }
 
@@ -118,6 +121,9 @@ module.exports = {
     let user;
     try {
       user = await passwordless.user(email, username);
+      sentryService.sendError({desc:'passwordless user', user}, (scope, sentryInstance) => {
+        scope.setTag('debug_log', '10');
+      });
     } catch (e) {
       return ctx.badRequest('wrong.user')
     }
