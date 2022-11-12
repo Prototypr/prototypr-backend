@@ -63,26 +63,26 @@ module.exports = {
         //   users_permissions_user: data.result.i
         // });
 
-        // await strapi.query('plugin::users-permissions.user').update({
-        //   where: {id: data.result.id},
-        //   data: {
-        //     password: "",
-        //     legacySlug:slug,
-        //     availability:false,
-        //     mentor:false,
-        //     collaborate:false,
-        //  }
-        // })
+        await strapi.query('plugin::users-permissions.user').update({
+          where: {id: data.result.id},
+          data: {
+            password: "",
+            legacySlug:slug,
+            availability:false,
+            mentor:false,
+            collaborate:false,
+         }
+        })
 
-        let res = await axios.put(
-          `${process.env.STRAPI_URL}/api/users/${data.result.id}`,
-          { data: { password: "", legacySlug:slug } },
-          {
-            headers: {
-              Authorization: `Bearer ${process.env.ADMIN_TOKEN}`,
-            },
-          }
-        );
+        // let res = await axios.put(
+        //   `${process.env.STRAPI_URL}/api/users/${data.result.id}`,
+        //   { data: { password: "", legacySlug:slug } },
+        //   {
+        //     headers: {
+        //       Authorization: `Bearer ${process.env.ADMIN_TOKEN}`,
+        //     },
+        //   }
+        // );
 
 
         //welcome email
