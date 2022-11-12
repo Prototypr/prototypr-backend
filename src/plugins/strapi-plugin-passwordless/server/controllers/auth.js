@@ -14,9 +14,6 @@ const emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"
 module.exports = {
   async login(ctx) {
 
-    const sentryService = strapi.plugin('sentry').service('sentry');
-
-
     const {loginToken} = ctx.query;
     const {passwordless} = strapi.plugins['passwordless'].services;
     const {user: userService, jwt: jwtService} = strapi.plugins['users-permissions'].services;
@@ -32,17 +29,10 @@ module.exports = {
     const token = await passwordless.fetchToken(loginToken);
 
     if (!token || !token.is_active) {
-      sentryService.sendError({desc:'token is valid?',token}, (scope, sentryInstance) => {
-        scope.setTag('debug_log', '11');
-      });
       return ctx.badRequest('token.invalid');
     }
 
     const isValid = await passwordless.isTokenValid(token);
-
-    sentryService.sendError({desc:'token is valid?',obj:isValid}, (scope, sentryInstance) => {
-      scope.setTag('debug_log', '5');
-    });
 
     if (!isValid) {
       await passwordless.deactivateToken(token);
@@ -55,22 +45,11 @@ module.exports = {
       where: {email: token.email}
     });
 
-
-    sentryService.sendError({desc:'found token user?',obj:isValid}, (scope, sentryInstance) => {
-      scope.setTag('debug_log', '6');
-    });
-
     if (!user) {
-      sentryService.sendError({desc:'wrong.email'}, (scope, sentryInstance) => {
-        scope.setTag('debug_log', '7');
-      });
       return ctx.badRequest('wrong.email');
     }
 
     if (user.blocked) {
-      sentryService.sendError({desc:'blocked.user'}, (scope, sentryInstance) => {
-        scope.setTag('debug_log', '8');
-      });
       return ctx.badRequest('blocked.user');
     }
 
@@ -87,9 +66,6 @@ module.exports = {
     } catch (e) {
       context = {}
     }
-    sentryService.sendError({desc:'context made', context, user, sanitizedUserInfo}, (scope, sentryInstance) => {
-      scope.setTag('debug_log', '9');
-    });
     ctx.send({
       jwt: jwtService.issue({id: user.id}),
       user: sanitizedUserInfo,
@@ -98,7 +74,6 @@ module.exports = {
   },
 
   async sendLink(ctx) {
-    const sentryService = strapi.plugin('sentry').service('sentry');
 
     const {passwordless} = strapi.plugins['passwordless'].services;
 
@@ -123,9 +98,6 @@ module.exports = {
     let user;
     try {
       user = await passwordless.user(email, username);
-      sentryService.sendError({desc:'passwordless user', user}, (scope, sentryInstance) => {
-        scope.setTag('debug_log', '10');
-      });
     } catch (e) {
       return ctx.badRequest('wrong.user')
     }

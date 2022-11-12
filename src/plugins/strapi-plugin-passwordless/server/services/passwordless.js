@@ -135,6 +135,7 @@ module.exports = (
       const tokenInfo = {
         email,
         body,
+        is_active:true,//this is the default in schema, but it doesn't seem to get set to true on account creation 
         context: JSON.stringify(context)
       };
       return tokensService.create({data: tokenInfo});
