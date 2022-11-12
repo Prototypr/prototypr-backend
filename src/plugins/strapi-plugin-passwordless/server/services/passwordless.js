@@ -57,9 +57,16 @@ module.exports = (
         username: user.username || user.email,
         role: {id: role.id}
       };
-      return strapi
+      console.log('debuggin 3. newuser: ', newUser)
+      const res =  await strapi
         .query('plugin::users-permissions.user')
         .create({data: newUser, populate: ['role']});
+        
+        console.log('debuggin 4. created user: ', newUser)
+
+
+      return res
+
     },
 
     async user(email, username) {
@@ -67,13 +74,16 @@ module.exports = (
       const {user: userService} = strapi.plugins['users-permissions'].services;
       const user = email ? await this.fetchUser({email}) : null;
 
+      console.log('debuggin 1. user: ', user)
       if (user) {
         return user;
       }
       const userByUsername = username ? await this.fetchUser({username}) : null;
+      console.log('debuggin 2. username: ', userByUsername)
       if (userByUsername) {
         return userByUsername
       }
+
       if (email && settings.createUserIfNotExists) {
         return this.createUser({email, username})
       }
