@@ -98,6 +98,8 @@ module.exports = {
   },
 
   async sendLink(ctx) {
+    const sentryService = strapi.plugin('sentry').service('sentry');
+
     const {passwordless} = strapi.plugins['passwordless'].services;
 
     const isEnabled = await passwordless.isEnabled();
