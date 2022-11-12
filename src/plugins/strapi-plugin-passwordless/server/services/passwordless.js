@@ -17,8 +17,6 @@ module.exports = (
   }
 ) => {
 
-  const sentryService = strapi.plugin('sentry').service('sentry');
-
   return {
 
     async initialize() {
@@ -60,17 +58,9 @@ module.exports = (
         username: user.username || user.email,
         role: {id: role.id}
       };
-      sentryService.sendError({desc:'debuggin 3. newuser',obj:newUser}, (scope, sentryInstance) => {
-        scope.setTag('debug_log', '3');
-      });
       const res =  await strapi
         .query('plugin::users-permissions.user')
         .create({data: newUser, populate: ['role']});
-        
-        sentryService.sendError({desc:'debuggin 4. created user:',obj:newUser}, (scope, sentryInstance) => {
-          scope.setTag('debug_log', '4');
-        });
-
 
       return res
 
@@ -81,17 +71,11 @@ module.exports = (
       const {user: userService} = strapi.plugins['users-permissions'].services;
       const user = email ? await this.fetchUser({email}) : null;
 
-      sentryService.sendError({desc:'debuggin 1. user',obj:user}, (scope, sentryInstance) => {
-        scope.setTag('debug_log', '1');
-      });
-
       if (user) {
         return user;
       }
       const userByUsername = username ? await this.fetchUser({username}) : null;
-      sentryService.sendError({desc:'debuggin 2. username',obj:userByUsername}, (scope, sentryInstance) => {
-        scope.setTag('debug_log', '2');
-      });
+      
       if (userByUsername) {
         return userByUsername
       }
