@@ -48,40 +48,66 @@ module.exports = {
 
       // your lifecycle hooks
       async afterCreate(data) {
-        //clear password
-        await axios.put(
-          `${process.env.STRAPI_URL}/api/users/${data.result.id}`,
-          { data: { password: "" } },
-          {
-            headers: {
-              Authorization: `Bearer ${process.env.ADMIN_TOKEN}`,
-            },
-          }
-        );
+        //clear password and add other profile data
+
+        let slug=data.result.username.replace(/\W+/g, '-')
+
+        // await strapi.services.profile.create({
+        //   data: {
+        //     password: "",
+        //     legacySlug:slug,
+        //     availability:false,
+        //     mentor:false,
+        //     collaborate:false,
+        //  },
+        //   users_permissions_user: data.result.i
+        // });
+
+        await strapi.query('plugin::users-permissions.user').update({
+          where: {id: data.result.id},
+          data: {
+            password: "",
+            legacySlug:slug,
+            availability:false,
+            mentor:false,
+            collaborate:false,
+         }
+        })
+
+        // let res = await axios.put(
+        //   `${process.env.STRAPI_URL}/api/users/${data.result.id}`,
+        //   { data: { password: "", legacySlug:slug } },
+        //   {
+        //     headers: {
+        //       Authorization: `Bearer ${process.env.ADMIN_TOKEN}`,
+        //     },
+        //   }
+        // );
+
 
         //welcome email
-        var emailConfig = {
-          method: "post",
-          url: `${process.env.LETTER_API_URL}/auth/basicAuth`,
-          // headers: {
-          //   'Authorization': `Bearer ${process.env.ADMIN_TOKEN}`,
-          //   ...fileData.getHeaders(),
-          // },
-          data: {
-            email: process.env.LETTER_USERNAME,
-            password: process.env.LETTER_PASSWORD,
-          },
-        };
+        // var emailConfig = {
+        //   method: "post",
+        //   url: `${process.env.LETTER_API_URL}/auth/basicAuth`,
+        //   // headers: {
+        //   //   'Authorization': `Bearer ${process.env.ADMIN_TOKEN}`,
+        //   //   ...fileData.getHeaders(),
+        //   // },
+        //   data: {
+        //     email: process.env.LETTER_USERNAME,
+        //     password: process.env.LETTER_PASSWORD,
+        //   },
+        // };
 
-        console.log("hi");
-        await axios(emailConfig)
-          .then(function (response) {
-            console.log(JSON.stringify(response.data));
-            (response) => response.json();
-          })
-          .catch(function (error) {
-            console.log(error.message);
-          });
+        // console.log("hi");
+        // await axios(emailConfig)
+        //   .then(function (response) {
+        //     console.log(JSON.stringify(response.data));
+        //     (response) => response.json();
+        //   })
+        //   .catch(function (error) {
+        //     console.log(error.message);
+        //   });
 
         //insert twitter image
         if (

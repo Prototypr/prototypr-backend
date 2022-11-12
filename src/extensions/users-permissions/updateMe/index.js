@@ -110,7 +110,7 @@
         .findOne({ where: { username } });
 
         console.log(id)
-        console.log(userWithSameUsername.id)
+        console.log(userWithSameUsername?.id)
       if (userWithSameUsername && userWithSameUsername.id != id) {
         return ctx.throw('Username already taken', 400);
         // ctx.throw(400, 'name required');
@@ -129,6 +129,7 @@
 
       originalEmail = user.email
       if (userWithSameEmail && userWithSameEmail.id != id) {
+        return ctx.throw('Email already taken', 400);
         throw new ApplicationError('Email already taken');
       }else{
         emailChanged = true
