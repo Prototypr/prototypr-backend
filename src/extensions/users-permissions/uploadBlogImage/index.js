@@ -40,6 +40,7 @@ module.exports = {
           },
           files: file,
         });
+        console.log(response[0]?.url)
         ctx.send({
           uploaded: "true",
           message: "Profile picture uploaded",
