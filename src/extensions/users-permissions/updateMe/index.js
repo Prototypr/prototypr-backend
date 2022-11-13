@@ -109,8 +109,6 @@
         .query('plugin::users-permissions.user')
         .findOne({ where: { username } });
 
-        console.log(id)
-        console.log(userWithSameUsername?.id)
       if (userWithSameUsername && userWithSameUsername.id != id) {
         return ctx.throw('Username already taken', 400);
         // ctx.throw(400, 'name required');

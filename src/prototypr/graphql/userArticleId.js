@@ -12,13 +12,13 @@ module.exports = (strapi) => ({
       date: String
       content: String
       localizations: JSON
+      owner: String
     }
   `,
   resolvers: {
     Query: {
       userPostId: {
         resolve: async (parent, args, context) => {
-          console.log(context)
           const data = await strapi.entityService.findMany("api::post.post", {
             // fields: ['id', 'slug', 'title', 'date', 'status', 'content'],
             populate: ["localizations", "featuredImage", "user"],
@@ -46,6 +46,7 @@ module.exports = (strapi) => ({
               date: data[0].date,
               content: data[0].content,
               localizations: data[0].localizations,
+              owner: data[0]?.user?.id,
             };
           }else{
             //not authorized - not post owner, not admin

@@ -12,6 +12,7 @@ module.exports = (strapi) => ({
       date: String
       content: String
       localizations: JSON
+      owner: String
     }
   `,
   resolvers: {
@@ -43,6 +44,7 @@ module.exports = (strapi) => ({
             date: data[0].date,
             content: data[0].content,
             localizations: data[0].localizations,
+            owner: data[0].user?.id
           };
         },
       },
