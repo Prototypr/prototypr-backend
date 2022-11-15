@@ -13,6 +13,9 @@ module.exports = (strapi) => ({
       content: String
       localizations: JSON
       owner: String
+      featuredImage: String
+      tier: Int
+      published_at: String
     }
   `,
   resolvers: {
@@ -38,7 +41,7 @@ module.exports = (strapi) => ({
 
 
           if(context.state.user?.id==data[0]?.user?.id || context.state.user.role.type === "admin"){
-            return {
+            const res = {
               id: data[0]?.id,
               title: data[0].title,
               slug: data[0].slug,
@@ -47,7 +50,11 @@ module.exports = (strapi) => ({
               content: data[0].content,
               localizations: data[0].localizations,
               owner: data[0]?.user?.id,
+              featuredImage:data[0].featuredImage?.url,
+              tier:data[0].tier,
+              published_at:data[0].publishedAt
             };
+            return res 
           }else{
             //not authorized - not post owner, not admin
             return {
