@@ -16,6 +16,7 @@ module.exports = (
     strapi
   }
 ) => {
+
   return {
 
     async initialize() {
@@ -57,9 +58,12 @@ module.exports = (
         username: user.username || user.email,
         role: {id: role.id}
       };
-      return strapi
+      const res =  await strapi
         .query('plugin::users-permissions.user')
         .create({data: newUser, populate: ['role']});
+
+      return res
+
     },
 
     async user(email, username) {
@@ -71,9 +75,11 @@ module.exports = (
         return user;
       }
       const userByUsername = username ? await this.fetchUser({username}) : null;
+      
       if (userByUsername) {
         return userByUsername
       }
+
       if (email && settings.createUserIfNotExists) {
         return this.createUser({email, username})
       }
@@ -123,15 +129,17 @@ module.exports = (
     async createToken(email, context) {
       const settings = await this.settings();
       const {token_length = 20} = settings;
-      const tokensService = strapi.query('plugin::passwordless.token');
-      tokensService.update({where: {email}, data: {is_active: false}});
+      // seems like the query gets run after the new one is created, so sets it back to inactive
+      // so add await to wait for it to comlete first
+      await strapi.query('plugin::passwordless.token').update({where: {email}, data: {is_active: false}});
       const body = nanoid(token_length);
       const tokenInfo = {
         email,
         body,
+        is_active:true,//maybe dont need to set this anymore, but just in case
         context: JSON.stringify(context)
       };
-      return tokensService.create({data: tokenInfo});
+      return strapi.query('plugin::passwordless.token').create({data: tokenInfo});
     },
 
     updateTokenOnLogin(token) {

@@ -36,11 +36,11 @@ module.exports = {
           data: {
             ref: "plugin::users-permissions.user",
             source: "users-permissions",
-            // field: "avatar",
             refId: id,
           },
           files: file,
         });
+        console.log(response[0]?.url)
         ctx.send({
           uploaded: "true",
           message: "Profile picture uploaded",

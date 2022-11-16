@@ -109,10 +109,13 @@
         .query('plugin::users-permissions.user')
         .findOne({ where: { username } });
 
-        console.log(id)
-        console.log(userWithSameUsername.id)
       if (userWithSameUsername && userWithSameUsername.id != id) {
-        throw new ApplicationError('Username already taken');
+        return ctx.throw('Username already taken', 400);
+        // ctx.throw(400, 'name required');
+
+        // ctx.send()
+        // return false
+        throw new ApplicationError('Username already taken', {foo:'bar'});
       }
     }
 
@@ -124,6 +127,7 @@
 
       originalEmail = user.email
       if (userWithSameEmail && userWithSameEmail.id != id) {
+        return ctx.throw('Email already taken', 400);
         throw new ApplicationError('Email already taken');
       }else{
         emailChanged = true

@@ -1,51 +1,65 @@
 module.exports = (strapi) => ({
     typeDefs:  `
     type Query {
-      userPosts(status: String!, pageSize: Int, offset: Int): UserPosts
+      adminPosts(status: String!, pageSize: Int, offset: Int, user:Int): AdminPosts
       count: Int
     }
 
-    type UserPosts {
+    type AdminPosts {
 
-      posts: [UserPost]
+      posts: [AdminPost]
       count: Int
     }
 
-    type UserPost {
-
+    type AdminPost {
       id: ID
       title: String
       slug: String
       status: String
       date: String
-      featuredImage: String
-      tier: Int
-      published_at: String
+      user: AdminPostUser
     }
+
+    type AdminPostUser {
+        id: ID
+        username: String
+        firstName: String
+        secondName: String
+        slug: String
+      }
   `,
   resolvers: {
     Query: {
-      userPosts: {
+     adminPosts: {
         resolve: async (parent, args, context) => {
 
+        //only give results for admin
+        if( context.state.user.role.type!== "admin"){
+            return {
+                posts:null,
+                count:0
+            }
+        }
+        const whereFilter =  { type:'article', status:args.status}
+        if(args.user){
+            whereFilter.user=args.user
+        }
           // https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/query-engine/single-operations.html#findwithcount
           const [entries, count] = await strapi.db.query('api::post.post').findWithCount({
             select: ['id', 'slug', 'title', 'date', 'status'],
-            where: { type:'article', status:args.status, user:context.state.user?.id },
+            where:whereFilter,
             limit:args.pageSize,
             offset:args.offset,
             orderBy: { date: 'DESC' },
-            // populate: { category: true },
-          });           
+            populate: { user: true },
+          });     
           let posts = entries.map(post => ({
             id: post.id,
             title: post.title,
             slug: post.slug,
             status: post.status,
             date:post.date,
-            featuredImage:post.featuredImage?.url,
-            tier:post.tier,
-            published_at:post.publishedAt
+            user:post.user
           }));
           return {
             posts,

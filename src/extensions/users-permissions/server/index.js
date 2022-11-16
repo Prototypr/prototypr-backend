@@ -7,7 +7,8 @@ const middlewares = require('@strapi/plugin-users-permissions/server/middlewares
 const services = require('./services');
 const routes = require('@strapi/plugin-users-permissions/server/routes');
 const controllers = require('@strapi/plugin-users-permissions/server/controllers');
-const config = require('@strapi/plugin-users-permissions/server/config');
+// const config = require('@strapi/plugin-users-permissions/server/config');
+const config = require('./config');
 
 module.exports = () => ({
   register,

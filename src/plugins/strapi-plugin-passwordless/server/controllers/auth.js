@@ -13,6 +13,7 @@ const emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"
 
 module.exports = {
   async login(ctx) {
+
     const {loginToken} = ctx.query;
     const {passwordless} = strapi.plugins['passwordless'].services;
     const {user: userService, jwt: jwtService} = strapi.plugins['users-permissions'].services;
@@ -73,6 +74,7 @@ module.exports = {
   },
 
   async sendLink(ctx) {
+
     const {passwordless} = strapi.plugins['passwordless'].services;
 
     const isEnabled = await passwordless.isEnabled();

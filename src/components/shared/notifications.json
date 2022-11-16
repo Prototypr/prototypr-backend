@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_shared_notifications",
+  "info": {
+    "displayName": "notifications",
+    "icon": "concierge-bell",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "postViewMilestone": {
+      "type": "boolean",
+      "default": true,
+      "required": false
+    }
+  }
+}
