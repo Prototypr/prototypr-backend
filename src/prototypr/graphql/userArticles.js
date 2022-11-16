@@ -1,7 +1,7 @@
 module.exports = (strapi) => ({
     typeDefs:  `
     type Query {
-      userPosts(status: String!, pageSize: Int, offset: Int): UserPosts
+      userPosts(status: [String]!, pageSize: Int, offset: Int): UserPosts
       count: Int
     }
 
