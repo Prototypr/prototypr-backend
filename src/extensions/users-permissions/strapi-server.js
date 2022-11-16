@@ -1,6 +1,8 @@
 const { resendConfirmationEmail } = require("./resendConfirmationEmail");
 const { updateMe, deleteAvatar, uploadAvatar } = require("./updateMe");
 const { uploadImageToArticle } = require("./uploadBlogImage");
+const { createJobPost } = require("./createJobPost");
+
 const { fetchPlausibleStatsForUser } = require("./fetchPlausibleStats");
 
 const { checkAdminRole } = require("./checkAdminRole");
@@ -26,6 +28,10 @@ module.exports = (plugin) => {
     return uploadImageToArticle(ctx);
   };
 
+  plugin.controllers.user.createJobPost = (ctx) => {
+    ctx.params.id = ctx.state.user.id;
+    return createJobPost(ctx);
+  };
   plugin.controllers.user.fetchPlausibleStatsForUser = (ctx) => {
     ctx.params.id = ctx.state.user.id;
     return fetchPlausibleStatsForUser(ctx);
@@ -60,6 +66,13 @@ module.exports = (plugin) => {
     handler: "user.uploadImageToArticle",
   });
 
+  // job post endpoint
+
+  plugin.routes["content-api"].routes.push({
+    method: "POST",
+    path: "/users/createJobPost",
+    handler: "user.createJobPost",
+  });
   //fetch post analytics for user
   plugin.routes["content-api"].routes.push({
     method: "POST",
