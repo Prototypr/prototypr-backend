@@ -24,6 +24,9 @@
   
 
    module.exports = {
+    /****************
+     * AVATAR
+     *****************/
      /**
       * delete avatar
       * @param {*} ctx 

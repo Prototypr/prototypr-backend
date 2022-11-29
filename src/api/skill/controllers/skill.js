@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- *  job-entry controller
+ * skill controller
  */
 
 const { createCoreController } = require('@strapi/strapi').factories;
 
-module.exports = createCoreController('api::job-entry.job-entry');
+module.exports = createCoreController('api::skill.skill');

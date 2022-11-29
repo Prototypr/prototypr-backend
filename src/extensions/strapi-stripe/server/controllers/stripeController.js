@@ -113,7 +113,10 @@ module.exports = {
      * can't be bought again.
      */
     console.log('update the product')
-    if(isTxnSuccessful){
+    console.log(stripeProduct)
+    // if it's a sponsor, set it to unavailable
+    // make sure sponsor product is id = 1
+    if(isTxnSuccessful && (stripeProduct==1 || stripeProduct=='1')){
         await strapi.entityService.update('plugin::strapi-stripe.strapi-stripe-product', 
         stripeProduct, {
          data: {

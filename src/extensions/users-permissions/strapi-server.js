@@ -134,9 +134,19 @@ module.exports = (plugin) => {
     const user = await strapi.entityService.findOne(
       "plugin::users-permissions.user",
       ctx.state.user.id,
-      { populate: ["avatar", "role"] }
+      { populate: ["avatar", "role", "companies"] }
     );
 
+    if(user?.companies?.length){
+      //get company logo
+      const company = await strapi.entityService.findOne(
+        "api::company.company",
+        user?.companies[0].id,
+        { populate: ["logo"] }
+      );
+      user.companies[0].logo = company.logo?.url
+    }
+    
     ctx.body = sanitizeOutput(user, ctx.state.user);
   };
 

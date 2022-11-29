@@ -1,0 +1,67 @@
+{
+  "kind": "collectionType",
+  "collectionName": "job",
+  "info": {
+    "singularName": "job",
+    "pluralName": "jobs",
+    "displayName": "Job",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "date": {
+      "type": "datetime"
+    },
+    "url": {
+      "type": "string"
+    },
+    "company": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::company.company",
+      "inversedBy": "jobs"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "fulltime",
+        "parttime",
+        "contract",
+        "volunteer",
+        "internship"
+      ]
+    },
+    "salarymin": {
+      "type": "integer",
+      "max": 750000,
+      "required": false
+    },
+    "salarymax": {
+      "type": "integer",
+      "max": 750000
+    },
+    "skills": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::skill.skill",
+      "mappedBy": "jobs"
+    },
+    "location": {
+      "type": "string"
+    }
+  }
+}

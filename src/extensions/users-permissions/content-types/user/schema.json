@@ -399,6 +399,12 @@
       "type": "component",
       "repeatable": false,
       "component": "shared.notifications"
+    },
+    "companies": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::company.company",
+      "mappedBy": "members"
     }
   }
 }

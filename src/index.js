@@ -12,6 +12,7 @@ const adminArticles = require("./prototypr/graphql/adminArticles");
 const userArticles = require("./prototypr/graphql/userArticles");
 const userArticle = require("./prototypr/graphql/userArticle");
 const userArticleId = require("./prototypr/graphql/userArticleId");
+const userJobId = require("./prototypr/graphql/userJobId");
 
 module.exports = {
   /**
@@ -42,6 +43,9 @@ module.exports = {
 
     const userArticleIdExtension = userArticleId(strapi);
     strapi.plugin("graphql").service("extension").use(userArticleIdExtension);
+
+    const userJobIdExtension = userJobId(strapi);
+    strapi.plugin("graphql").service("extension").use(userJobIdExtension);
   },
 
   //set user avatar after create for twitter
