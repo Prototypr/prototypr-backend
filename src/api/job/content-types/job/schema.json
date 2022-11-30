@@ -71,6 +71,12 @@
       "relation": "oneToMany",
       "target": "plugin::strapi-stripe.strapi-stripe-payment",
       "mappedBy": "job"
+    },
+    "promoted": {
+      "type": "boolean"
+    },
+    "slug": {
+      "type": "uid"
     }
   }
 }

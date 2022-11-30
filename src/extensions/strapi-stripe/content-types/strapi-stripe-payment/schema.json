@@ -29,7 +29,8 @@
       "type": "string",
       "maxLength": 2500,
       "required": true,
-      "configurable": false
+      "configurable": false,
+      "unique": true
     },
     "isTxnSuccessful": {
       "type": "boolean",
