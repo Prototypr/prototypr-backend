@@ -9,7 +9,7 @@
     "kind": "collectionType"
   },
   "options": {
-    "draftAndPublish": false
+    "draftAndPublish": "false"
   },
   "pluginOptions": {
     "content-manager": {
@@ -72,6 +72,12 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "plugin::users-permissions.user"
+    },
+    "job": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::job.job",
+      "inversedBy": "payments"
     }
   }
 }

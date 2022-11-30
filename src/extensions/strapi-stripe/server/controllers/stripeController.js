@@ -53,12 +53,14 @@ module.exports = {
   },
 
   createCheckoutSession: async (ctx) => {
-    const { stripePriceId, productId, productName } = ctx.request.body;
+    //prototypr add - postId and postType + successUrl
+    const { stripePriceId, productId, productName, postId, postType, successUrl, cancelUrl } = ctx.request.body;
 
     const checkoutSessionResponse = await strapi
       .plugin("strapi-stripe")
       .service("stripeService")
-      .createCheckoutSession(stripePriceId, productId, productName);
+      //prototypr add -postId and postType + successUrl
+      .createCheckoutSession(stripePriceId, productId, productName, postId, postType, successUrl, cancelUrl);
     ctx.send(checkoutSessionResponse, 200);
   },
   retrieveCheckoutSession: async (ctx) => {
@@ -80,7 +82,8 @@ module.exports = {
       customerName,
       customerEmail,
       stripeProduct,
-      userId
+      userId,
+      job
     } = ctx.request.body;
 
     /**
@@ -104,6 +107,7 @@ module.exports = {
           customerName: customerName,
           customerEmail: customerEmail,
           stripeProduct: stripeProduct,
+          job:job
         },
         populate: true,
       });

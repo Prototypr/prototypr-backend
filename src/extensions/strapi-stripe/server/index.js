@@ -11,7 +11,8 @@ const controllers = require('./controllers');
 const routes = require('strapi-stripe/server/routes');
 const middlewares = require('strapi-stripe/server/middlewares');
 const policies = require('strapi-stripe/server/policies');
-const services = require('strapi-stripe/server/services');
+// const services = require('strapi-stripe/server/services');
+const services = require('./services');
 
 module.exports = {
   register,

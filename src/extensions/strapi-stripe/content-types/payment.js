@@ -29,6 +29,7 @@ module.exports = {
         maxLength: 2500,
         required: true,
         configurable: false,
+        unique:true
       },
       isTxnSuccessful: {
         type: "boolean",
@@ -71,6 +72,12 @@ module.exports = {
         type: "relation",
         relation: "oneToOne",
         target: "plugin::users-permissions.user"
+      },
+      job:{
+        type: "relation",
+        relation: "manyToOne",
+        target: "api::job.job",
+        inversedBy: "payments"
       }
     },
   };
