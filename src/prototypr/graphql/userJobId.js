@@ -55,7 +55,7 @@ module.exports = (strapi) => ({
             let active = false;
             if(hasAccess){
               //check if payment in last 30 days
-              if(data[0].payments){
+              if(data[0].payments?.length){
 
                 active = true
                 let then = new Date(data[0].payments?.txnDate).getTime()
