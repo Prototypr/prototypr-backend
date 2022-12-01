@@ -19,6 +19,8 @@ module.exports = (strapi) => ({
         slug: String
         owner: String
         date: String
+        salarymax: Int
+        salarymin: Int
         companyName: String
         companyLogo: String
         skills: [JobSkills]
@@ -54,7 +56,7 @@ module.exports = (strapi) => ({
                   populate:["name", "slug"]
                 },
             },
-            select: ['id', 'slug', 'title', 'date'],
+            select: ['id', 'slug', 'title', 'date', 'salarymin', 'salarymax'],
             where: { 
                 $not: {
                     publishedAt: null,
@@ -65,12 +67,13 @@ module.exports = (strapi) => ({
             orderBy: { date: 'DESC' },
             // populate: { category: true },
           });        
-          console.log(entries[0])   
           let posts = entries.map(post => ({
             id: post.id,
             title: post.title,
             slug: post.slug,
             owner: post.user,
+            salarymin:post.salarymin,
+            salarymax:post.salarymax,
             companyName:post.company?.name,
             companyLogo:post.company?.logo?.url,
             skills:post.skills,
