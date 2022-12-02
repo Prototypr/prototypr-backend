@@ -9,6 +9,25 @@ module.exports = (strapi) => ({
       title: String
       owner: String
       active: Boolean
+      description: String
+      url: String
+      locations: [UserLocation]
+      skills: [UserSkill]
+      type: String
+      salarymin: Int
+      salarymax: Int
+    }
+
+    type UserSkill {
+      id: ID
+      name: String
+      slug: String
+    }
+
+    type UserLocation {
+      id: ID
+      name: String
+      slug: String
     }
   `,
   resolvers: {
@@ -26,7 +45,17 @@ module.exports = (strapi) => ({
               user:true,
               payments:{
                 sort: 'txnDate:asc',
-              }
+              },
+              locations:{
+                populate:['id','name','slug']
+              },
+              skills:{
+                populate:['id','name','slug']
+              },
+              type:true,
+              salarymin:true,
+              salarymax:true
+              
             }
             ,
             limit: 1,
@@ -71,7 +100,14 @@ module.exports = (strapi) => ({
               const res = {
                 id: data[0]?.id,
                 title: data[0].title,
+                description:data[0].description,
+                locations:data[0].locations,
+                skills:data[0].skills,
                 owner: data[0].user?.id,
+                url:data[0].url,
+                type:data[0].type,
+                salarymin:data[0].salarymin,
+                salarymax:data[0].salarymax,
                 active
               };
               return res 

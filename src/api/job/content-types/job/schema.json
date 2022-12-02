@@ -60,9 +60,6 @@
       "target": "api::skill.skill",
       "mappedBy": "jobs"
     },
-    "location": {
-      "type": "string"
-    },
     "expiry": {
       "type": "datetime"
     },
@@ -77,6 +74,12 @@
     },
     "slug": {
       "type": "uid"
+    },
+    "locations": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::location.location",
+      "mappedBy": "jobs"
     }
   }
 }

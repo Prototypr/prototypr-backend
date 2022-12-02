@@ -405,6 +405,12 @@
       "relation": "manyToMany",
       "target": "api::company.company",
       "mappedBy": "members"
+    },
+    "locations": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::location.location",
+      "mappedBy": "users_permissions_users"
     }
   }
 }
