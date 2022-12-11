@@ -1,6 +1,6 @@
 "use strict";
 
-const userValidation = require("../../../users-permissions/resendConfirmationEmail/libs/userValidation");
+const userValidation = require("../../../users-permissions/custom/resendConfirmationEmail/libs/userValidation");
 
 module.exports = {
   createProduct: async (ctx) => {
@@ -53,14 +53,14 @@ module.exports = {
   },
 
   createCheckoutSession: async (ctx) => {
-    //prototypr add - postId and postType + successUrl
-    const { stripePriceId, productId, productName, postId, postType, successUrl, cancelUrl } = ctx.request.body;
+    //prototypr add - postId and postType + successUrl, sponsorWeeks
+    const { stripePriceId, productId, productName, postId, postType, successUrl, cancelUrl, sponsorWeeks } = ctx.request.body;
 
     const checkoutSessionResponse = await strapi
       .plugin("strapi-stripe")
       .service("stripeService")
-      //prototypr add -postId and postType + successUrl
-      .createCheckoutSession(stripePriceId, productId, productName, postId, postType, successUrl, cancelUrl);
+      //prototypr add -postId and postType + successUrl, sponsorWeeks
+      .createCheckoutSession(stripePriceId, productId, productName, postId, postType, successUrl, cancelUrl, sponsorWeeks);
     ctx.send(checkoutSessionResponse, 200);
   },
   retrieveCheckoutSession: async (ctx) => {
@@ -83,7 +83,8 @@ module.exports = {
       customerEmail,
       stripeProduct,
       userId,
-      job
+      job,
+      sponsoredPost
     } = ctx.request.body;
 
     /**
@@ -107,7 +108,8 @@ module.exports = {
           customerName: customerName,
           customerEmail: customerEmail,
           stripeProduct: stripeProduct,
-          job:job
+          job:job,
+          sponsoredPost:sponsoredPost
         },
         populate: true,
       });
@@ -119,15 +121,17 @@ module.exports = {
     console.log('update the product')
     console.log(stripeProduct)
     // if it's a sponsor, set it to unavailable
+    // update: don't need to do this any more, as you can only
+    // buy what's available, if there's a clash, fix it manually
     // make sure sponsor product is id = 1
-    if(isTxnSuccessful && (stripeProduct==1 || stripeProduct=='1')){
-        await strapi.entityService.update('plugin::strapi-stripe.strapi-stripe-product', 
-        stripeProduct, {
-         data: {
-           availability: false,
-         },
-       });
-    }
+    // if(isTxnSuccessful && (stripeProduct==1 || stripeProduct=='1')){
+    //     await strapi.entityService.update('plugin::strapi-stripe.strapi-stripe-product', 
+    //     stripeProduct, {
+    //      data: {
+    //        availability: false,
+    //      },
+    //    });
+    // }
 
 
     return savePaymentDetails;

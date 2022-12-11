@@ -411,6 +411,18 @@
       "relation": "manyToMany",
       "target": "api::location.location",
       "mappedBy": "users_permissions_users"
+    },
+    "jobs": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::job.job",
+      "mappedBy": "user"
+    },
+    "sponsored_posts": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::sponsored-post.sponsored-post",
+      "mappedBy": "user"
     }
   }
 }

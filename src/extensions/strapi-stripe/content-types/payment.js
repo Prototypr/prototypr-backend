@@ -78,6 +78,12 @@ module.exports = {
         relation: "manyToOne",
         target: "api::job.job",
         inversedBy: "payments"
+      },
+      sponsoredPost:{
+        type: "relation",
+        relation: "manyToOne",
+        target: "api::sponsored-post.sponsored-post",
+        inversedBy: "payments"
       }
     },
   };

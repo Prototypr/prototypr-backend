@@ -1,0 +1,82 @@
+{
+  "kind": "collectionType",
+  "collectionName": "sponsored_posts",
+  "info": {
+    "singularName": "sponsored-post",
+    "pluralName": "sponsored-posts",
+    "displayName": "Sponsored Post",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "banner": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "newsletter",
+        "website",
+        "combo"
+      ]
+    },
+    "tagline": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "featuredImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "week": {
+      "type": "integer"
+    },
+    "company": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::company.company",
+      "inversedBy": "sponsored_posts"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "sponsored_posts"
+    },
+    "link": {
+      "type": "string"
+    },
+    "weeks": {
+      "type": "json"
+    },
+    "payments": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::strapi-stripe.strapi-stripe-payment",
+      "mappedBy": "job"
+    }
+  }
+}

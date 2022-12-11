@@ -18,21 +18,16 @@ module.exports = {
    * @param {*} ctx
    */
 
-  async createJobPost(ctx) {
+  async createSponsoredPost(ctx) {
     const data = ctx.request.body;
     //company info
     const { companyName, companyWebsite, contactEmail } = data;
     //job post info
     const { 
       title, 
-      location,
       description, 
       type,
-      salaryMin, 
-      salaryMax, 
-      url, 
-      image,
-      skills
+      link, 
     } = data;
 
     // location = JSON.parse(location)//just use as as string
@@ -73,7 +68,6 @@ module.exports = {
               email:contactEmail,
               user:ctx.state.user.id, //company owner
               members:[ctx.state.user.id], //add first member,
-              image:image
             },
           }
         );
@@ -134,30 +128,26 @@ module.exports = {
 
         let fields={
           title: title,
-          locations: JSON.parse(location),
           description:description,
           type:type,
-          salarymin: salaryMin,
-          salarymax: salaryMax,
-          url: url,
-          skills: JSON.parse(skills),
-          image:image,
+          link: link,
           company: companyProfile?.id,
           user:ctx.state.user.id // job poster
         }
         
-        const jobEntry = await strapi.entityService.create(
-          "api::job.job",
+        const sponsordPostEntry = await strapi.entityService.create(
+          "api::sponsored-post.sponsored-post",
           {
             data: fields
           }
         );
+        console.log(sponsordPostEntry)
 
-        if (jobEntry) {
+        if (sponsordPostEntry) {
           ctx.send({
             posted: true,
-            message: "Job Posted",
-            id:jobEntry.id,
+            message: "Sponsored post draft created",
+            id:sponsordPostEntry.id,
             companyId:companyProfile.id
           });
         }
@@ -166,7 +156,63 @@ module.exports = {
       ctx.send({ posted: false, message: e.message });
     }
   },
-  async updateJobPost(ctx) {
+  async updateBookingWeeks(ctx) {
+    const data = ctx.request.body;
+    const { 
+      weeks,
+      sponsoredPostId
+    } = data;
+    try{
+      if(!sponsoredPostId){
+        ctx.send({ posted: false, message: e.message });
+        return false
+      }
+      const sponsoredPost = await strapi.entityService.findOne(
+        "api::sponsored-post.sponsored-post",sponsoredPostId,
+        {
+          populate:['user'],
+        }
+      );
+      
+      if(sponsoredPost.user?.id!==ctx.state.user.id){
+        return  ctx.send({
+          posted: false,
+          message: "You don't have permission to update this job post.",
+          // id:jobEntry.id,
+          // companyId:companyProfile.id
+        });
+      }
+
+      let weeksArray=[weeks]
+      if(weeks.indexOf(',')){
+        weeksArray = weeks.split(',');
+      }
+      
+      const sponsoredPostEntry = await strapi.entityService.update(
+        "api::sponsored-post.sponsored-post",
+        sponsoredPostId,
+        {
+          data: {
+            weeks:weeksArray
+          }
+        }
+      );
+
+      if (sponsoredPostEntry) {
+      return  ctx.send({
+          posted: true,
+          message: "Job Updated",
+          id:sponsoredPostEntry.id,
+        });
+      }
+    }
+    catch (e) {
+      console.log(e)
+      return ctx.send({ posted: false, message: e.message });
+    }
+
+  },
+  async updateSponsoredPost(ctx) {
 
     const data = ctx.request.body;
     //company info
@@ -174,18 +220,13 @@ module.exports = {
     //job post info
     const { 
       title, 
-      jobId,
-      location,
+      sponsoredPostId,
       description, 
       type,
-      salaryMin, 
-      salaryMax, 
-      url, 
-      image,
-      skills
+      link, 
     } = data;
 
-    if(!jobId){
+    if(!sponsoredPostId){
       ctx.send({ posted: false, message: e.message });
       return false
     }
@@ -290,28 +331,23 @@ module.exports = {
 
         let fields={
           title: title,
-          locations: JSON.parse(location),
           description:description,
           type:type,
-          salarymin: salaryMin,
-          salarymax: salaryMax,
-          url: url,
-          skills: JSON.parse(skills),
-          image:image,
+          link: link,
           company: companyProfile?.id,
           user:ctx.state.user.id // job poster
         }
 
 
 
-        const job = await strapi.entityService.findOne(
-          "api::job.job",jobId,
+        const sponsoredPost = await strapi.entityService.findOne(
+          "api::sponsored-post.sponsored-post",sponsoredPostId,
           {
             populate:['user'],
           }
         );
 
-        if(job.user?.id!==ctx.state.user.id){
+        if(sponsoredPost.user?.id!==ctx.state.user.id){
           return  ctx.send({
             posted: false,
             message: "You don't have permission to update this job post.",
@@ -320,19 +356,19 @@ module.exports = {
           });
         }
         
-        const jobEntry = await strapi.entityService.update(
-          "api::job.job",
-          jobId,
+        const sponsoredPostEntry = await strapi.entityService.update(
+          "api::sponsored-post.sponsored-post",
+          sponsoredPostId,
           {
             data: fields
           }
         );
 
-        if (jobEntry) {
+        if (sponsoredPostEntry) {
         return  ctx.send({
             posted: true,
             message: "Job Updated",
-            id:jobEntry.id,
+            id:sponsoredPostEntry.id,
             companyId:companyProfile.id
           });
         }

@@ -1,11 +1,11 @@
-const { resendConfirmationEmail } = require("./resendConfirmationEmail");
-const { updateMe, deleteAvatar, uploadAvatar } = require("./updateMe");
-const { uploadImageToArticle } = require("./uploadBlogImage");
-const { createJobPost, updateJobPost } = require("./createJobPost");
+const { resendConfirmationEmail } = require("./custom/resendConfirmationEmail");
+const { updateMe, deleteAvatar, uploadAvatar } = require("./custom/updateMe");
+const { uploadImageToArticle } = require("./custom/uploadBlogImage");
+const { createJobPost, updateJobPost } = require("./custom/createJobPost");
+const {createSponsoredPost, updateSponsoredPost, updateBookingWeeks} = require('./custom/createSponsoredPost')
+const { fetchPlausibleStatsForUser } = require("./custom/fetchPlausibleStats");
 
-const { fetchPlausibleStatsForUser } = require("./fetchPlausibleStats");
-
-const { checkAdminRole } = require("./checkAdminRole");
+const { checkAdminRole } = require("./custom/checkAdminRole");
 // https://medium.com/@fabian.froeschl/add-updateme-route-to-strapi-4-0s-users-permissons-plugin-fc31798df295
 module.exports = (plugin) => {
   // https://javascript.plainenglish.io/add-a-customize-users-permissions-provider-for-strapi-v4-6aa78c642977
@@ -35,6 +35,18 @@ module.exports = (plugin) => {
   plugin.controllers.user.updateJobPost = (ctx) => {
     ctx.params.id = ctx.state.user.id;
     return updateJobPost(ctx);
+  };
+  plugin.controllers.user.createSponsoredPost = (ctx) => {
+    ctx.params.id = ctx.state.user.id;
+    return createSponsoredPost(ctx);
+  };
+  plugin.controllers.user.updateSponsoredPost = (ctx) => {
+    ctx.params.id = ctx.state.user.id;
+    return updateSponsoredPost(ctx);
+  };
+  plugin.controllers.user.updateBookingWeeks = (ctx) => {
+    ctx.params.id = ctx.state.user.id;
+    return updateBookingWeeks(ctx);
   };
   plugin.controllers.user.fetchPlausibleStatsForUser = (ctx) => {
     ctx.params.id = ctx.state.user.id;
@@ -71,7 +83,6 @@ module.exports = (plugin) => {
   });
 
   // job post endpoint
-
   plugin.routes["content-api"].routes.push({
     method: "POST",
     path: "/users/createJobPost",
@@ -81,6 +92,22 @@ module.exports = (plugin) => {
     method: "POST",
     path: "/users/updateJobPost",
     handler: "user.updateJobPost",
+  });
+  // sponsored post endpoint
+  plugin.routes["content-api"].routes.push({
+    method: "POST",
+    path: "/users/createSponsoredPost",
+    handler: "user.createSponsoredPost",
+  });
+  plugin.routes["content-api"].routes.push({
+    method: "POST",
+    path: "/users/updateSponsoredPost",
+    handler: "user.updateSponsoredPost",
+  });
+  plugin.routes["content-api"].routes.push({
+    method: "POST",
+    path: "/users/updateBookingWeeks",
+    handler: "user.updateBookingWeeks",
   });
   //fetch post analytics for user
   plugin.routes["content-api"].routes.push({

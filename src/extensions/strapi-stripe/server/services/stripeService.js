@@ -75,8 +75,8 @@ module.exports = ({ strapi }) => ({
       });
     return updateProductResponse;
   },
-  //prototypr changes - add postId, postType, successUrl
-  async createCheckoutSession(stripePriceId, productId, productName, postId,postType, successUrl, cancelUrl) {
+  //prototypr changes - add postId, postType, successUrl, sponsorWeeks
+  async createCheckoutSession(stripePriceId, productId, productName, postId,postType, successUrl, cancelUrl, sponsorWeeks) {
     const pluginStore = strapi.store({
       environment: strapi.config.environment,
       type: "plugin",
@@ -89,12 +89,18 @@ module.exports = ({ strapi }) => ({
     } else {
       stripe = new Stripe(stripeSettings.stripeTestSecKey);
     }
+    //prototypr change for multibuy
+    let quantity = 1
+    if(sponsorWeeks?.length){
+      quantity = sponsorWeeks.length
+    }
+
     const session = await stripe.checkout.sessions.create({
       line_items: [
         {
           // Provide the exact Price ID (for example, pr_1234) of the product you want to sell
           price: stripePriceId,
-          quantity: 1,
+          quantity: quantity,//prototypr
         },
       ],
       mode: "payment",
@@ -104,7 +110,8 @@ module.exports = ({ strapi }) => ({
         productId: `${productId}`,
         productName: `${productName}`,
         postId:`${postId}`,//prototypr
-        postType:`${postType}`,//prototypr
+        postType:`${postType}`,//prototypr,
+        sponsorWeeks:`${sponsorWeeks}`
       },
     });
     return session;

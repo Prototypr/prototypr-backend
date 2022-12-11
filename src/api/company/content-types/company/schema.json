@@ -45,6 +45,12 @@
     },
     "email": {
       "type": "email"
+    },
+    "sponsored_posts": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::sponsored-post.sponsored-post",
+      "mappedBy": "company"
     }
   }
 }
