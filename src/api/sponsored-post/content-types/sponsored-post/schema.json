@@ -29,8 +29,11 @@
     "type": {
       "type": "enumeration",
       "enum": [
-        "newsletter",
+        "banner",
+        "link",
         "website",
+        "linkcombo",
+        "bannercombo",
         "combo"
       ]
     },

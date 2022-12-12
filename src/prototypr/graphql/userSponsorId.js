@@ -52,7 +52,6 @@ module.exports = (strapi) => ({
           });
 
           if(data.length){
-            console.log(data[0])
             let hasAccess = (context.state.user?.id==data[0]?.user?.id || context.state.user.role.type === "admin")
             //or if user is in the company group
             if (data[0]?.members?.length){
@@ -66,7 +65,6 @@ module.exports = (strapi) => ({
 
             let active = false;
 
-            console.log(hasAccess)
             if(hasAccess){
               //check if payment in last 30 days
               if(data[0].payments?.length){
@@ -92,7 +90,6 @@ module.exports = (strapi) => ({
                 banner:data[0].banner?.url,
                 featuredImage:data[0].featuredImage?.url
               };
-              console.log(res)
               return res 
   
             }else{

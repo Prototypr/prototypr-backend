@@ -82,8 +82,6 @@ module.exports = (strapi) => ({
             
             const jobType = getJobType(post)
 
-            console.log(post.type)
-            console.log(jobType)
             return({
             id: post.id,
             title: post.title,
