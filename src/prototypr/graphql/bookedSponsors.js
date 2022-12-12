@@ -24,8 +24,6 @@ module.exports = (strapi) => ({
       bookedSponsors: {
         resolve: async (parent, args, context) => {
 
-          console.log('papa')
-          console.log(args)
            const total =  strapi.entityService.count('api::sponsored-post.sponsored-post', {
             select: ['id'],
             where: { 

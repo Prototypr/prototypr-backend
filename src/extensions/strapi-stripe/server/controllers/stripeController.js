@@ -42,6 +42,14 @@ module.exports = {
       .findOne({ where: { id: id } });
     ctx.body = res;
   },
+  async findOneBySlug(ctx) {
+    console.log(ctx)
+    const { slug } = ctx.params;
+    const res = await strapi
+      .query("plugin::strapi-stripe.strapi-stripe-product")
+      .findOne({ where: { slug: slug } });
+    ctx.body = res;
+  },
   updateProduct: async (ctx) => {
     const { id } = ctx.params;
     const { title, url, description, stripeProductId } = ctx.request.body;
