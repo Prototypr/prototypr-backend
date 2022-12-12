@@ -164,7 +164,7 @@ module.exports = {
     } = data;
     try{
       if(!sponsoredPostId){
-        ctx.send({ posted: false, message: e.message });
+        ctx.send({ posted: false, message: 'No Sponsored Post ID' });
         return false
       }
       const sponsoredPost = await strapi.entityService.findOne(
@@ -227,7 +227,7 @@ module.exports = {
     } = data;
 
     if(!sponsoredPostId){
-      ctx.send({ posted: false, message: e.message });
+      ctx.send({ posted: false, message: 'No Sponsored Post ID' });
       return false
     }
 

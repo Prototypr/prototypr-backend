@@ -12,6 +12,8 @@ module.exports = (strapi) => ({
       description: String
       link: String
       type: String
+      banner: String
+      featuredImage: String
     }
   `,
   resolvers: {
@@ -31,6 +33,12 @@ module.exports = (strapi) => ({
                 sort: 'txnDate:asc',
               },
               type:true,
+              banner:{
+                populate:'url'
+              },
+              featuredImage:{
+                populate:'url'
+              }
             }
             ,
             limit: 1,
@@ -80,7 +88,9 @@ module.exports = (strapi) => ({
                 owner: data[0].user?.id,
                 link:data[0].link,
                 type:data[0].type,
-                active
+                active,
+                banner:data[0].banner?.url,
+                featuredImage:data[0].featuredImage?.url
               };
               console.log(res)
               return res 

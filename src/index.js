@@ -16,6 +16,8 @@ const userJobId = require("./prototypr/graphql/userJobId");
 const userSponsorId = require("./prototypr/graphql/userSponsorId");
 const allJobs = require('./prototypr/graphql/allJobs')
 const bookedSponsors = require('./prototypr/graphql/bookedSponsors')
+const partnerPosts = require("./prototypr/graphql/partnerPosts");
+const partnerJobs = require("./prototypr/graphql/partnerJobs");
 
 module.exports = {
   /**
@@ -43,6 +45,12 @@ module.exports = {
     const allJobsExtension = allJobs(strapi);
     strapi.plugin("graphql").service("extension").use(allJobsExtension);
     
+    const partnerPostsExtension = partnerPosts(strapi);
+    strapi.plugin("graphql").service("extension").use(partnerPostsExtension);
+    
+    const partnerJobsExtension = partnerJobs(strapi);
+    strapi.plugin("graphql").service("extension").use(partnerJobsExtension);
+
     const bookedSponsorsExtension = bookedSponsors(strapi);
     strapi.plugin("graphql").service("extension").use(bookedSponsorsExtension);
     
