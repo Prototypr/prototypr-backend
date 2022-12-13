@@ -14,8 +14,10 @@ const userArticle = require("./prototypr/graphql/userArticle");
 const userArticleId = require("./prototypr/graphql/userArticleId");
 const userJobId = require("./prototypr/graphql/userJobId");
 const userSponsorId = require("./prototypr/graphql/userSponsorId");
-const allJobs = require('./prototypr/graphql/allJobs')
-const bookedSponsors = require('./prototypr/graphql/bookedSponsors')
+const allJobs = require("./prototypr/graphql/allJobs");
+const randomPosts = require("./prototypr/graphql/randomPosts");
+
+const bookedSponsors = require("./prototypr/graphql/bookedSponsors");
 const partnerPosts = require("./prototypr/graphql/partnerPosts");
 const partnerJobs = require("./prototypr/graphql/partnerJobs");
 
@@ -41,19 +43,22 @@ module.exports = {
     // Going to be our custom query resolver to get all authors and their details.
     const userArticlesExtension = userArticles(strapi);
     strapi.plugin("graphql").service("extension").use(userArticlesExtension);
-    
+
     const allJobsExtension = allJobs(strapi);
     strapi.plugin("graphql").service("extension").use(allJobsExtension);
-    
+
+    const randomPostsExtension = randomPosts(strapi);
+    strapi.plugin("graphql").service("extension").use(randomPostsExtension);
+
     const partnerPostsExtension = partnerPosts(strapi);
     strapi.plugin("graphql").service("extension").use(partnerPostsExtension);
-    
+
     const partnerJobsExtension = partnerJobs(strapi);
     strapi.plugin("graphql").service("extension").use(partnerJobsExtension);
 
     const bookedSponsorsExtension = bookedSponsors(strapi);
     strapi.plugin("graphql").service("extension").use(bookedSponsorsExtension);
-    
+
     const adminArticlesExtension = adminArticles(strapi);
     strapi.plugin("graphql").service("extension").use(adminArticlesExtension);
     const userArticleExtension = userArticle(strapi);
@@ -64,7 +69,7 @@ module.exports = {
 
     const userJobIdExtension = userJobId(strapi);
     strapi.plugin("graphql").service("extension").use(userJobIdExtension);
-    
+
     const userSponsorIdExtension = userSponsorId(strapi);
     strapi.plugin("graphql").service("extension").use(userSponsorIdExtension);
   },
@@ -78,7 +83,7 @@ module.exports = {
       async afterCreate(data) {
         //clear password and add other profile data
 
-        let slug=data.result.username.replace(/\W+/g, '-')
+        let slug = data.result.username.replace(/\W+/g, "-");
 
         // await strapi.services.profile.create({
         //   data: {
@@ -91,16 +96,16 @@ module.exports = {
         //   users_permissions_user: data.result.i
         // });
 
-        await strapi.query('plugin::users-permissions.user').update({
-          where: {id: data.result.id},
+        await strapi.query("plugin::users-permissions.user").update({
+          where: { id: data.result.id },
           data: {
             password: "",
-            legacySlug:slug,
-            availability:false,
-            mentor:false,
-            collaborate:false,
-         }
-        })
+            legacySlug: slug,
+            availability: false,
+            mentor: false,
+            collaborate: false,
+          },
+        });
 
         // let res = await axios.put(
         //   `${process.env.STRAPI_URL}/api/users/${data.result.id}`,
@@ -111,7 +116,6 @@ module.exports = {
         //     },
         //   }
         // );
-
 
         //welcome email
         // var emailConfig = {
