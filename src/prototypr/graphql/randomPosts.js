@@ -51,5 +51,10 @@ module.exports = (strapi) => {
         },
       },
     },
+    resolversConfig: {
+      "Query.randomPost": {
+        auth: false, //requires auth
+      },
+    },
   });
 };
