@@ -54,9 +54,6 @@
         "audios"
       ]
     },
-    "week": {
-      "type": "integer"
-    },
     "company": {
       "type": "relation",
       "relation": "manyToOne",
@@ -80,6 +77,9 @@
       "relation": "oneToMany",
       "target": "plugin::strapi-stripe.strapi-stripe-payment",
       "mappedBy": "job"
+    },
+    "active": {
+      "type": "boolean"
     }
   }
 }

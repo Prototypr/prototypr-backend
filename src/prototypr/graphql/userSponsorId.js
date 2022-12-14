@@ -34,10 +34,10 @@ module.exports = (strapi) => ({
               },
               type:true,
               banner:{
-                populate:'url'
+                populate:{url:true}
               },
               featuredImage:{
-                populate:'url'
+                populate:{url:true}
               }
             }
             ,
