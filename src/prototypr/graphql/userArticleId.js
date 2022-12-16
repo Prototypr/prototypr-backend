@@ -16,6 +16,7 @@ module.exports = (strapi) => ({
       featuredImage: String
       tier: Int
       published_at: String
+      seo: JSON
     }
   `,
   resolvers: {
@@ -24,7 +25,7 @@ module.exports = (strapi) => ({
         resolve: async (parent, args, context) => {
           const data = await strapi.entityService.findMany("api::post.post", {
             // fields: ['id', 'slug', 'title', 'date', 'status', 'content'],
-            populate: ["localizations", "featuredImage", "user"],
+            populate: ["localizations", "featuredImage", "user", "seo"],
             limit: 1,
             filters: {
               $and: [
@@ -52,8 +53,10 @@ module.exports = (strapi) => ({
               owner: data[0]?.user?.id,
               featuredImage:data[0].featuredImage?.url,
               tier:data[0].tier,
-              published_at:data[0].publishedAt
+              published_at:data[0].publishedAt,
+              seo:data[0].seo
             };
+
             return res 
           }else{
             //not authorized - not post owner, not admin

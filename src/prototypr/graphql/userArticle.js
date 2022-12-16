@@ -13,6 +13,7 @@ module.exports = (strapi) => ({
       content: String
       localizations: JSON
       owner: String
+      seo: JSON
     }
   `,
   resolvers: {
@@ -21,7 +22,7 @@ module.exports = (strapi) => ({
         resolve: async (parent, args, context) => {
           const data = await strapi.entityService.findMany("api::post.post", {
             // fields: ['id', 'slug', 'title', 'date', 'status', 'content'],
-            populate: ["localizations", "featuredImage"],
+            populate: ["localizations", "featuredImage", "seo"],
             limit: 1,
             filters: {
               $and: [
@@ -44,7 +45,8 @@ module.exports = (strapi) => ({
             date: data[0].date,
             content: data[0].content,
             localizations: data[0].localizations,
-            owner: data[0].user?.id
+            owner: data[0].user?.id,
+            seo:data[0].seo
           };
         },
       },
