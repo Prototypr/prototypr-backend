@@ -62,6 +62,7 @@
     "request": "^2.88.2",
     "strapi-plugin-config-sync": "^1.0.4",
     "strapi-plugin-import-export-entries": "^1.15.0",
+    "strapi-plugin-meilisearch": "^0.8.2",
     "strapi-provider-upload-dos": "file:providers/strapi-provider-upload-dos/",
     "strapi-stripe": "^1.12.0"
   },

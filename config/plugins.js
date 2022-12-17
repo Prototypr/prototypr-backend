@@ -16,6 +16,25 @@ module.exports = ({ env }) => ({
       // user plugin config goes here
     },
   },
+  meilisearch: {
+    config: {
+      post: {
+        transformEntry({ entry }) { 
+          // remove sensitive user info
+          if(entry?.user){
+            entry.user = {
+              firstName:entry?.user?.firstName,
+              secondName:entry?.user?.secondName,
+              username:entry?.user?.username,
+            }
+          }
+          return {
+            ...entry
+          }
+        },
+      }
+    }
+  },
     email: {
       config: {
         provider: 'mailgun',
