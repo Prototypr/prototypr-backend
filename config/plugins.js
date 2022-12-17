@@ -19,6 +19,9 @@ module.exports = ({ env }) => ({
   meilisearch: {
     config: {
       post: {
+        settings: {
+          filterableAttributes: ['type'],
+        },
         transformEntry({ entry }) { 
           // remove sensitive user info
           if(entry?.user){
