@@ -112,3 +112,6 @@ exports
 *.cache
 build
 .strapi-updater.json
+
+##Ignore Strapi config sync plugin in case sensitive data is syncd
+config/sync/
