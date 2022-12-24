@@ -17,6 +17,7 @@
     "@strapi/plugin-sentry": "^4.5.0",
     "@strapi/plugin-users-permissions": "4.4.3",
     "@strapi/provider-email-mailgun": "^4.4.3",
+    "@strapi/provider-email-sendgrid": "^4.5.4",
     "@strapi/strapi": "4.4.3",
     "@tiptap/core": "^2.0.0-beta.130",
     "@tiptap/extension-bold": "^2.0.0-beta.21",
