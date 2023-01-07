@@ -16,6 +16,7 @@ const userJobId = require("./prototypr/graphql/userJobId");
 const userSponsorId = require("./prototypr/graphql/userSponsorId");
 const allJobs = require("./prototypr/graphql/allJobs");
 const randomPosts = require("./prototypr/graphql/randomPosts");
+const popularTags = require("./prototypr/graphql/popularTags");
 
 const bookedSponsors = require("./prototypr/graphql/bookedSponsors");
 const activeSponsors = require("./prototypr/graphql/activeSponsors");
@@ -50,6 +51,9 @@ module.exports = {
 
     const randomPostsExtension = randomPosts(strapi);
     strapi.plugin("graphql").service("extension").use(randomPostsExtension);
+    
+    const popularTagsExtension = popularTags(strapi);
+    strapi.plugin("graphql").service("extension").use(popularTagsExtension);
 
     const partnerPostsExtension = partnerPosts(strapi);
     strapi.plugin("graphql").service("extension").use(partnerPostsExtension);
