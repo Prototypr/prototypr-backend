@@ -33,7 +33,7 @@ module.exports = (strapi) => {
              FROM posts_tags_links
              LEFT JOIN tags ON posts_tags_links.tag_id = tags.id 
              LEFT JOIN posts ON posts_tags_links.post_id = posts.id 
-             LEFT JOIN files_related_morphs ON posts_tags_links.tag_id = files_related_morphs.related_id 
+             LEFT JOIN files_related_morphs ON posts_tags_links.tag_id = files_related_morphs.related_id AND files_related_morphs.field='icon'
              LEFT JOIN files ON files_related_morphs.file_id = files.id 
              ${args.postType?`WHERE posts.type = '${args.postType}'`:''}
              GROUP BY posts_tags_links.tag_id, tags.name, tags.slug, files_related_morphs.file_id, files.url
