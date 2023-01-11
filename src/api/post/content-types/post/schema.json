@@ -226,6 +226,14 @@
         }
       },
       "type": "biginteger"
+    },
+    "promoted": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "boolean"
     }
   }
 }
