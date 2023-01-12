@@ -6,7 +6,10 @@
  */
 module.exports = async (policyContext, config, { strapi }) => {
 
-
+//for admin api:
+if(policyContext?.state?.auth?.credentials?.type=='full-access'){
+  return true
+}
   if(!policyContext.state?.user?.id){
     return false
   }

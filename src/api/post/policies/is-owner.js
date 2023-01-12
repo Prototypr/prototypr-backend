@@ -3,10 +3,15 @@
 module.exports = async(policyContext, config, { strapi }) => {
   
   const id = policyContext.request.url.split("/").pop()
+  
   //fetch post with user populated
   const post = await strapi.entityService.findOne('api::post.post',id, {
     populate: { user: true }
   });
+  //for admin api:
+  if(policyContext?.state?.auth?.credentials?.type=='full-access'){
+    return true
+  }
     
   //if admin role yes
   if(policyContext?.state?.user?.role?.type=='admin'){
