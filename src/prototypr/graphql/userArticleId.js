@@ -1,7 +1,7 @@
 module.exports = (strapi) => ({
   typeDefs: `
     type Query {
-      userPostId(id: ID!): UserPost
+      userPostId(id: ID!): UserPostId
     }
 
     type UserPostId {
@@ -9,6 +9,7 @@ module.exports = (strapi) => ({
       title: String
       slug: String
       status: String
+      excerpt: String
       date: String
       content: String
       localizations: JSON
@@ -17,6 +18,10 @@ module.exports = (strapi) => ({
       tier: Int
       published_at: String
       seo: JSON
+      type: String
+      link: String
+      logo: JSON
+      gallery: JSON
     }
   `,
   resolvers: {
@@ -25,7 +30,7 @@ module.exports = (strapi) => ({
         resolve: async (parent, args, context) => {
           const data = await strapi.entityService.findMany("api::post.post", {
             // fields: ['id', 'slug', 'title', 'date', 'status', 'content'],
-            populate: ["localizations", "featuredImage", "user", "seo"],
+            populate: ["localizations", "featuredImage", "user", "seo", "logo", "gallery"],
             limit: 1,
             filters: {
               $and: [
@@ -54,7 +59,12 @@ module.exports = (strapi) => ({
               featuredImage:data[0].featuredImage?.url,
               tier:data[0].tier,
               published_at:data[0].publishedAt,
-              seo:data[0].seo
+              seo:data[0].seo,
+              type:data[0].type,
+              excerpt:data[0].excerpt,
+              link:data[0].link,
+              logo:data[0].logo,
+              gallery:data[0].gallery
             };
 
             return res 
@@ -70,7 +80,7 @@ module.exports = (strapi) => ({
     },
   },
   resolversConfig: {
-    "Query.userPost": {
+    "Query.userPostId": {
       auth: true, //requires auth
     },
   },
