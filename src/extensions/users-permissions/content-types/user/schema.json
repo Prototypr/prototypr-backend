@@ -454,18 +454,6 @@
     "maker": {
       "type": "boolean"
     },
-    "newsletterDeals": {
-      "type": "boolean"
-    },
-    "newsletterJobs": {
-      "type": "boolean"
-    },
-    "newsletterUpdates": {
-      "type": "boolean"
-    },
-    "newsletterWeekly": {
-      "type": "boolean"
-    },
     "newsletters": {
       "type": "component",
       "repeatable": false,

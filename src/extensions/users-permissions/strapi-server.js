@@ -172,7 +172,7 @@ module.exports = (plugin) => {
       ctx.state.user.id,
       { populate: ["avatar", "role", "companies", "tags", "newsletters"] }
     );
-
+    
     if(user?.companies?.length){
       //get company logo
       const company = await strapi.entityService.findOne(
