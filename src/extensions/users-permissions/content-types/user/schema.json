@@ -458,6 +458,9 @@
       "type": "component",
       "repeatable": false,
       "component": "shared.newsletters"
+    },
+    "onboardComplete": {
+      "type": "boolean"
     }
   }
 }
