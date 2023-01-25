@@ -52,6 +52,12 @@
           "localized": true
         }
       }
+    },
+    "users": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "tags"
     }
   }
 }

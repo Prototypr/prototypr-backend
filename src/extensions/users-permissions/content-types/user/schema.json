@@ -423,6 +423,53 @@
       "relation": "oneToMany",
       "target": "api::sponsored-post.sponsored-post",
       "mappedBy": "user"
+    },
+    "tags": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::tag.tag",
+      "inversedBy": "users"
+    },
+    "mentee": {
+      "type": "boolean"
+    },
+    "monetization": {
+      "type": "boolean"
+    },
+    "networking": {
+      "type": "boolean"
+    },
+    "writer": {
+      "type": "boolean"
+    },
+    "reader": {
+      "type": "boolean"
+    },
+    "coder": {
+      "type": "boolean"
+    },
+    "designer": {
+      "type": "boolean"
+    },
+    "maker": {
+      "type": "boolean"
+    },
+    "newsletterDeals": {
+      "type": "boolean"
+    },
+    "newsletterJobs": {
+      "type": "boolean"
+    },
+    "newsletterUpdates": {
+      "type": "boolean"
+    },
+    "newsletterWeekly": {
+      "type": "boolean"
+    },
+    "newsletters": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.newsletters"
     }
   }
 }

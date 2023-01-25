@@ -91,6 +91,29 @@
     const { id } = ctx.params;
     const { email, username, password } = ctx.request.body;
 
+    const {prototyprWeekly, platformUpdates, deals, jobs} = ctx.request.body
+      if((prototyprWeekly !==null && prototyprWeekly!==undefined)
+         && (platformUpdates !==null && platformUpdates!==undefined)
+         && (deals !==null && deals!==undefined)
+         && (jobs !==null && jobs!==undefined)
+      ){
+
+        const newsletters = {prototyprWeekly, platformUpdates, deals, jobs}
+         if(newsletters){
+           ctx.request.body.newsletters = newsletters
+         }
+      }
+      delete ctx.request.body.prototyprWeekly
+      delete ctx.request.body.platformUpdates
+      delete ctx.request.body.deals
+      delete ctx.request.body.jobs
+    
+
+    // if(ctx.request.body.newsletters){
+    //   let newsletters = JSON.parse(ctx.request.body.newsletters)
+    //   console.log(newsletters)
+    // }
+
     const user = await getService('user').fetch(id);
 
     await validateUpdateUserBody(ctx.request.body);
@@ -143,8 +166,13 @@
     }
 
     let updateData = {
+      user,
       ...ctx.request.body,
     };
+
+    if(updateData.tags===false || updateData.tags =='false'){
+      updateData.tags = null
+    }
 
     const data = await getService('user').edit(user.id, updateData);
     const sanitizedData = await sanitizeOutput(data, ctx);

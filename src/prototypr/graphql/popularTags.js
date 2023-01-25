@@ -14,6 +14,7 @@ module.exports = (strapi) => {
         slug: String
         icon: String
         count: Int
+        tag_id: ID
       }`,
       resolvers: {
         Query: {

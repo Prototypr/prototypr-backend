@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_shared_newsletters",
+  "info": {
+    "displayName": "newsletters",
+    "icon": "newspaper"
+  },
+  "options": {},
+  "attributes": {
+    "prototyprWeekly": {
+      "type": "boolean"
+    },
+    "jobs": {
+      "type": "boolean"
+    },
+    "deals": {
+      "type": "boolean"
+    },
+    "platformUpdates": {
+      "type": "boolean"
+    }
+  }
+}
