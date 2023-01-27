@@ -21,6 +21,7 @@ module.exports = (strapi) => ({
       type: String
       link: String
       logo: JSON
+      legacyLogo: String
       gallery: JSON
     }
   `,
@@ -30,7 +31,7 @@ module.exports = (strapi) => ({
         resolve: async (parent, args, context) => {
           const data = await strapi.entityService.findMany("api::post.post", {
             // fields: ['id', 'slug', 'title', 'date', 'status', 'content'],
-            populate: ["localizations", "featuredImage", "user", "seo", "logo", "gallery"],
+            populate: ["localizations", "featuredImage", "user", "seo", "logo", "gallery", "legacyMedia"],
             limit: 1,
             filters: {
               $and: [
@@ -63,8 +64,9 @@ module.exports = (strapi) => ({
               type:data[0].type,
               excerpt:data[0].excerpt,
               link:data[0].link,
-              logo:data[0].logo?data[0].logo:data[0]?.legacyMedia?.logoNew?data[0]?.legacyMedia?.logoNew:null,
-              gallery:data[0].gallery
+              logo:data[0].logo,
+              gallery:data[0].gallery,
+              legacyLogo:data[0]?.legacyMedia?.logoNew
             };
 
             return res 
