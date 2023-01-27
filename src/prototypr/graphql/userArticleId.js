@@ -63,7 +63,7 @@ module.exports = (strapi) => ({
               type:data[0].type,
               excerpt:data[0].excerpt,
               link:data[0].link,
-              logo:data[0].logo,
+              logo:data[0].logo?data[0].logo:data[0]?.legacyMedia?.logoNew?data[0]?.legacyMedia?.logoNew:null,
               gallery:data[0].gallery
             };
 

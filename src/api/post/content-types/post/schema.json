@@ -250,6 +250,17 @@
           "localized": true
         }
       }
+    },
+    "deal": {
+      "displayName": "deal",
+      "type": "component",
+      "repeatable": false,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "shared.deal"
     }
   }
 }

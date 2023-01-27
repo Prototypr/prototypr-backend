@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_shared_deals",
+  "info": {
+    "displayName": "deal",
+    "icon": "shopping-cart",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "expiry": {
+      "type": "datetime"
+    },
+    "description": {
+      "type": "text"
+    },
+    "code": {
+      "type": "string"
+    },
+    "link": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    }
+  }
+}
