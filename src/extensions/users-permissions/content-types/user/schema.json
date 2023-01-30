@@ -461,6 +461,9 @@
     },
     "onboardComplete": {
       "type": "boolean"
+    },
+    "approved": {
+      "type": "boolean"
     }
   }
 }
