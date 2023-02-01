@@ -464,6 +464,9 @@
     },
     "approved": {
       "type": "boolean"
+    },
+    "pro": {
+      "type": "boolean"
     }
   }
 }

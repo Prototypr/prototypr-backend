@@ -2,6 +2,7 @@ const { resendConfirmationEmail } = require("./custom/resendConfirmationEmail");
 const { updateMe, deleteAvatar, uploadAvatar } = require("./custom/updateMe");
 const { uploadImageToArticle } = require("./custom/uploadBlogImage");
 const { createJobPost, updateJobPost } = require("./custom/createJobPost");
+const { createCompany, updateCompany } = require("./custom/createCompany");
 const {createSponsoredPost, updateSponsoredPost, updateBookingWeeks} = require('./custom/createSponsoredPost')
 const { fetchPlausibleStatsForUser } = require("./custom/fetchPlausibleStats");
 
@@ -35,6 +36,14 @@ module.exports = (plugin) => {
   plugin.controllers.user.updateJobPost = (ctx) => {
     ctx.params.id = ctx.state.user.id;
     return updateJobPost(ctx);
+  };
+  plugin.controllers.user.createCompany = (ctx) => {
+    ctx.params.id = ctx.state.user.id;
+    return createCompany(ctx);
+  };
+  plugin.controllers.user.updateCompany = (ctx) => {
+    ctx.params.id = ctx.state.user.id;
+    return updateCompany(ctx);
   };
   plugin.controllers.user.createSponsoredPost = (ctx) => {
     ctx.params.id = ctx.state.user.id;
@@ -92,6 +101,17 @@ module.exports = (plugin) => {
     method: "POST",
     path: "/users/updateJobPost",
     handler: "user.updateJobPost",
+  });
+  // company post endpoint
+  plugin.routes["content-api"].routes.push({
+    method: "POST",
+    path: "/users/createCompany",
+    handler: "user.createCompany",
+  });
+  plugin.routes["content-api"].routes.push({
+    method: "POST",
+    path: "/users/updateCompany",
+    handler: "user.updateCompany",
   });
   // sponsored post endpoint
   plugin.routes["content-api"].routes.push({

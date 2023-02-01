@@ -43,7 +43,8 @@
         "parttime",
         "contract",
         "volunteer",
-        "internship"
+        "internship",
+        "collaboration"
       ]
     },
     "salarymin": {
