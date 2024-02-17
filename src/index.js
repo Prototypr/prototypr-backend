@@ -109,6 +109,7 @@ module.exports = {
           data: {
             password: "",
             legacySlug: slug,
+            approved:false,
             availability: false,
             mentor: false,
             collaborate: false,
@@ -124,6 +125,19 @@ module.exports = {
         //     },
         //   }
         // );
+
+        // var config = {
+        //   method: 'post',
+        //   url: 'https://app.letter.so/api/mail/getTemplate',
+        //   headers: { 
+        //   'authorization': 'Bearer YOUR_TOKEN', 
+        //   'Content-Type': 'application/json'
+        //   },
+        //   data : JSON.stringify({
+        //   "documentId": "63e39a333aa8183acec58981",
+          
+        //   })
+        //   };
 
         //welcome email
         // var emailConfig = {
