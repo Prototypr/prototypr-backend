@@ -113,6 +113,8 @@ module.exports = {
             availability: false,
             mentor: false,
             collaborate: false,
+            pro:false,
+            publishedAt: new Date() 
           },
         });
 

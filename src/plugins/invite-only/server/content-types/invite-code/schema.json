@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "invite_codes",
+  "info": {
+    "singularName": "invite-code",
+    "pluralName": "invite-codes",
+    "displayName": "Invite Code"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "code": {
+      "type": "string",
+      "unique": true
+    },
+    "used": {
+      "type": "boolean",
+      "default": false
+    },
+    "owner": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "invite_codes"
+    },
+    "invitee": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "invite_code"
+    }
+  }
+}

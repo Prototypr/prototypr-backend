@@ -89,6 +89,15 @@ module.exports = ({ strapi }) => {
               .query('plugin::users-permissions.role')
               .findOne({ where: { type: advanced.default_role } });
 
+
+            //prototypr mod - check for invite token before creating user
+            const invite_code = query?.invite_code
+
+            console.log('invite_code', invite_code)
+            if(!invite_code){
+              return reject({ message: 'Invite code invalid.' });
+            }
+
             // Create the new user.
             const params = {
               ...profile,

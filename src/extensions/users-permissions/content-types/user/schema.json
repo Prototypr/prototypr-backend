@@ -467,6 +467,18 @@
     },
     "pro": {
       "type": "boolean"
+    },
+    "invite_codes": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::invite-only.invite-code",
+      "mappedBy": "owner"
+    },
+    "invite_code": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::invite-only.invite-code",
+      "inversedBy": "invitee"
     }
   }
 }

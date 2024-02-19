@@ -66,7 +66,8 @@ module.exports = (
 
     },
 
-    async user(email, username) {
+    //prototypr mod - add inviteCode
+    async user(email, username, invite_code) {
       const settings = await this.settings();
       const {user: userService} = strapi.plugins['users-permissions'].services;
       const user = email ? await this.fetchUser({email}) : null;
@@ -81,7 +82,10 @@ module.exports = (
       }
 
       if (email && settings.createUserIfNotExists) {
-        return this.createUser({email, username})
+        //prototypr mode - only create user if they have valid invite
+        if(invite_code){
+          return this.createUser({email, username})
+        }
       }
       return false;
     },

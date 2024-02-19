@@ -16,6 +16,10 @@ module.exports = ({ env }) => ({
       // user plugin config goes here
     },
   },
+  'invite-only': {
+    enabled: true,
+    resolve: './src/plugins/invite-only' // path to plugin folder
+  },
   meilisearch: {
     config: {
       post: {

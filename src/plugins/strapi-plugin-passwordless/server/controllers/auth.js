@@ -97,7 +97,9 @@ module.exports = {
 
     let user;
     try {
-      user = await passwordless.user(email, username);
+      //prototypr mod - add invite_code
+      const invite_code = params.invite_code
+      user = await passwordless.user(email, username, invite_code);
     } catch (e) {
       return ctx.badRequest('wrong.user')
     }
