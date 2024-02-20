@@ -9,6 +9,14 @@ module.exports = {
             policies: ["plugin::invite-only.isAdmin"],
         },
       },
+      // {
+      //   method: 'GET',
+      //   path: '/get-users-invites',
+      //   handler: 'inviteTokenController.getUsersWithInvites',
+      //   config: {
+      //       policies: ["plugin::invite-only.isAdmin"],
+      //   },
+      // },
       {
         "method": "POST",
         "path": "/check-token",

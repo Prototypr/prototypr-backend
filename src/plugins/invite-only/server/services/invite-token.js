@@ -15,6 +15,34 @@ module.exports = {
     }
     return true;
   },
+  async getUsersWithInvites({ pageSize, currentPage, searchTerm }) {
+    console.log('searchterm')
+    console.log(searchTerm)
+    //used in the admin route only
+    const users = await strapi.entityService.findMany('plugin::users-permissions.user', {
+      fields: ['id', 'username', 'email', 'firstName', 'secondName', 'slug'], // Include new fields in the selection
+      populate: {
+        invite_codes: {
+          fields: ['code', 'used'],
+        },
+        invite_code: {
+          fields: ['code', 'used'],
+        }
+      },
+      filters: {
+        $or: [
+          { username: { $containsi: searchTerm } },
+          { email: { $containsi: searchTerm } },
+          { firstName: { $containsi: searchTerm } }, // Added firstName to the search filter
+          { secondName: { $containsi: searchTerm } }, // Added secondName to the search filter
+          { slug: { $containsi: searchTerm } }, // Added slug to the search filter
+        ],
+      },
+      start: currentPage?currentPage:0,
+      limit: pageSize?pageSize:10,
+    });
+    return users.length > 0 ? users : null;
+  },
   // Function to check if an invite token is valid
   async checkInviteToken(code) {
     const inviteToken = await strapi.entityService.findMany('plugin::invite-only.invite-code', {

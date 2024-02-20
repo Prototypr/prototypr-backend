@@ -23,7 +23,7 @@
 'use strict';
 
 module.exports = {
-  // admin: require('./admin'),
+  admin: require('./admin'),
   'content-api': require('./content-api'),
 };
 

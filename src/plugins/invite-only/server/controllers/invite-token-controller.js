@@ -4,6 +4,13 @@ module.exports = {
       const inviteToken = await strapi.plugin('invite-only').service('invite-token').generateInviteToken(userId, quantity);
       ctx.body = { inviteToken };
     },
+    async getUsersWithInvites(ctx) {
+
+      const { pageSize, currentPage, searchTerm } = ctx.request.query;
+     
+      const users = await strapi.plugin('invite-only').service('invite-token').getUsersWithInvites({ pageSize, currentPage, searchTerm });
+      ctx.body = { users };
+    },
       // Action to check invite token validity
     async checkToken(ctx) {
       const { token } = ctx.request.body;

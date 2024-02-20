@@ -5,8 +5,9 @@ import { Dialog, DialogBody, DialogFooter, Flex } from '@strapi/design-system';
 import {Plus } from '@strapi/icons';
 import { Field, FieldLabel, FieldInput } from '@strapi/design-system';
 import { NumberInput , Tooltip} from '@strapi/design-system';
+import {LoadingIndicatorPage} from '@strapi/helper-plugin'
 
-import axios from 'axios';
+import inviteOnlyRequests from '../api/invite-only';
 
 const UsersList = () => {
   const [users, setUsers] = useState([]);
@@ -18,21 +19,22 @@ const UsersList = () => {
   const [inviteCount, setInviteCount] = useState(0)
   const [isAdding, setIsAdding] = useState(false)
 
+  const [isLoadingUsers, setIsLoadingUsers] = useState(true)
 
 const fetchUsers = async ({concat}) => {
- const query = searchTerm ? `&filters[$or][0][email][$containsi]=${searchTerm}&filters[$or][1][username][$containsi]=${searchTerm}` : '';
-    const response = await axios.get(`${process.env.STRAPI_ADMIN_BACKEND_URL}/api/users?start=${currentPage}&limit=${pageSize}&populate[0]=invite_codes&populate[1]=invite_code${query}`,
-    {headers:{
-        'Authorization': process.env.ADMIN_READONLY_TOKEN
-      }}
-    );
-    if(currentPage>0 && concat!==false){
+  if(isLoadingUsers===false && !users?.length) setIsLoadingUsers(true)
+
+  const data = await inviteOnlyRequests.getUsers({searchTerm, currentPage, pageSize})
+
+      if(currentPage>0 && concat!==false){
         let newUsers = users
-        newUsers = newUsers.concat(response.data);
+        newUsers = newUsers.concat(data?.users);
         setUsers(newUsers);
     }else{
-      setUsers(response.data);
+      setUsers(data?.users);
     }
+  setIsLoadingUsers(false)
+
   };
 
   useEffect(() => {
@@ -44,6 +46,11 @@ const fetchUsers = async ({concat}) => {
     fetchUsers({concat:false});
   }, [searchTerm]);
 
+  if(isLoadingUsers){
+    return(
+      <LoadingIndicatorPage/>
+    )
+  }
 
   return (
     <div>
@@ -87,7 +94,7 @@ const fetchUsers = async ({concat}) => {
                 if(invite.used==true){
                 return <div>
                     <a target='_blank' style={{textDecoration:'line-through'}} href={`/admin/content-manager/collectionType/plugin::invite-only.invite-code/${invite?.id}`}>
-                    🎫
+                      🎫
                     </a>
                 </div>
                 }
@@ -145,12 +152,14 @@ const fetchUsers = async ({concat}) => {
               disabled={isAdding}
               onClick={async()=>{
                 setIsAdding(true)
-                const endpoint = `${process.env.STRAPI_ADMIN_BACKEND_URL}/api/invite-only/generate-invite-token` 
-                const response = await axios.post(endpoint, { userId: selectedUser?.id,quantity:inviteCount }, {
-                    headers: {
-                      'Authorization': `Bearer ${process.env.ADMIN_TOKEN}`
-                    }
-                  });
+                const response = await inviteOnlyRequests.generateToken({userId:selectedUser?.id, quantity:inviteCount })
+                // const endpoint = `${process.env.STRAPI_ADMIN_BACKEND_URL}/api/invite-only/generate-invite-token` 
+                // const response = await axios.post(endpoint, { userId: selectedUser?.id,quantity:inviteCount }, {
+                //     headers: {
+                //       'Authorization': `Bearer ${process.env.ADMIN_TOKEN}`
+                //     }
+                //   });
+
                 //refetch the users with new tokens should be there
                 fetchUsers({concat:false})
                 setIsVisible(false)
