@@ -1,3 +1,7 @@
-'use strict';
+"use strict"
 
-module.exports = {};
+const isAdmin = require("./is-admin");
+
+module.exports = {
+    isAdmin,
+};

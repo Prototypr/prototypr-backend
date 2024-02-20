@@ -8,26 +8,60 @@ const name = pluginPkg.strapi.name;
 
 export default {
   register(app) {
-    app.addMenuLink({
-      to: `/plugins/${pluginId}`,
-      icon: PluginIcon,
-      intlLabel: {
-        id: `${pluginId}.plugin.name`,
-        defaultMessage: name,
-      },
-      Component: async () => {
-        const component = await import(/* webpackChunkName: "[request]" */ './pages/App');
+    // app.addMenuLink({
+    //   to: `/plugins/${pluginId}`,
+    //   icon: PluginIcon,
+    //   intlLabel: {
+    //     id: `${pluginId}.plugin.name`,
+    //     defaultMessage: name,
+    //   },
+    //   Component: async () => {
+    //     const component = await import(/* webpackChunkName: "[request]" */ './pages/App');
 
-        return component;
+    //     return component;
+    //   },
+    //   permissions: [
+    //     // Uncomment to set the permissions of the plugin here
+    //     // {
+    //     //   action: '', // the action name should be plugin::plugin-name.actionType
+    //     //   subject: null,
+    //     // },
+    //   ],
+    // });
+
+    // Prototypr addition - add to admin settings
+    app.createSettingSection(
+      {
+        id: pluginId,
+        intlLabel: {
+          id: `${pluginId}.plugin.name`,
+          defaultMessage: 'Invite Only',
+        },
       },
-      permissions: [
-        // Uncomment to set the permissions of the plugin here
-        // {
-        //   action: '', // the action name should be plugin::plugin-name.actionType
-        //   subject: null,
-        // },
-      ],
-    });
+      [
+        {
+          intlLabel: {
+            id:`${pluginId}.plugin.name`,
+            defaultMessage: 'Manage Invites',
+          },
+          id: 'invite-only-settings',
+          to: `/settings/${pluginId}`,
+          Component: async () => {
+            const component = await import(/* webpackChunkName: "[request]" */ './pages/HomePage');
+            return component;
+
+          },
+          permissions: [
+            // Uncomment to set the permissions of the plugin here
+            // {
+            //   action: '', // the action name should be plugin::plugin-name.actionType
+            //   subject: null,
+            // },
+          ],
+        },
+      ]
+    );
+
     app.registerPlugin({
       id: pluginId,
       initializer: Initializer,

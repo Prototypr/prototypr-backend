@@ -190,7 +190,7 @@ module.exports = (plugin) => {
     const user = await strapi.entityService.findOne(
       "plugin::users-permissions.user",
       ctx.state.user.id,
-      { populate: ["avatar", "role", "companies", "tags", "newsletters"] }
+      { populate: ["avatar", "role", "companies", "tags", "newsletters", "invite_codes", "invite_code"] }
     );
     
     if(user?.companies?.length){

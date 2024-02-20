@@ -3,16 +3,22 @@
  * HomePage
  *
  */
+import {HeaderLayout, ContentLayout} from '@strapi/design-system/Layout'
 
 import React from 'react';
 // import PropTypes from 'prop-types';
-import pluginId from '../../pluginId';
-
+// import pluginId from '../../pluginId';
+import UsersList from '../../components/UsersList'
 const HomePage = () => {
   return (
     <div>
-      <h1>{pluginId}&apos;s HomePage</h1>
-      <p>Happy coding</p>
+       <HeaderLayout
+          title={'Invite Only Plugin'}
+          subtitle={'Add invitations to users, who can pass them on to friends.'}
+        />
+        <ContentLayout>
+         <UsersList/>
+        </ContentLayout>
     </div>
   );
 };
