@@ -1,14 +1,15 @@
 module.exports = {
     type: 'content-api',
     routes: [
-      {
-        method: 'POST',
-        path: '/generate-invite-token',
-        handler: 'inviteTokenController.generate',
-        config: {
-            policies: ["plugin::invite-only.isAdmin"],
-        },
-      },
+      //do these from admin routes 
+      // {
+      //   method: 'POST',
+      //   path: '/generate-invite-token',
+      //   handler: 'inviteTokenController.generate',
+      //   config: {
+      //       policies: ["plugin::invite-only.isAdmin"],
+      //   },
+      // },
       // {
       //   method: 'GET',
       //   path: '/get-users-invites',
@@ -30,7 +31,7 @@ module.exports = {
         "path": "/use-token",
         "handler": "inviteTokenController.useToken",
         "config": {
-            policies: ["plugin::invite-only.isAdmin"],
+            policies: ["plugin::invite-only.isAdmin"],//admin only
         }
       }
     ],
