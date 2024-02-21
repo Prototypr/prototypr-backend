@@ -7,6 +7,7 @@
 // Public node modules.
 const _ = require('lodash');
 const urlJoin = require('url-join');
+const axios = require("axios");//prototypr
 
 const { getAbsoluteServerUrl } = require('@strapi/utils');
 
@@ -90,6 +91,9 @@ module.exports = ({ strapi }) => {
               .findOne({ where: { type: advanced.default_role } });
 
 
+            /**
+             * prototoypr invite only check
+             */
             //prototypr mod - check for invite token before creating user
             const invite_code = query?.invite_code
 
@@ -97,6 +101,28 @@ module.exports = ({ strapi }) => {
             if(!invite_code){
               return reject({ message: 'Invite code invalid.' });
             }
+            //check token is valid
+            const checkEndpoint = `${process.env.STRAPI_ADMIN_BACKEND_URL}/api/invite-only/use-token` 
+              const checkResponse = await axios.post(checkEndpoint, { token: invite_code }, {
+                  headers: {
+                    'Authorization': `Bearer ${process.env.ADMIN_TOKEN}`
+                  }
+                });
+
+            console.log(checkResponse)
+            return reject({message:'code rejected'})
+            //@todo, if token is valid, mark it used!
+            
+            // const useEndpoint = `${process.env.STRAPI_ADMIN_BACKEND_URL}/api/invite-only/use-token` 
+            //   const response = await axios.post(endpoint, { userId: selectedUser?.id,quantity:inviteCount }, {
+            //       headers: {
+            //         'Authorization': `Bearer ${process.env.ADMIN_TOKEN}`
+            //       }
+            //     });
+            //end prototypr mod
+            /**
+             * invite only done
+             */
 
             // Create the new user.
             const params = {
