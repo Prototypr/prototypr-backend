@@ -10,6 +10,7 @@ const _ = require("lodash");
 const crypto = require("crypto");
 const {sanitize} = require('@strapi/utils');
 const {nanoid} = require("nanoid");
+const axios = require("axios");//prototypr
 
 module.exports = (
   {
@@ -45,7 +46,18 @@ module.exports = (
       return !!settings.enabled;
     },
 
-    async createUser(user) {
+    //added invite code
+    async createUser(user, invite_code) {
+
+      //check token is valid
+      const checkEndpoint = `${process.env.STRAPI_URL}/api/invite-only/check-token` 
+      const checkResponse = await axios.post(checkEndpoint, { token: invite_code }, {headers: {'Content-Type': 'application/json'}});
+      //if token invalid
+      if(!(checkResponse?.data?.valid==true && checkResponse?.data?.token?.used==false)){
+        return false
+      }
+
+
       const userSettings = await this.userSettings();
       const role = await strapi
         .query('plugin::users-permissions.role')
@@ -56,11 +68,19 @@ module.exports = (
       const newUser = {
         email: user.email,
         username: user.username || user.email,
-        role: {id: role.id}
+        role: {id: role.id},
+        invite_code:checkResponse?.data?.token?.id//prototypr invite code
       };
       const res =  await strapi
         .query('plugin::users-permissions.user')
         .create({data: newUser, populate: ['role']});
+
+       //finally update prototypr invite code to used
+       const updatedToken = await strapi.entityService.update('plugin::invite-only.invite-code', checkResponse?.data?.token?.id, {
+        data: {
+          used: true,
+        },
+      });
 
       return res
 
@@ -83,9 +103,10 @@ module.exports = (
 
       if (email && settings.createUserIfNotExists) {
         //prototypr mode - only create user if they have valid invite
-        if(invite_code){
-          return this.createUser({email, username})
+        if(!invite_code){
+          return false
         }
+        return this.createUser({email, username},invite_code)
       }
       return false;
     },

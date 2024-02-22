@@ -8,6 +8,7 @@
 const _ = require('lodash');
 const urlJoin = require('url-join');
 const axios = require("axios");//prototypr
+require('dotenv').config();//prototypr
 
 const { getAbsoluteServerUrl } = require('@strapi/utils');
 
@@ -97,32 +98,16 @@ module.exports = ({ strapi }) => {
             //prototypr mod - check for invite token before creating user
             const invite_code = query?.invite_code
 
-            console.log('invite_code', invite_code)
             if(!invite_code){
               return reject({ message: 'Invite code invalid.' });
             }
             //check token is valid
-            const checkEndpoint = `${process.env.STRAPI_ADMIN_BACKEND_URL}/api/invite-only/use-token` 
-              const checkResponse = await axios.post(checkEndpoint, { token: invite_code }, {
-                  headers: {
-                    'Authorization': `Bearer ${process.env.ADMIN_TOKEN}`
-                  }
-                });
-
-            console.log(checkResponse)
-            return reject({message:'code rejected'})
-            //@todo, if token is valid, mark it used!
-            
-            // const useEndpoint = `${process.env.STRAPI_ADMIN_BACKEND_URL}/api/invite-only/use-token` 
-            //   const response = await axios.post(endpoint, { userId: selectedUser?.id,quantity:inviteCount }, {
-            //       headers: {
-            //         'Authorization': `Bearer ${process.env.ADMIN_TOKEN}`
-            //       }
-            //     });
-            //end prototypr mod
-            /**
-             * invite only done
-             */
+            const checkEndpoint = `${process.env.STRAPI_URL}/api/invite-only/check-token` 
+            const checkResponse = await axios.post(checkEndpoint, { token: invite_code }, {headers: {'Content-Type': 'application/json'}});
+            //if token invalid
+            if(!(checkResponse?.data?.valid==true && checkResponse?.data?.token?.used==false)){
+              return reject({message:'Invite code rejected'})
+            }
 
             // Create the new user.
             const params = {
@@ -131,11 +116,19 @@ module.exports = ({ strapi }) => {
               provider,
               role: defaultRole.id,
               confirmed: true,
+              invite_code:checkResponse?.data?.token?.id//prototypr invite code
             };
 
             const createdUser = await strapi
               .query('plugin::users-permissions.user')
               .create({ data: params });
+
+            //finally update prototypr invite code to used
+            const updatedToken = await strapi.entityService.update('plugin::invite-only.invite-code', checkResponse?.data?.token?.id, {
+              data: {
+                used: true,
+              },
+            });
 
             return resolve(createdUser);
           } catch (err) {
