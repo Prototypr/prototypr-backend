@@ -33,13 +33,20 @@ module.exports = (strapi) => ({
      adminPosts: {
         resolve: async (parent, args, context) => {
 
+          let isAllowed = false
         //only give results for admin
-        if( context.state.user.role.type!== "admin"){
-            return {
-                posts:null,
-                count:0
-            }
+        if( context.state.user && context.state.user?.role?.type== "admin"){
+          isAllowed = true
+        }else if(!context?.state?.user?.role && (context.state.isAuthenticated==true && context?.state?.auth?.credentials?.type=='full-access')){
+           isAllowed = true
         }
+        if (!isAllowed){
+          return {
+              posts:null,
+              count:0
+          }
+        }
+
         const whereFilter =  { type:'article', status:args.status}
         if(args.user){
             whereFilter.user=args.user
