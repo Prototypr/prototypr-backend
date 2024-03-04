@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { Button, NumberInput,Checkbox, Flex} from '@strapi/design-system';
+import { Button, NumberInput,Checkbox, Flex, Avatar} from '@strapi/design-system';
 
 import manageSpamRequests from '../../api/plugin-services';
 import { Table, Thead, Tbody, Tr, Th, Td, Typography,BaseCheckbox } from '@strapi/design-system';
@@ -9,7 +9,10 @@ const GetPostsButton = ({title}) =>{
 
     const [currentPage, setCurrentPage] = useState(0)
     const [pageSize, setPageSize] = useState(10)
+    
     const [isDeleting, setDeleting] = useState(false)
+    const [isApproving, setApproving] = useState(false)
+
     const [usersWithPosts, setUsersWithPosts] = useState(true)
     const [providerIsMagicLink, setProviderIsMagicLink] = useState(true)
     const [providerIsGoogle, setProviderIsGoogle] = useState(false)
@@ -30,32 +33,10 @@ const GetPostsButton = ({title}) =>{
 
     const [selectedRows, setSelectedRows] = useState([]);
 
-    const deleteAll =async () =>{
-        if(confirm(`Are you sure you want to delete all ${users?.length} users?`)){
-            setDeleting(true)
-            await manageSpamRequests.deleteAllPotentialSpamUsers({currentPage,pageSize, options:{
-                usersWithPosts,
-                noFirstName,
-                noBio,
-                noAvatar,
-
-                noDribbble,
-                noGithub,
-                noKofi,
-                noTwitter,
-
-                userHasWebsite,
-                providerIsMagicLink,
-                providerIsGoogle
-            }})
-        }
-
-        getPosts()
-        
-    }
     const getPosts =async () =>{
         setSelectedRows([])
         setDeleting(false)
+        setApproving(false)
         const data = await manageSpamRequests.getPotentialSpamUsers({currentPage,pageSize,
         options:{
             usersWithPosts,
@@ -111,6 +92,18 @@ const GetPostsButton = ({title}) =>{
         // Assume deletion is successful, update the state to reflect the changes
         // This might involve fetching the updated list of users or removing the deleted users from the local state
     };
+
+
+    const approveSelectedRows =async () =>{
+
+        if(confirm(`Are you sure you want to approve all ${selectedRows?.length} users?`)){
+            setApproving(true)
+            await manageSpamRequests.approveUsers(selectedRows)
+        }
+
+        getPosts()
+        
+    }
 
 
     return(
@@ -191,6 +184,7 @@ const GetPostsButton = ({title}) =>{
                         aria-label="Select all entries" />
                     </Th>
                     <Th><Typography variant="sigma">ID</Typography></Th>
+                    <Th><Typography variant="sigma">Avatar</Typography></Th>
                     <Th><Typography variant="sigma">Username</Typography></Th>
                     <Th><Typography variant="sigma">Email</Typography></Th>
                     <Th><Typography variant="sigma">Website</Typography></Th>
@@ -209,6 +203,11 @@ const GetPostsButton = ({title}) =>{
                   aria-label={`Select ${user.id}`} />
                 </Td>
                     <Td><Typography textColor="neutral800">{user.id}</Typography></Td>
+                    <Td>{user.avatar_url?
+                    <Avatar src={user.avatar_url}/>:
+                    null    
+                    }
+                    </Td>
                     <Td>
                         <Typography textColor="neutral800">
                         <span 
@@ -232,14 +231,24 @@ const GetPostsButton = ({title}) =>{
                 </Tbody>
             </Table>
             </div>
-            <div style={{marginTop:12}}>
+            <div style={{marginTop:12, display:'flex'}}>
                 <Button
+                    variant="danger"
                     style={{cursor: isDeleting ? 'progress' : ''}}
                     disabled={isDeleting || selectedRows.length === 0}
                     onClick={deleteSelectedRows}
                 >
                     {isDeleting ? 'Deleting...' : 'Delete selected'}
                 </Button>
+                <div style={{marginLeft:10}}>
+                    <Button
+                        style={{cursor: isApproving ? 'progress' : ''}}
+                        disabled={isApproving || selectedRows.length === 0}
+                        onClick={approveSelectedRows}
+                    >
+                        {isApproving ? 'Approving...' : 'Approve selected'}
+                    </Button>
+                </div>
                 {/* <Button style={{cursor:isDeleting?'progress':''}} disabled={isDeleting} onClick={deleteAll}>{isDeleting?'Deleting...':'Delete all'}</Button> */}
             </div>
         </>

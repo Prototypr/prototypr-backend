@@ -31,6 +31,15 @@ module.exports = {
             // policies: ["plugin::invite-only.isAdmin"],
         },
       },
+      {
+        method: 'GET',
+        path: '/approve-users',
+        handler: 'manageSpamController.approveUsers',
+        config: {
+          policies:[]
+            // policies: ["plugin::invite-only.isAdmin"],
+        },
+      },
     //   {
     //     method: 'POST',
     //     path: '/generate-invite-token',

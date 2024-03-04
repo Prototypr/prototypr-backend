@@ -15,7 +15,7 @@ const HomePage = () => {
     <div>
       <HeaderLayout
           title={'Manage Spammers'}
-          subtitle={'Filters to help identify and delete spam users.'}
+          subtitle={'Filters to help identify and delete spam users, or approve new users.'}
         />
         <ContentLayout>
          <GetPostsButton/>

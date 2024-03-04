@@ -20,4 +20,11 @@ module.exports = {
       const users = await strapi.plugin('strapi-manage-spam').service('manageSpam').deletePotentialSpammers({ ids });
       ctx.body = { users };
     },
+    async approveUsers(ctx) {
+
+      const { ids } = ctx.request.query;
+     
+      const users = await strapi.plugin('strapi-manage-spam').service('manageSpam').approveUsers({ ids });
+      ctx.body = { users };
+    },
   };
