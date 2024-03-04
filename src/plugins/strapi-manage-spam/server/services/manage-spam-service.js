@@ -23,13 +23,21 @@ module.exports = {
     });
     return posts.length > 0 ? posts : null;
   },
-  async getPotentialSpammers({ pageSize, currentPage }) {
+  async getPotentialSpammers({ pageSize, currentPage, options }) {
+   
+    if(options){
+      try{
+        options = JSON.parse(options)
+      }catch(e){
+
+      }
+    }
     /**
      * users who are not approved and have zero published posts
      */
     //used in the admin route only
     const users = await strapi.entityService.findMany('plugin::users-permissions.user', {
-      fields: ['id', 'username', 'email', 'firstName', 'secondName', 'slug', 'approved'], // Include 'approved' in the selection
+      fields: ['id', 'username', 'email', 'firstName', 'secondName', 'slug', 'approved', "website"], // Include 'approved' in the selection
       populate: {
         posts: {
           fields: ['id', 'status'], // Assuming 'posts' is the correct relation name and 'status' is the field in posts
@@ -49,15 +57,19 @@ module.exports = {
       limit: pageSize ? pageSize : 10,
     });
 
-    const filteredUsers = users?.filter(user => {
-      // Check if the user has no posts or all posts are not published
-      return user.posts.length === 0 || user.posts.every(post => post.status !== 'publish');
-    });
+    const filteredUsers = filterUsers(users, options)
     
     return filteredUsers.length > 0 ? filteredUsers : null;
   },
-  async deletePotentialSpammers({ pageSize, currentPage }) {
+  async deletePotentialSpammers({ pageSize, currentPage, options }) {
     // Find users who are not approved
+    if(options){
+      try{
+        options = JSON.parse(options)
+      }catch(e){
+
+      }
+    }
     const users = await strapi.entityService.findMany('plugin::users-permissions.user', {
       fields: ['id'], // Only need 'id' for deletion
       populate: {
@@ -76,9 +88,7 @@ module.exports = {
     });
   
     // Filter users who have no published posts
-    const usersToDelete = users.filter(user => {
-      return user.posts.length === 0 || user.posts.every(post => post.status !== 'publish');
-    });
+    const usersToDelete = filterUsers(users, options)
   
     // Delete each user and their non-published posts
     for (const user of usersToDelete) {
@@ -96,3 +106,40 @@ module.exports = {
   },
   
 };
+
+
+const filterUsers = (users, options) =>{
+  const filteredUsers = users?.filter(user => {
+    console.log(user)
+    // Check for users with posts
+    let hasValidPosts = false;
+    if (options?.usersWithPosts) {
+      hasValidPosts = user.posts.length > 0 && user.posts.every(post => post.status === 'publish');
+    } else {
+      hasValidPosts = user.posts.length === 0 || user.posts.every(post => post.status !== 'publish');
+    }
+  
+    // Check for users with a first name
+    let hasFirstName = true;
+    if (options?.firstNameComplete) {
+      hasFirstName = Boolean(user.firstName);
+    }
+  
+    // Check for users with an email
+    let usesEmailProvider = true;
+    if (options?.providerIsMagicLink) {
+      usesEmailProvider = Boolean(user.email);
+    }
+  
+    // Include other checks as needed
+    // Example: let hasOtherCondition = true;
+    // if (options?.otherCondition) {
+    //   hasOtherCondition = // your condition here;
+    // }
+  
+    // Return true if all conditions are met
+    return hasValidPosts && hasFirstName && usesEmailProvider; // && hasOtherCondition for additional conditions
+  });
+
+  return filteredUsers
+}
