@@ -13,7 +13,15 @@ const GetPostsButton = ({title}) =>{
     const [usersWithPosts, setUsersWithPosts] = useState(true)
     const [providerIsMagicLink, setProviderIsMagicLink] = useState(true)
     const [providerIsGoogle, setProviderIsGoogle] = useState(false)
-    const [userHasFirstName, setUserHasFirstName] = useState(false)
+    
+    const [noFirstName, setNoFirstName] = useState(false)
+    const [noAvatar, setNoAvatar] = useState(false)
+    const [noBio, setNoBio] = useState(false)
+    const [noKofi, setNoKofi] = useState(false)
+    const [noGithub, setNoGithub] = useState(false)
+    const [noDribbble, setNoDribbble] = useState(false)
+    const [noTwitter, setNoTwitter] = useState(false)
+    
     const [userHasWebsite, setUserHasWebsite] = useState(false)
 
     const [hideEmails, setHideEmails] = useState(true)
@@ -27,7 +35,15 @@ const GetPostsButton = ({title}) =>{
             setDeleting(true)
             await manageSpamRequests.deleteAllPotentialSpamUsers({currentPage,pageSize, options:{
                 usersWithPosts,
-                userHasFirstName,
+                noFirstName,
+                noBio,
+                noAvatar,
+
+                noDribbble,
+                noGithub,
+                noKofi,
+                noTwitter,
+
                 userHasWebsite,
                 providerIsMagicLink,
                 providerIsGoogle
@@ -43,7 +59,16 @@ const GetPostsButton = ({title}) =>{
         const data = await manageSpamRequests.getPotentialSpamUsers({currentPage,pageSize,
         options:{
             usersWithPosts,
-            userHasFirstName,
+            
+            noFirstName,
+            noBio,
+            noAvatar,
+
+            noDribbble,
+            noGithub,
+            noKofi,
+            noTwitter,
+
             userHasWebsite,
             providerIsMagicLink,
             providerIsGoogle
@@ -110,7 +135,25 @@ const GetPostsButton = ({title}) =>{
                     <Checkbox onValueChange={value => setUsersWithPosts(value)} value={usersWithPosts}>Attempted at least 1 post</Checkbox>
                 </div>
                 <div style={{marginBottom:10, marginLeft:15}}>
-                    <Checkbox onValueChange={value => setUserHasFirstName(value)} value={userHasFirstName}>First name complete</Checkbox>
+                    <Checkbox onValueChange={value => setNoFirstName(value)} value={noFirstName}>No first name</Checkbox>
+                </div>
+                <div style={{marginBottom:10, marginLeft:15}}>
+                    <Checkbox onValueChange={value => setNoBio(value)} value={noBio}>No bio</Checkbox>
+                </div>
+                <div style={{marginBottom:10, marginLeft:15}}>
+                    <Checkbox onValueChange={value => setNoAvatar(value)} value={noAvatar}>No avatar</Checkbox>
+                </div>
+                <div style={{marginBottom:10, marginLeft:15}}>
+                    <Checkbox onValueChange={value => setNoGithub(value)} value={noGithub}>No GitHub</Checkbox>
+                </div>
+                <div style={{marginBottom:10, marginLeft:15}}>
+                    <Checkbox onValueChange={value => setNoDribbble(value)} value={noDribbble}>No Dribbble</Checkbox>
+                </div>
+                <div style={{marginBottom:10, marginLeft:15}}>
+                    <Checkbox onValueChange={value => setNoKofi(value)} value={noKofi}>No KoFi</Checkbox>
+                </div>
+                <div style={{marginBottom:10, marginLeft:15}}>
+                    <Checkbox onValueChange={value => setNoTwitter(value)} value={noTwitter}>No Twitter</Checkbox>
                 </div>
                 <div style={{marginBottom:10, marginLeft:15}}>
                     <Checkbox onValueChange={value => setUserHasWebsite(value)} value={userHasWebsite}>User has website</Checkbox>

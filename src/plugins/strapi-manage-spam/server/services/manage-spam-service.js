@@ -160,9 +160,45 @@ async function findUsersWithUnpublishedPosts(options, pageSize, currentPage) {
   }
 
   // Additional options checks
-  if (options.userHasFirstName) {
+  if (options.noFirstName) {
     query += whereIncluded ? " AND" : " WHERE"; // Check if WHERE clause is already included
-    query += " u.first_name IS NOT NULL";
+    query += " u.first_name IS NULL";
+    whereIncluded = true;
+  }
+  if (options.noGithub) {
+    query += whereIncluded ? " AND" : " WHERE"; // Check if WHERE clause is already included
+    query += " u.github IS NULL";
+    whereIncluded = true;
+  }
+  if (options.noKofi) {
+    query += whereIncluded ? " AND" : " WHERE"; // Check if WHERE clause is already included
+    query += " u.kofi IS NULL";
+    whereIncluded = true;
+  }
+  if (options.noTwitter) {
+    query += whereIncluded ? " AND" : " WHERE"; // Check if WHERE clause is already included
+    query += " u.twitter IS NULL";
+    whereIncluded = true;
+  }
+  if (options.noDribbble) {
+    query += whereIncluded ? " AND" : " WHERE"; // Check if WHERE clause is already included
+    query += " u.dribbble IS NULL";
+    whereIncluded = true;
+  }
+  
+  if (options.noAvatar) {
+    query += whereIncluded ? " AND" : " WHERE";
+    query += ` NOT EXISTS (
+        SELECT 1
+        FROM "files_related_morphs" frm
+        WHERE frm.related_id = u.id AND frm.field = 'avatar'
+    )`;
+    whereIncluded = true;
+  }
+  
+  if (options.noBio) {
+    query += whereIncluded ? " AND" : " WHERE"; // Check if WHERE clause is already included
+    query += " u.bio IS NULL";
     whereIncluded = true;
   }
 
