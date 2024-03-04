@@ -11,10 +11,10 @@ const manageSpamRequests= {
         const endpoint = `${process.env.STRAPI_ADMIN_BACKEND_URL}/strapi-manage-spam/get-potential-spammers?currentPage=${currentPage}&pageSize=${pageSize}&options=${optionsString}`
         return await request(endpoint, {method:'GET'})
      },
-      deleteAllPotentialSpamUsers:async({currentPage, pageSize, options})=>{
-        const optionsString = encodeURIComponent(JSON.stringify(options))
+      deleteAllPotentialSpamUsers:async(selectedRows)=>{
+        const rowsToDelete = encodeURIComponent(JSON.stringify(selectedRows))
 
-        const endpoint = `${process.env.STRAPI_ADMIN_BACKEND_URL}/strapi-manage-spam/delete-potential-spammers?currentPage=${currentPage}&pageSize=${pageSize}&options=${optionsString}`
+        const endpoint = `${process.env.STRAPI_ADMIN_BACKEND_URL}/strapi-manage-spam/delete-potential-spammers?ids=${rowsToDelete}`
         return await request(endpoint, {method:'GET'})
      },
    //   generateToken:async(postBody)=>{

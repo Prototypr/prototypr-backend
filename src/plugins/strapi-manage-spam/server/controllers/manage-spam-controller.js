@@ -15,9 +15,9 @@ module.exports = {
     },
     async deletePotentialSpammers(ctx) {
 
-      const { pageSize, currentPage, options } = ctx.request.query;
+      const { ids } = ctx.request.query;
      
-      const users = await strapi.plugin('strapi-manage-spam').service('manageSpam').deletePotentialSpammers({ pageSize, currentPage, options });
+      const users = await strapi.plugin('strapi-manage-spam').service('manageSpam').deletePotentialSpammers({ ids });
       ctx.body = { users };
     },
   };
