@@ -16,6 +16,8 @@ const GetPostsButton = ({title}) =>{
     const [userHasFirstName, setUserHasFirstName] = useState(false)
     const [userHasWebsite, setUserHasWebsite] = useState(false)
 
+    const [hideEmails, setHideEmails] = useState(true)
+
     const [users, setUsers] = useState(null)
 
     const [selectedRows, setSelectedRows] = useState([]);
@@ -125,8 +127,15 @@ const GetPostsButton = ({title}) =>{
 
         {users?.length?
         <>
-            <div style={{marginTop:32, marginBottom:12}}>
-                Found {users?.length} potential spam accounts
+            <div style={{marginTop:32, marginBottom:12, display:'flex', justifyContent:'space-between'}}>
+                <div>
+                    Found {users?.length} potential spam accounts
+                </div>
+                <div style={{display:'flex'}}>
+                    <button onClick={()=>{
+                        setHideEmails(!hideEmails)
+                    }} style={{fontSize:'13px'}}>{hideEmails?'Show emails':'Hide Emails'}</button>
+                </div>
             </div>
             <div style={{maxHeight:500, overflowY:'auto'}}>
                 <Table style={{marginBottom:12}}>
@@ -163,7 +172,7 @@ const GetPostsButton = ({title}) =>{
                         {user.username} →
                         </a>
                         </Typography></Td>
-                    <Td><Typography textColor="neutral800">{user.email}</Typography></Td>
+                    <Td><Typography textColor="neutral800"><span>{hideEmails?'***************':user.email}</span></Typography></Td>
                     <Td><Typography textColor="neutral800">{user.website}</Typography></Td>
                     <Td><Typography textColor="neutral800">
                         <div style={{maxWidth:250, textWrap:'wrap'}}>
