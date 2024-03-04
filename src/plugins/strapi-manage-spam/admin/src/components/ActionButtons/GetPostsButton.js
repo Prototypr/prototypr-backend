@@ -137,7 +137,7 @@ const GetPostsButton = ({title}) =>{
                     }} style={{fontSize:'13px'}}>{hideEmails?'Show emails':'Hide Emails'}</button>
                 </div>
             </div>
-            <div style={{maxHeight:500, overflowY:'auto'}}>
+            <div style={{overflowY:'auto'}}>
                 <Table style={{marginBottom:12}}>
                 <Thead>
                 <Tr>
@@ -168,9 +168,13 @@ const GetPostsButton = ({title}) =>{
                     <Td><Typography textColor="neutral800">{user.id}</Typography></Td>
                     <Td>
                         <Typography textColor="neutral800">
-                        <a target='_blank' style={{textDecoration:'none'}} href={`/admin/content-manager/collectionType/plugin::users-permissions.user/${user?.id}`}>
+                        <span 
+                        onClick={()=>{
+                            window.open(`/admin/content-manager/collectionType/plugin::users-permissions.user/${user?.id}`)
+                        }}
+                        style={{textDecoration:'none', cursor:'pointer'}}>
                         {user.username} →
-                        </a>
+                        </span>
                         </Typography></Td>
                     <Td><Typography textColor="neutral800"><span>{hideEmails?'***************':user.email}</span></Typography></Td>
                     <Td><Typography textColor="neutral800">{user.website}</Typography></Td>
