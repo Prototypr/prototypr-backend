@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Button, NumberInput,Checkbox, Flex} from '@strapi/design-system';
 
 import manageSpamRequests from '../../api/plugin-services';
-import { Table, Thead, Tbody, Tr, Th, Td, Typography } from '@strapi/design-system';
+import { Table, Thead, Tbody, Tr, Th, Td, Typography,BaseCheckbox } from '@strapi/design-system';
 
 const GetPostsButton = ({title}) =>{
 
@@ -50,7 +50,7 @@ const GetPostsButton = ({title}) =>{
         <div style={{marginBottom:10}}>
             <Flex justifyContent="start">
                 <div style={{marginRight:10}}>
-                    <NumberInput placeholder="0" aria-label="Start Page" name="currentPage" hint="Current page" error={undefined} onValueChange={value => setCurrentPage(value)} value={currentPage}/>
+                    <NumberInput placeholder="0" aria-label="Page offset" name="currentPage" hint="Page offset" error={undefined} onValueChange={value => setCurrentPage(value)} value={currentPage}/>
                 </div>
                 <NumberInput placeholder="10" aria-label="Page Size" name="pageSize" hint="Users per page" error={undefined} onValueChange={value => setPageSize(value)} value={pageSize} />
             </Flex>
@@ -78,6 +78,9 @@ const GetPostsButton = ({title}) =>{
                 <Table style={{marginBottom:12}}>
                 <Thead>
                 <Tr>
+                    <Th>
+                        <BaseCheckbox aria-label="Select all entries" />
+                    </Th>
                     <Th><Typography variant="sigma">ID</Typography></Th>
                     <Th><Typography variant="sigma">Username</Typography></Th>
                     <Th><Typography variant="sigma">Email</Typography></Th>
@@ -89,6 +92,9 @@ const GetPostsButton = ({title}) =>{
                 {users?.map((user) => {
                     return(
                     <Tr key={user.id}>
+                        <Td>
+                  <BaseCheckbox aria-label={`Select ${user.id}`} />
+                </Td>
                     <Td><Typography textColor="neutral800">{user.id}</Typography></Td>
                     <Td>
                         <Typography textColor="neutral800">

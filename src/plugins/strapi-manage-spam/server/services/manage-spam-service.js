@@ -41,17 +41,19 @@ module.exports = {
       populate: {
         posts: {
           fields: ['id', 'status'], // Assuming 'posts' is the correct relation name and 'status' is the field in posts
-          filters: {
-            status: { $ne: 'publish' }, // Include posts that are not published
-          },
+          // filters: {
+          //   status: { $ne: 'publish' }, // Include posts that are not published
+          // },
         },
       },
       filters: {
-        $or: [
-          { approved: {$ne: true}  }, // Users where approved is not true
-          // { posts: { $null: true } }, // Users with no posts
-          // { 'posts.status': { $ne: 'publish' } }, // Users with no published posts
-        ],
+        // $or: [
+        //   { approved: {$ne: true}  }, // Users where approved is not true
+        //   // { posts: { $null: true } }, // Users with no posts
+        //   // { 'posts.status': { $ne: 'publish' } }, // Users with no published posts
+        // ],
+        posts:{publishedAt:{$null:true}}
+        // posts:{status:{$ne:'publish'}}
       },
       start: currentPage ? currentPage : 0,
       limit: pageSize ? pageSize : 10,
