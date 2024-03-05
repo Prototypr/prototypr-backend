@@ -2,32 +2,33 @@ import { prefixPluginTranslations } from '@strapi/helper-plugin';
 import pluginPkg from '../../package.json';
 import pluginId from './pluginId';
 import Initializer from './components/Initializer';
-// import PluginIcon from './components/PluginIcon';
+import PluginIcon from './components/PluginIcon';
 
 const name = pluginPkg.strapi.name;
+const displayName = pluginPkg.strapi.displayName;
 
 export default {
   register(app) {
-    // app.addMenuLink({
-    //   to: `/plugins/${pluginId}`,
-    //   icon: PluginIcon,
-    //   intlLabel: {
-    //     id: `${pluginId}.plugin.name`,
-    //     defaultMessage: name,
-    //   },
-    //   Component: async () => {
-    //     const component = await import(/* webpackChunkName: "[request]" */ './pages/App');
+    app.addMenuLink({
+      to: `/plugins/${pluginId}`,
+      icon: PluginIcon,
+      intlLabel: {
+        id: `${pluginId}.plugin.name`,
+        defaultMessage: displayName,
+      },
+      Component: async () => {
+        const component = await import(/* webpackChunkName: "[request]" */ './pages/App');
 
-    //     return component;
-    //   },
-    //   permissions: [
-    //     // Uncomment to set the permissions of the plugin here
-    //     // {
-    //     //   action: '', // the action name should be plugin::plugin-name.actionType
-    //     //   subject: null,
-    //     // },
-    //   ],
-    // });
+        return component;
+      },
+      permissions: [
+        // Uncomment to set the permissions of the plugin here
+        // {
+        //   action: '', // the action name should be plugin::plugin-name.actionType
+        //   subject: null,
+        // },
+      ],
+    });
 
     // Prototypr addition - add to admin settings
     app.createSettingSection(

@@ -6,7 +6,7 @@
     "name": "strapi-manage-spam",
     "description": "Description of Strapi Manage Spam plugin",
     "kind": "plugin",
-    "displayName": "Strapi Manage Spam"
+    "displayName": "Manage Spammers"
   },
   "dependencies": {},
   "author": {
