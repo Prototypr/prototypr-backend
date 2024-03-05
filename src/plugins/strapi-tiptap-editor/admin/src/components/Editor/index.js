@@ -3,20 +3,20 @@ import PropTypes from 'prop-types';
 
 // TipTap Editor
 import {EditorContent, FloatingMenu, BubbleMenu} from '@tiptap/react'
-import {useEditor} from '@tiptap/react'
-import {Extension, mergeAttributes, wrappingInputRule} from '@tiptap/core'
-import StarterKit from '@tiptap/starter-kit'
-import UnderlineExtension from '@tiptap/extension-underline'
-import LinkExtension from '@tiptap/extension-link'
-import ImageExtension from '@tiptap/extension-image'
-import TextAlignExtension from '@tiptap/extension-text-align'
-import TableExtension from '@tiptap/extension-table'
-import TableRowExtension from '@tiptap/extension-table-row'
-import TableCellExtension from '@tiptap/extension-table-cell'
-import TableHeaderExtension from '@tiptap/extension-table-header'
-import TextStyleExtension from '@tiptap/extension-text-style'
-import { Color as ColorExtension } from '@tiptap/extension-color'
-import packageInfo from '../../../../package.json'
+// import {useEditor} from '@tiptap/react'
+// import {Extension, mergeAttributes, wrappingInputRule} from '@tiptap/core'
+// import StarterKit from '@tiptap/starter-kit'
+// import UnderlineExtension from '@tiptap/extension-underline'
+// import LinkExtension from '@tiptap/extension-link'
+// import ImageExtension from '@tiptap/extension-image'
+// import TextAlignExtension from '@tiptap/extension-text-align'
+// import TableExtension from '@tiptap/extension-table'
+// import TableRowExtension from '@tiptap/extension-table-row'
+// import TableCellExtension from '@tiptap/extension-table-cell'
+// import TableHeaderExtension from '@tiptap/extension-table-header'
+// import TextStyleExtension from '@tiptap/extension-text-style'
+// import { Color as ColorExtension } from '@tiptap/extension-color'
+// import packageInfo from '../../../../package.json'
 import {Toolbar} from "./Toolbar";
 import { Waypoint } from 'react-waypoint';
 
@@ -196,7 +196,7 @@ const Editor = ({onChange, name, value, editor, disabled, settings}) => {
          
       <Box hasRadius={true} overflow={'hidden'} style={{marginTop:toolbarSticky?'30px':''}} borderWidth="1px" borderStyle="solid" borderColor="neutral200">
         <Toolbar editor={editor} width={navWidth} sticky={toolbarSticky} toggleMediaLib={handleToggleMediaLib} settings={settings}/>
-        <BubbleMenuComponent editor={editor} toggleMediaLib={handleToggleMediaLib}/>
+        {/* <BubbleMenuComponent editor={editor} toggleMediaLib={handleToggleMediaLib}/> */}
         
           <Box padding={2} background="neutral0" maxHeight={'900px'} style={{resize: 'vertical', overflow: 'auto'}}>
             <EditorContent editor={editor}/>

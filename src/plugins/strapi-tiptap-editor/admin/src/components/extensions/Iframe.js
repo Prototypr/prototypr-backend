@@ -1,7 +1,7 @@
 import { Node , mergeAttributes} from '@tiptap/core'
 import { ReactNodeViewRenderer } from "@tiptap/react";
 
-import Component from './iframeComponent'
+import Component from './IframeComponent'
 // https://gist.github.com/kiranparajuli589/5d4ab7aaf9e9ad12bc7d2dfacbe2f96d
 const Iframe = Node.create({
   name: 'iframe',

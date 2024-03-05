@@ -1,13 +1,13 @@
 module.exports = ({ env }) => ({
      // enable a custom plugin
-  // 'strapi-tiptap-editor': {
-  //   // my-plugin is going to be the internal name used for this plugin
-  //   resolve: './src/plugins/strapi-tiptap-editor',
-  //   enabled: true,
-  //   config: {
-  //     // user plugin config goes here
-  //   },
-  // },
+  'strapi-tiptap-editor': {
+    // my-plugin is going to be the internal name used for this plugin
+    resolve: './src/plugins/strapi-tiptap-editor',
+    enabled: true,
+    config: {
+      // user plugin config goes here
+    },
+  },
   'passwordless': {
     // my-plugin is going to be the internal name used for this plugin
     enabled: true,

@@ -1,78 +1,79 @@
-import {
-  Node,
-  mergeAttributes,
-  wrappingInputRule
-} from '@tiptap/core'
+import { mergeAttributes, Node, wrappingInputRule } from '@tiptap/core'
 
 export const inputRegex = /^\s*>\s$/
 
+export const Blockquote = Node.create({
 
-const Blockquote = Node.create({
+  name: 'blockquote',
 
-    name: 'blockquote',
-  
-    addOptions() {
-      return {
-        HTMLAttributes: {
-          class: '',
-        }      
-      }
-    },
-    addAttributes() {
-        return {
-          class: {
-            default: this.options.HTMLAttributes.class,
-          },
+  addOptions() {
+    return {
+      HTMLAttributes: {},
+    }
+  },
+
+  content: 'block+',
+
+  group: 'block',
+
+  defining: true,
+
+  parseHTML() {
+    return [
+      { tag: 'blockquote' },
+    ]
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    return ['blockquote', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0]
+  },
+
+  addAttributes() {
+    return {
+      // extend the existing attributes …
+      ...this.parent?.(),
+      // and add a new one …
+      class: {
+        parseHTML:(element)=>{
+            return element.getAttribute('class')
+        },
+        renderHTML: (attributes) => {
+          if(attributes.class){
+            return {
+              class: attributes.class
+            };
+          }
         }
+      },
+    }
     },
-  
-    content: 'block+',
-  
-    group: 'block',
-  
-    defining: true,
-  
-    parseHTML() {
-      return [
-        { tag: 'blockquote' },
-      ]
-    },
-  
-    renderHTML({ HTMLAttributes }) {
-      return ['blockquote', mergeAttributes(this.options.HTMLAttributes, HTMLAttributes), 0]
-    },
-  
-    addCommands() {
-      return {
-        setBlockquote: () => ({ commands }) => {
-          return commands.wrapIn(this.name)
-        },
-        toggleBlockquote: () => ({ commands }) => {
-          return commands.toggleWrap(this.name)
-        },
-        unsetBlockquote: () => ({ commands }) => {
-          return commands.lift(this.name)
-        },
-        // setBlockquoteClass:(classy)=>({editor}) =>{
-        //   return ()=>console.log(classy)
-        // }
-      }
-    },
-  
-    addKeyboardShortcuts() {
-      return {
-        'Mod-Shift-b': () => this.editor.commands.toggleBlockquote(),
-      }
-    },
-  
-    addInputRules() {
-      return [
-        wrappingInputRule({
-          find: inputRegex,
-          type: this.type,
-        }),
-      ]
-    },
-  })
 
-  export default Blockquote
+  addCommands() {
+    return {
+      setBlockquote: () => ({ commands }) => {
+        return commands.wrapIn(this.name)
+      },
+      toggleBlockquote: () => ({ commands }) => {
+        return commands.toggleWrap(this.name)
+      },
+      unsetBlockquote: () => ({ commands }) => {
+        return commands.lift(this.name)
+      },
+    }
+  },
+
+  addKeyboardShortcuts() {
+    return {
+      'Mod-Shift-b': () => this.editor.commands.toggleBlockquote(),
+    }
+  },
+
+  addInputRules() {
+    return [
+      wrappingInputRule({
+        find: inputRegex,
+        type: this.type,
+      }),
+    ]
+  },
+})
