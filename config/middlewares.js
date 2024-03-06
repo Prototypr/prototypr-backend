@@ -29,6 +29,7 @@ module.exports = [
             "codepen.io",
             "upscri.be/",
             "letter-so.s3.amazonaws.com",
+            "platform.twitter.com",
           ],
           "img-src": [
             "'self'",
@@ -58,6 +59,7 @@ module.exports = [
           ],
           "script-src": [
             "'self'",
+            "platform.twitter.com",
             "https://platform.twitter.com",
           ],
           upgradeInsecureRequests: null,
