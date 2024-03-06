@@ -56,6 +56,10 @@ module.exports = [
             "youtube.com",
             "www.youtube.com",
           ],
+          "script-src": [
+            "'self'",
+            "https://platform.twitter.com",
+          ],
           upgradeInsecureRequests: null,
         },
       },
