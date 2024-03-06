@@ -1,0 +1,66 @@
+{
+  "name": "strapi-stripe",
+  "version": "1.12.0",
+  "description": "Online payments made simple, secure and fast. This free plugin enables you to accept online payments using Credit Card, Apple pay and Google pay on your Strapi website or app via Stripe.",
+  "strapi": {
+    "name": "strapi-stripe",
+    "description": "Online payments made simple, secure and fast. This free plugin enables you to accept online payments using Credit Card, Apple pay and Google pay on your Strapi website or app via Stripe.",
+    "kind": "plugin"
+  },
+  "dependencies": {
+    "html-react-parser": "^1.4.10",
+    "stripe": "^8.210.0"
+  },
+  "author": {
+    "name": "HigherEdLab.com",
+    "email": "support@higheredlab.com",
+    "url": "https://higheredlab.com/"
+  },
+  "homepage": "https://github.com/manishkatyan/strapi-stripe#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/manishkatyan/strapi-stripe.git"
+  },
+  "maintainers": [
+    {
+      "name": "HigherEdLab.com",
+      "email": "support@higheredlab.com",
+      "url": "https://higheredlab.com/"
+    }
+  ],
+  "engines": {
+    "node": ">=12.x.x <=16.x.x",
+    "npm": ">=6.0.0"
+  },
+  "keywords": [
+    "strapi",
+    "stripe",
+    "checkout",
+    "payment",
+    "subscribe",
+    "charge",
+    "intent",
+    "merchant",
+    "credit",
+    "debit",
+    "card pay",
+    "google pay",
+    "secure payment",
+    "payment integration",
+    "digital payment",
+    "e-commerce",
+    "stripe nodejs",
+    "stripe javascript",
+    "payment processing",
+    "pay",
+    "via stripe",
+    "element",
+    "online payment",
+    "headless CMS",
+    "secure payment",
+    "open-source",
+    "subscribe",
+    "gateway"
+  ],
+  "license": "MIT"
+}
