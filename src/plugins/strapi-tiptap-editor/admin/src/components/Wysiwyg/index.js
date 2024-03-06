@@ -4,13 +4,13 @@ import { Stack } from '@strapi/design-system/Stack';
 import { Box } from '@strapi/design-system/Box';
 import { Field, FieldLabel, FieldHint, FieldError, FieldInput, FieldAction } from '@strapi/design-system/Field';
 import { Typography } from '@strapi/design-system/Typography';
-import MediaLib from '../MediaLib/index.js';
+// import MediaLib from '../MediaLib/index.js';
 import Editor from '../Editor';
 import { useIntl } from 'react-intl';
 import {getSettings} from "../../../../utils/api";
-import {defaultSettings} from "../../../../utils/defaults";
+// import {defaultSettings} from "../../../../utils/defaults";
 import { useQuery } from 'react-query';
-import Earth from "@strapi/icons/Earth"
+// import Earth from "@strapi/icons/Earth"
 
 import Link from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
@@ -56,7 +56,7 @@ import Document from '@tiptap/extension-document'
 
 // Editor
 import {useEditor} from '@tiptap/react'
-import {Extension, mergeAttributes, wrappingInputRule} from '@tiptap/core'
+// import {Extension, mergeAttributes, wrappingInputRule} from '@tiptap/core'
 // import StarterKit from '@tiptap/starter-kit'
 // import LinkExtension from '@tiptap/extension-link'
 // import LinkExtension from '../extensions/Link/Link'
@@ -193,16 +193,16 @@ const WysiwygContent = ({ name, onChange, value, intlLabel, labelAction, disable
       Placeholder.configure({
           includeChildren: true,
         placeholder: ({ node }) => {
-          if (node.type.name === "heading") {
+          if (node?.type?.name === "heading") {
             return "What's the title?";
           }
-          if (node.type.name === "figcaption") {
+          if (node?.type?.name === "figcaption") {
             return "What's the title?";
           }
-          if (node.type.name === "figure") {
+          if (node?.type?.name === "figure") {
             return "What's the title?";
           }
-          if (node.type.name === "tweet") {
+          if (node?.type?.name === "tweet") {
             return "Paste a tweet link and press enter";
           }
             return "Tell a story...";
