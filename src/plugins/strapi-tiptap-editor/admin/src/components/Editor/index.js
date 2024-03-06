@@ -120,27 +120,27 @@ const TableMenuBar = (editor) => {
 
 
 // Floating bubble menu for table
-const BubbleMenuComponent = ({editor, toggleMediaLib}) => {
-  if (editor) {
-    let menuBars = []
+// const BubbleMenuComponent = ({editor, toggleMediaLib}) => {
+//   if (editor) {
+//     let menuBars = []
 
-    if (editor.isActive('table')) {
-      menuBars.push(TableMenuBar(editor))
-    }
+//     if (editor.isActive('table')) {
+//       menuBars.push(TableMenuBar(editor))
+//     }
 
-    return (
-      <BubbleMenu editor={editor} tippyOptions={{zIndex: 2, maxWidth: '450px'}}>
-        {menuBars.length ? (
-          <Flex padding={2} className="menu-bar floating" style={{flexWrap: 'wrap'}}>
-            {/* Render menu bars */}
-            {menuBars}
-          </Flex>
-        ) : null}
-      </BubbleMenu>
-    )
-  }
-  return null
-}
+//     return (
+//       <BubbleMenu editor={editor} tippyOptions={{zIndex: 2, maxWidth: '450px'}}>
+//         {menuBars.length ? (
+//           <Flex padding={2} className="menu-bar floating" style={{flexWrap: 'wrap'}}>
+//             {/* Render menu bars */}
+//             {menuBars}
+//           </Flex>
+//         ) : null}
+//       </BubbleMenu>
+//     )
+//   }
+//   return null
+// }
 
 
 const Editor = ({onChange, name, value, editor, disabled, settings}) => {
