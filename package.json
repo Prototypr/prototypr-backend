@@ -35,7 +35,6 @@
     "strapi-plugin-meilisearch": "^0.8.2",
     "strapi-provider-upload-dos": "file:providers/strapi-provider-upload-dos/",
     "strapi-stripe": "^1.12.0",
-
     "@tiptap/core": "^2.2.4",
     "@tiptap/extension-bold": "^2.2.4",
     "@tiptap/extension-bullet-list": "^2.2.4",
