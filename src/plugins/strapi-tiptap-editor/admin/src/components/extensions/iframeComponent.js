@@ -15,7 +15,7 @@ export default (props) => {
       <iframe src={props.node.attrs.src} width="400" height="300"></iframe>
       <div style={{position:'absolute', top:'6px', right:'6px'}}>
         <button style={{background:'blue', padding:'6px', borderRadius:'6px', color:'white', fontSize:'13px'}} 
-        onClick={(e)=>{
+        onClick={(e)=>{ 
             e.preventDefault();
             var newSrc= prompt("Please enter an embed link from YouTube, CodePen or CodeSandbox", props.node.attrs.src)
             if (newSrc.startsWith('https://www.youtube.com/watch?v=')) {
