@@ -59,6 +59,7 @@ module.exports = [
           ],
           "script-src": [
             "'self'",
+            "analytics.strapi.io",
             "platform.twitter.com",
             "https://platform.twitter.com",
           ],
