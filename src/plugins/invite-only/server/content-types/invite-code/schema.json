@@ -29,7 +29,7 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "plugin::users-permissions.user",
-      "inversedBy": "invite_code"
+      "mappedBy": "invite_code"
     }
   }
 }
