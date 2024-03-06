@@ -42,6 +42,7 @@ module.exports = [
             "wp.prototypr.io",
             "miro.medium.com",
             "letter-so.s3.amazonaws.com",
+            "*"
           ],
           "media-src": [
             "'self'",
