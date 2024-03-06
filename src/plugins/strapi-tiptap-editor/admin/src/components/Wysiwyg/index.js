@@ -96,46 +96,46 @@ const Wysiwyg = ({ name, onChange, value, intlLabel, labelAction, disabled, erro
   )
 }
 
-const CSSColumnsExtension = Extension.create({
-  name: 'cssColumns',
-  addOptions() {
-    return {
-      types: [],
-      columnTypes: [2, 3],
-      defaultColumnType: 'two',
-    };
-  },
-  addGlobalAttributes() {
-    return [
-      {
-        types: this.options.types,
-        attributes: {
-          cssColumns: {
-            default: null,
-            renderHTML: attributes => {
-              if (attributes.cssColumns === null) return
-              return {
-                style: `column-count: ${attributes.cssColumns}`,
-              }
-            },
-            parseHTML: element => element.style.columnCount || null,
-          },
-        },
-      }
-    ]
-  },
-  addCommands() {
-    return {
-      toggleColumns: (columnType) => ({commands, editor}) => {
-        if (!editor.isActive({'cssColumns': columnType})) return this.options.types.every((type) => commands.updateAttributes(type, {cssColumns: columnType}))
-        return this.options.types.every((type) => commands.resetAttributes(type, 'cssColumns'))
-      },
-      unsetColumns: (columnType) => ({commands}) => {
-        return this.options.types.every((type) => commands.resetAttributes(type, 'cssColumns'))
-      },
-    }
-  }
-})
+// const CSSColumnsExtension = Extension.create({
+//   name: 'cssColumns',
+//   addOptions() {
+//     return {
+//       types: [],
+//       columnTypes: [2, 3],
+//       defaultColumnType: 'two',
+//     };
+//   },
+//   addGlobalAttributes() {
+//     return [
+//       {
+//         types: this.options.types,
+//         attributes: {
+//           cssColumns: {
+//             default: null,
+//             renderHTML: attributes => {
+//               if (attributes.cssColumns === null) return
+//               return {
+//                 style: `column-count: ${attributes.cssColumns}`,
+//               }
+//             },
+//             parseHTML: element => element.style.columnCount || null,
+//           },
+//         },
+//       }
+//     ]
+//   },
+//   addCommands() {
+//     return {
+//       toggleColumns: (columnType) => ({commands, editor}) => {
+//         if (!editor.isActive({'cssColumns': columnType})) return this.options.types.every((type) => commands.updateAttributes(type, {cssColumns: columnType}))
+//         return this.options.types.every((type) => commands.resetAttributes(type, 'cssColumns'))
+//       },
+//       unsetColumns: (columnType) => ({commands}) => {
+//         return this.options.types.every((type) => commands.resetAttributes(type, 'cssColumns'))
+//       },
+//     }
+//   }
+// })
 
 const CustomDocument = Document.extend({
   content: "block*",
@@ -144,7 +144,7 @@ const CustomDocument = Document.extend({
 
 const WysiwygContent = ({ name, onChange, value, intlLabel, labelAction, disabled, error, description, required, settings }) => {
   const { formatMessage } = useIntl();
-  const [ mergedSettings, setMergedSettings] = useState(null)
+  // const [ mergedSettings, setMergedSettings] = useState(null)
 
   const editor = useEditor({
     extensions: [

@@ -56,6 +56,7 @@ module.exports = [
             "letter-so.s3.amazonaws.com",
             "youtube.com",
             "www.youtube.com",
+            "cdn-images-1.medium.com"
           ],
           "script-src": [
             "'self'",
@@ -79,7 +80,7 @@ module.exports = [
         "http://localhost:1337",
         "https://sfo2.digitaloceanspaces.com",
         process.env.NEXT_URL,
-        // "https://analytics.strapi.io",
+        "https://analytics.strapi.io",
         process.env.STRAPI_URL,
       ],
     },
