@@ -42,6 +42,7 @@
     "@tiptap/pm": "^2.2.4",
     "@tiptap/react": "^2.2.4",
     "@tiptap/starter-kit": "^2.2.4",
+    "ai": "^3.0.7",
     "dotenv": "^16.4.5",
     "email-validator": "^2.0.4",
     "form-data": "^4.0.0",
@@ -57,6 +58,8 @@
     "strapi-plugin-config-sync": "^1.1.3",
     "strapi-plugin-meilisearch": "^0.8.2",
     "strapi-provider-upload-dos": "file:providers/strapi-provider-upload-dos/",
+    "html-react-parser": "^1.4.10",
+    "stripe": "^8.210.0"
   },
   "author": {
     "name": "A Strapi developer"

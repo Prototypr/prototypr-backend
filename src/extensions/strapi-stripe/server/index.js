@@ -1,17 +1,17 @@
 'use strict';
 
 const register = require('./register');
-const bootstrap = require('strapi-stripe/server/bootstrap');
-const destroy = require('strapi-stripe/server/destroy');
-const config = require('strapi-stripe/server/config');
+const bootstrap = require('../../../plugins/strapi-stripe/server/bootstrap');
+const destroy = require('../../../plugins/strapi-stripe/server/destroy');
+const config = require('../../../plugins/strapi-stripe/server/config');
 // const contentTypes = require('strapi-stripe/server/content-types');
 const contentTypes = require('../content-types');
 // const controllers = require('strapi-stripe/server/controllers');
 const controllers = require('./controllers');
 // const routes = require('strapi-stripe/server/routes');
 const routes = require('./routes');
-const middlewares = require('strapi-stripe/server/middlewares');
-const policies = require('strapi-stripe/server/policies');
+const middlewares = require('../../../plugins/strapi-stripe/server/middlewares');
+const policies = require('../../../plugins/strapi-stripe/server/policies');
 // const services = require('strapi-stripe/server/services');
 const services = require('./services');
 

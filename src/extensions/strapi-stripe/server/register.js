@@ -4,7 +4,7 @@ const path = require("path");
 const fs = require("fs-extra");
 const _ = require("lodash");
 
-const staticFileMiddleware = require("strapi-stripe/server/middlewares/staticFiles");
+const staticFileMiddleware = require("../../../plugins/strapi-stripe/server/middlewares/staticFiles");
 module.exports = async ({ strapi }) => {
   // registeration phase
   await staticFileMiddleware({ strapi });
