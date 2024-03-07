@@ -46,6 +46,7 @@
     "dotenv": "^16.4.5",
     "email-validator": "^2.0.4",
     "form-data": "^4.0.0",
+    "html-react-parser": "^1.4.10",
     "jwt-decode": "^3.1.2",
     "nanoid": "^3.3.4",
     "node-fetch": "^3.2.3",
@@ -57,8 +58,7 @@
     "sharp": "^0.33.2",
     "strapi-plugin-config-sync": "^1.1.3",
     "strapi-plugin-meilisearch": "^0.8.2",
-    "strapi-provider-upload-dos": "file:providers/strapi-provider-upload-dos/",
-    "html-react-parser": "^1.4.10",
+    "strapi-provider-upload-dos": "^4.0.5",
     "stripe": "^8.210.0"
   },
   "author": {
