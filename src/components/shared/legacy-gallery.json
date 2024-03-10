@@ -21,6 +21,14 @@
     },
     "sourceUrl": {
       "type": "string"
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "video",
+        "image",
+        "link"
+      ]
     }
   }
 }

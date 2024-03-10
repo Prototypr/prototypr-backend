@@ -174,7 +174,7 @@ const Editor = ({onChange, name, value, editor, disabled, settings}) => {
     return null
   }
 
-  const strapiHeader = document.querySelector('[data-strapi-header-sticky]')
+  const strapiHeader = document.querySelector('main')
   let navWidth = '0px'
   if(strapiHeader){
     navWidth=strapiHeader.getAttribute('width')+'px'

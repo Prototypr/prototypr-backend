@@ -7,7 +7,7 @@
 
 import React from "react";
 import { Switch, Route } from "react-router-dom";
-import { NotFound } from "@strapi/helper-plugin";
+// import { NotFound } from "@strapi/helper-plugin";
 import pluginId from "../../pluginId";
 import HomePage from "../HomePage";
 import PaymentReport from "../../components/Report";
@@ -21,7 +21,7 @@ const App = () => {
           path={`/plugins/${pluginId}/report/:productId/:productName`}
           component={PaymentReport}
         />
-        <Route component={NotFound} />
+        {/* <Route component={NotFound} /> */}
       </Switch>
     </div>
   );
