@@ -28,11 +28,11 @@ module.exports = ({ env }) => ({
     enabled: true,
     resolve: './src/plugins/invite-only' // path to plugin folder
   },
-  // 'prototypr-assistant': {
-  //   enabled: true,
-  //   // resolve: './src/plugins/prototypr-assistant' // path to plugin folder
-  //   // resolve: '@prototypr/prototypr-assistant' // path to plugin folder
-  // },
+  'prototypr-assistant': {
+    enabled: true,
+    // resolve: './src/plugins/prototypr-assistant' // path to plugin folder
+    // resolve: '@prototypr/prototypr-assistant' // path to plugin folder
+  },
   'strapi-manage-spam': {
     enabled: true,
     resolve: './src/plugins/strapi-manage-spam'
