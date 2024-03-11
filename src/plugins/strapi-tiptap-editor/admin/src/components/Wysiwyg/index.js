@@ -47,7 +47,7 @@ import LinkEmbed from "../extensions/LinkEmbed";
 import Video from "../extensions/Video";
 
 
-// import Cite from "../extensions/Cite"
+import Cite from "../extensions/Cite"
 // import Video from "../extensions/Video"
 
 
@@ -165,6 +165,7 @@ const WysiwygContent = ({ name, onChange, value, intlLabel, labelAction, disable
       BulletList,
       OrderedList,
       Dropcursor,
+      Cite,
       // Twitter,
       Video,
       Iframe,

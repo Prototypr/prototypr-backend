@@ -7,7 +7,7 @@ const Cite = Mark.create({
 //   group: 'block', // belongs to the 'block' group of extensions
 priority: 1000,
 
-inclusive: false,
+inclusive: true,
 
 //   selectable: true, // so we can select the video
 //   draggable: true, // so we can drag the video
