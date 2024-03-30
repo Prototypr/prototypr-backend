@@ -1,7 +1,7 @@
 module.exports = (strapi) => ({
     typeDefs:  `
     type Query {
-      partnerPosts( pageSize: Int, offset: Int): PartnerPosts
+      partnerPosts( companyId:ID!, pageSize: Int, offset: Int): PartnerPosts
       count: Int
     }
 
@@ -24,26 +24,40 @@ module.exports = (strapi) => ({
       partnerPosts: {
         resolve: async (parent, args, context) => {
 
-          console.log(context.state.user?.id)
-          //get company by user id  
-        const companies = await strapi.entityService.findMany("api::company.company", {
-          filters: {
-            members: {
-              id: {
-                $in: [context.state.user?.id],
-              },
-            },
-          },
-          populate: ['sponsored_posts'], // populate sponsored_posts
-        });
+          //get company from companyId passed in
+          const company = await strapi.entityService.findOne("api::company.company", args.companyId, {populate: '*'});
+          //check if user is a member of the company or owner
+          if(company?.user?.id!=context.state.user?.id && !company.members.includes(context.state.user?.id)){
+            throw new Error('You are not a member of this company')
+          }
 
-        const allSponsoredPosts = companies.reduce((accumulator, company) => {
-          return accumulator.concat(company.sponsored_posts);
-        }, []);
+          if(!company){
+            return {
+              posts:[],
+              count:0
+            }
+          }
+          //get company by user id  
+        // const companies = await strapi.entityService.findMany("api::company.company", {
+        //   filters: {
+        //     members: {
+        //       id: {
+        //         $in: [context.state.user?.id],
+        //       },
+        //     },
+        //   },
+        //   populate: ['sponsored_posts'], // populate sponsored_posts
+        // });
+
+        // const allSponsoredPosts = companies.reduce((accumulator, company) => {
+        //   return accumulator.concat(company.sponsored_posts);
+        // }, []);
+
+        const sponsoredPosts = company.sponsored_posts;
 
         return{
-          posts: allSponsoredPosts,
-          count: allSponsoredPosts.length
+          posts: sponsoredPosts,
+          count: sponsoredPosts?.length
         }
           
           // https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/query-engine/single-operations.html#findwithcount

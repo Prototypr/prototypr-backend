@@ -42,8 +42,6 @@ module.exports = (strapi) => {
              LIMIT ${args.pageSize ||12} OFFSET ${args.offset || 0};
              `)
 
-             console.log(popularTagQuery)
-
              var entries = [], count = 0
              if(popularTagQuery?.rows?.length){
               
