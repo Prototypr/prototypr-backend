@@ -44,7 +44,8 @@
       "inversedBy": "companies"
     },
     "email": {
-      "type": "email"
+      "type": "email",
+      "private": true
     },
     "sponsored_posts": {
       "type": "relation",

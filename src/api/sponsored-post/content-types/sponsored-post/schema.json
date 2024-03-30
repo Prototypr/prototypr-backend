@@ -80,6 +80,19 @@
     },
     "active": {
       "type": "boolean"
+    },
+    "productId": {
+      "type": "string"
+    },
+    "paid": {
+      "type": "boolean",
+      "default": false
+    },
+    "paymentId": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email"
     }
   }
 }

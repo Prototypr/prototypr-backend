@@ -12,8 +12,14 @@ module.exports = (strapi) => ({
       description: String
       link: String
       type: String
+      productId: String
       banner: String
       featuredImage: String
+      company: ID,
+      paid: Boolean,
+      email: String,
+      #members: JSON,
+      isMember: Boolean
     }
   `,
   resolvers: {
@@ -26,13 +32,13 @@ module.exports = (strapi) => ({
             // ["company", "user", "payments"]
             {
               company:{
-                populate:["members", "payments"]
+                populate:["members", "payments", "id"]
               },
               user:true,
-              payments:{
-                sort: 'txnDate:asc',
-              },
-              type:true,
+              // payments:{
+              //   sort: 'txnDate:asc',
+              // },
+              // type:true,
               banner:{
                 populate:{url:true}
               },
@@ -51,15 +57,17 @@ module.exports = (strapi) => ({
             },
           });
 
+          let isMember=false
           if(data.length){
             let hasAccess = (context.state.user?.id==data[0]?.user?.id || context.state.user.role.type === "admin")
             //or if user is in the company group
-            if (data[0]?.members?.length){
+            if (data[0]?.company?.members?.length){
               
-              if (data[0].members.filter(function(e) { 
+              if (data[0].company?.members?.filter(function(e) { 
                 return e.id === context.state.user.id; 
               }).length > 0) {
                 hasAccess = true
+                isMember=true
               }
             }
 
@@ -81,14 +89,20 @@ module.exports = (strapi) => ({
               }
               const res = {
                 id: data[0]?.id,
+                email:data[0]?.email,
                 title: data[0].title,
                 description:data[0].description,
+                paid:data[0].paid,
                 owner: data[0].user?.id,
                 link:data[0].link,
+                productId:data[0].productId,
                 type:data[0].type,
                 active,
                 banner:data[0].banner?.url,
-                featuredImage:data[0].featuredImage?.url
+                featuredImage:data[0].featuredImage?.url,
+                company:data[0].company?.id,
+                // members:data[0].company?.members,
+                isMember
               };
               return res 
   

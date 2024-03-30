@@ -18,6 +18,8 @@ const allJobs = require("./prototypr/graphql/allJobs");
 const randomPosts = require("./prototypr/graphql/randomPosts");
 const popularTags = require("./prototypr/graphql/popularTags");
 
+const sponsoredPostByPaymentId = require("./prototypr/graphql/sponsoredPostByPaymentId");
+
 const bookedSponsors = require("./prototypr/graphql/bookedSponsors");
 const activeSponsors = require("./prototypr/graphql/activeSponsors");
 const partnerPosts = require("./prototypr/graphql/partnerPosts");
@@ -80,6 +82,9 @@ module.exports = {
 
     const userSponsorIdExtension = userSponsorId(strapi);
     strapi.plugin("graphql").service("extension").use(userSponsorIdExtension);
+    
+    const sponsoredPostByPaymentIdExtension = sponsoredPostByPaymentId(strapi);
+    strapi.plugin("graphql").service("extension").use(sponsoredPostByPaymentIdExtension);
   },
 
   //set user avatar after create for twitter

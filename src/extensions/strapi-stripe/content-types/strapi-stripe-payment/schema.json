@@ -77,7 +77,7 @@
     "job": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "api::job.job",
+      "target": "api::sponsored-post.sponsored-post",
       "inversedBy": "payments"
     },
     "sponsoredPost": {

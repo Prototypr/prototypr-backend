@@ -1,7 +1,7 @@
 module.exports = (strapi) => ({
     typeDefs:  `
     type Query {
-      bookedSponsors(type: String, pageSize: Int, offset: Int): SponsoredPosts
+      bookedSponsors(productId: String, pageSize: Int, offset: Int): SponsoredPosts
       count: Int
       total: Int
     }
@@ -24,24 +24,25 @@ module.exports = (strapi) => ({
       bookedSponsors: {
         resolve: async (parent, args, context) => {
 
-           const total =  strapi.entityService.count('api::sponsored-post.sponsored-post', {
+           const total = await strapi.entityService.count('api::sponsored-post.sponsored-post', {
             select: ['id'],
             where: { 
               $and: [
-                {type:args.type},
+                {productId:args.productId},
                 {$not: {
                   weeks: null,
                   },}
               ]
             },
            });
+
            
           // https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/query-engine/single-operations.html#findwithcount
           const [entries, count] = await strapi.db.query('api::sponsored-post.sponsored-post').findWithCount({
-            select: ['id', 'publishedAt', 'weeks', 'type'],
+            select: ['id', 'publishedAt', 'weeks', 'productId', 'paid'],
             where: { 
               $and: [
-                {type:args.type},
+                {productId:args.productId},
                 {$not: {
                   weeks: null,
                   },}
@@ -59,7 +60,7 @@ module.exports = (strapi) => ({
             id: post.id,
             weeks:post.weeks,
             publishedAt:post.publishedAt,
-            type:post.type
+            productId:post.productId
             // date:post.date,
           })});
           return {

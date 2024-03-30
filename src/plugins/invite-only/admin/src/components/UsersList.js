@@ -2,10 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Table, Thead, Tbody, Tr, Th, Td, TextInput } from '@strapi/design-system';
 import { Button, Typography } from '@strapi/design-system';
 import { Dialog, DialogBody, DialogFooter, Flex } from '@strapi/design-system';
-import {Plus } from '@strapi/icons';
+import {Plus, Mail } from '@strapi/icons';
 import { Field, FieldLabel, FieldInput } from '@strapi/design-system';
-import { NumberInput , Tooltip} from '@strapi/design-system';
+import { NumberInput , Tooltip, Checkbox} from '@strapi/design-system';
 import {LoadingIndicatorPage} from '@strapi/helper-plugin'
+
+import {
+  SingleSelect,
+  SingleSelectOption,
+} from '@strapi/design-system';
 
 import inviteOnlyRequests from '../api/invite-only';
 
@@ -18,6 +23,10 @@ const UsersList = () => {
   const [selectedUser, setSelectedUser] = useState(false)
   const [inviteCount, setInviteCount] = useState(0)
   const [isAdding, setIsAdding] = useState(false)
+  const [inviteeEmail, setInviteeEmail] = useState('')
+  const [sendEmail, setSendEmail] = useState(false)
+  const [option, setOption] = useState('add')
+  const [invitedVia, setInvitedVia] = useState('adminPanel')
 
   const [isLoadingUsers, setIsLoadingUsers] = useState(true)
 
@@ -104,12 +113,24 @@ const fetchUsers = async ({concat}) => {
             :'No invites'}
               </Typography></Td>
               <Td>
-                <Button onClick={async()=>{
-                    setSelectedUser(user)
-                    setInviteCount(1)
-                    setIsVisible(true)
+                <div style={{display:'flex'}}>
+                  <Button onClick={async()=>{
+                      setOption('add')
+                      setSendEmail(false)
+                      setSelectedUser(user)
+                      setInviteCount(1)
+                      setIsVisible(true)
 
-                }}>Add</Button>
+                  }}>Add</Button>
+                  <div style={{marginLeft:8}}>
+                    <Button variant="secondary" onClick={async()=>{
+                        setOption('send')
+                        setSelectedUser(user)
+                        setInviteCount(1)
+                        setIsVisible(true)
+                    }}>Send</Button>
+                  </div>
+                </div>
               </Td>
             </Tr>
           )})}
@@ -122,17 +143,37 @@ const fetchUsers = async ({concat}) => {
        }} variant="secondary">Show more</Button>
       </div>
 
-      <Dialog onClose={() => setIsVisible(false)} title="Add Invites" isOpen={isVisible}>
+      <Dialog onClose={() => setIsVisible(false)} title={option=='send'?'Send Invite':"Add Invites"} isOpen={isVisible}>
           {/* <DialogBody icon={<ExclamationMarkCircle />}> */}
           <DialogBody>
-            <Flex direction="column" alignItems="center" gap={2}>
-              <Flex justifyContent="center">
-                <Field name="email" required={false}>
-                    <Flex direction="column" alignItems="flex-start" gap={1}>
-                        <FieldLabel>User</FieldLabel>
+            <Flex direction="column" alignItems="start" gap={6}>
+              {/* <Flex justifyContent="center"> */}
+                    <Flex direction="column" alignItems="flex-start" gap={2}>
+                        <FieldLabel>Invite From</FieldLabel>
                         <FieldInput disabled={true} type="text" placeholder="test@strapi.io" value={selectedUser?.username}/>
                     </Flex>
-                    <Flex style={{marginTop:12}} direction="column" alignItems="flex-start" gap={1}>
+                    {option=='send'?<Flex direction="column" alignItems="flex-start" gap={1}>
+                        <FieldLabel>Invitee Email</FieldLabel>
+                        <FieldInput disabled={false} type="text" placeholder="test@strapi.io"
+                        onChange={e => setInviteeEmail(e.target.value)} value={inviteeEmail}
+                        />
+                    </Flex>:null}
+
+                    <SingleSelect label="Invited via..." placeholder="Where is the invite from?" onClear={() => {
+                      setInvitedVia(undefined);
+                    }} value={invitedVia} onChange={setInvitedVia}>
+                        <SingleSelectOption value="adminPanel">Admin Panel</SingleSelectOption>
+                        <SingleSelectOption value="payment">Payment Complete</SingleSelectOption>
+                      </SingleSelect>
+                    
+                    {option=='send'?<Flex direction="column" alignItems="flex-start" gap={1}>
+                        <FieldLabel>Send Email?</FieldLabel>
+                        <Checkbox value={sendEmail} onChange={(e)=>{setSendEmail(e.target.checked)}}>Send</Checkbox>
+                    </Flex>:null}
+
+                    
+
+                    {option=='add'?<Flex direction="column" alignItems="flex-start" gap={1}>
                     <NumberInput placeholder="0" label="Invites" name="invites" hint="Number of invites to add to this user" error={undefined} onValueChange={value => setInviteCount(value)} value={inviteCount} labelAction={<Tooltip description="Number of invites to add to this user">
               <button aria-label="Information about the email" style={{
           border: 'none',
@@ -141,9 +182,8 @@ const fetchUsers = async ({concat}) => {
         }}>
               </button>
             </Tooltip>} />
-                    </Flex>
-                </Field>
-              </Flex>
+                    </Flex>:null}
+              {/* </Flex> */}
             </Flex>
           </DialogBody>
           <DialogFooter startAction={<Button onClick={() => setIsVisible(false)} variant="tertiary">
@@ -152,7 +192,7 @@ const fetchUsers = async ({concat}) => {
               disabled={isAdding}
               onClick={async()=>{
                 setIsAdding(true)
-                const response = await inviteOnlyRequests.generateToken({userId:selectedUser?.id, quantity:inviteCount })
+                const response = await inviteOnlyRequests.generateToken({userId:selectedUser?.id, quantity:inviteCount,inviteeEmail:inviteeEmail, sendEmail:sendEmail, via:invitedVia })
                 // const endpoint = `${process.env.STRAPI_ADMIN_BACKEND_URL}/api/invite-only/generate-invite-token` 
                 // const response = await axios.post(endpoint, { userId: selectedUser?.id,quantity:inviteCount }, {
                 //     headers: {
@@ -165,8 +205,8 @@ const fetchUsers = async ({concat}) => {
                 setIsVisible(false)
                 setIsAdding(false)
               }}
-              variant="confirm" startIcon={<Plus />}>
-                Add
+              variant="confirm" startIcon={option=='send'?<Mail/>:<Plus />}>
+                {option=='add'?'Add':option=='send'?'Send':null}
               </Button>} />
         </Dialog>
     </div>

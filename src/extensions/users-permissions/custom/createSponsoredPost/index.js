@@ -20,61 +20,47 @@ module.exports = {
 
   async createSponsoredPost(ctx) {
     const data = ctx.request.body;
-    //company info
-    const { companyName, companyWebsite, contactEmail } = data;
     //job post info
-    const { 
+    let { 
       title, 
       description, 
-      type,
+      // type,
+      sponsorEmail:email,
+      productId,
       link, 
+      companyId
     } = data;
 
-    // location = JSON.parse(location)//just use as as string
 
+    if(!email){
+      email = ctx.state.user.email
+    }
+    //to create the sponsored post, we need a company profile to link it to
+    // this is passed in as companyId
     try {
-      // check if company already exists,
-      // if not, create company
-      // a company can only exist once. Check for domain name
+      //get company by id 
+      let companyProfile = await strapi.entityService.findOne( "api::company.company",companyId, {populate: '*'});
+      if(!companyProfile){
 
-      const entries = await strapi.entityService.findMany(
-        "api::company.company",
-        {
-          populate: '*',
-          filters: {
-            $or: [
-              {
-                url: companyWebsite,
-              },
-              {
-                name: companyName,
-              },
-            ],
-          },
-        }
-      );
+        //@todo ! check if user has any company
 
-      const exists = entries.length > 0;
-
-      let companyProfile;
-      if (!exists) {
-        // create a new companyProfile if it doesn't exist
+        //if not, create company
         companyProfile = await strapi.entityService.create(
           "api::company.company",
           {
             data: {
-              name: companyName,
-              url: companyWebsite,
-              email:contactEmail,
+              name: ctx.state.user.username,
+              url: '',
+              email:ctx.state.user.email,
               user:ctx.state.user.id, //company owner
               members:[ctx.state.user.id], //add first member,
             },
           }
         );
-      } else {
-        // use the retrived companyProfile
-        companyProfile = entries[0];
-        
+      }
+
+      if (companyProfile) {
+        // use the retrived companyProfile        
         let companyMember = false
           //if user is not the owner, or part of the team, don't allow them to use this company
           if(companyProfile?.user?.id){
@@ -84,7 +70,7 @@ module.exports = {
               companyMember = true
             }
           } 
-          
+
           //or if user is in the company group
           if (companyProfile?.members?.length){
             if (companyProfile.members.filter(function(e) { 
@@ -99,38 +85,43 @@ module.exports = {
           if(!companyMember){
             throw new ApplicationError('This company is owned by someone else.', { foo: 'bar' });
           }
-
-        if(companyProfile?.id){
-          let members = companyProfile?.members
-          if(!members){
-            members = [ctx.state.user.id]
-          }else{
-            members.push(ctx.state.user.id)
-          }
+        // if(companyProfile?.id){
+        //   let members = companyProfile?.members
+        //   if(!members){
+        //     members = [ctx.state.user.id]
+        //   }else{
+        //     members.push(ctx.state.user.id)
+        //   }
         
 
-          // add whoever is paying into the company members
-          // later when there are subscriptions, company members can have access to company features
-          // and company owner could add members to give control
-          companyProfile = await strapi.entityService.update(
-            "api::company.company",companyProfile.id,
-            {
-              data: {
-                members, //company owner
-                email:contactEmail
-              },
-            }
-          );
-        }
+        //   // add whoever is paying into the company members
+        //   // later when there are subscriptions, company members can have access to company features
+        //   // and company owner could add members to give control
+        //   // companyProfile = await strapi.entityService.update(
+        //   //   "api::company.company",companyProfile.id,
+        //   //   {
+        //   //     data: {
+        //   //       members, //company owner
+        //   //       email:contactEmail
+        //   //     },
+        //   //   }
+        //   // );
+        // }
       }
 
+      /**
+       * company exists, so now
+       * insert the sponsored post
+       */
       if (companyProfile) {
 
         let fields={
           title: title,
           description:description,
-          type:type,
+          // type:type,
           link: link,
+          productId:productId,//lemonsqueezy price id
+          email,
           company: companyProfile?.id,
           user:ctx.state.user.id // job poster
         }
@@ -141,7 +132,6 @@ module.exports = {
             data: fields
           }
         );
-        console.log(sponsordPostEntry)
 
         if (sponsordPostEntry) {
           ctx.send({
@@ -215,15 +205,14 @@ module.exports = {
   async updateSponsoredPost(ctx) {
 
     const data = ctx.request.body;
-    //company info
-    const { companyName, companyWebsite, contactEmail } = data;
     //job post info
     const { 
       title, 
-      sponsoredPostId,
       description, 
-      type,
+      sponsoredPostId,
+      productId,
       link, 
+      companyId
     } = data;
 
     if(!sponsoredPostId){
@@ -231,99 +220,40 @@ module.exports = {
       return false
     }
 
-    // let {skills} = data
-    // skills = JSON.parse(skills)
-    // location = JSON.parse(location)//just use as as string
-
     try {
       // check if company already exists,
-      // if not, create company
-      // a company can only exist once. Check for domain name
+      //get company by id 
+      let companyProfile = await strapi.entityService.findOne( "api::company.company",companyId, {populate: '*'});
 
-      const entries = await strapi.entityService.findMany(
-        "api::company.company",
-        {
-          populate: '*',
-          filters: {
-            $or: [
-              {
-                url: companyWebsite,
-              },
-              {
-                name: companyName,
-              },
-            ],
-          },
-        }
-      );
-
-      const exists = entries.length > 0;
-
-      let companyProfile;
-      if (!exists) {
-        // create a new companyProfile if it doesn't exist
-        companyProfile = await strapi.entityService.create(
-          "api::company.company",
-          {
-            data: {
-              name: companyName,
-              url: companyWebsite,
-              email:contactEmail,
-              user:ctx.state.user.id, //company owner
-              members:[ctx.state.user.id], //add first member,
-              image:image
-            },
-          }
-        );
-      } else {
-        // use the retrived companyProfile
-        companyProfile = entries[0];
-        
+      if(!companyProfile){
+        ctx.send({ posted: false, message: 'No Company profile associated' });
+        return false
+      }
+      
+      if (companyProfile) {
         let companyMember = false
-          //if user is not the owner, or part of the team, don't allow them to use this company
-          if(companyProfile?.user?.id){
-            if(companyProfile.user.id!=ctx.state.user.id){
-              companyMember = false
-            }else{
-              companyMember = true
-            }
-          } 
-          
-          //or if user is in the company group
-          if (companyProfile?.members?.length){
-            if (companyProfile.members.filter(function(e) { 
-              return e.id === ctx.state.user.id; 
-            }).length > 0) {
-              companyMember = true
-            }else{
-              companyMember = false
-            }
-          }
-
-          if(!companyMember){
-            throw new ApplicationError('This company is owned by someone else.', { foo: 'bar' });
-          }
-
-        if(companyProfile?.id){
-          let members = companyProfile?.members
-          if(!members){
-            members = [ctx.state.user.id]
+        //if user is not the owner, or part of the team, don't allow them to use this company
+        if(companyProfile?.user?.id){
+          if(companyProfile.user.id!=ctx.state.user.id){
+            companyMember = false
           }else{
-            members.push(ctx.state.user.id)
+            companyMember = true
           }
+        } 
 
-          // add whoever is paying into the company members
-          // later when there are subscriptions, company members can have access to company features
-          // and company owner could add members to give control
-          companyProfile = await strapi.entityService.update(
-            "api::company.company",companyProfile.id,
-            {
-              data: {
-                members, //company owner
-                email:contactEmail
-              },
-            }
-          );
+        //or if user is in the company group
+        if (companyProfile?.members?.length){
+          if (companyProfile.members.filter(function(e) { 
+            return e.id === ctx.state.user.id; 
+          }).length > 0) {
+            companyMember = true
+          }else{
+            companyMember = false
+          }
+        }
+
+        if(!companyMember){
+          throw new ApplicationError('This company is owned by someone else.', { foo: 'bar' });
         }
       }
 
@@ -332,25 +262,23 @@ module.exports = {
         let fields={
           title: title,
           description:description,
-          type:type,
           link: link,
-          company: companyProfile?.id,
-          user:ctx.state.user.id // job poster
+          productId:productId,//lemonsqueezy price id
+          // company: companyProfile?.id, // no need to update company
+          // user:ctx.state.user.id // no need to update user
         }
-
-
 
         const sponsoredPost = await strapi.entityService.findOne(
           "api::sponsored-post.sponsored-post",sponsoredPostId,
           {
-            populate:['user'],
+            populate:['company'],
           }
         );
 
-        if(sponsoredPost.user?.id!==ctx.state.user.id){
+        if(sponsoredPost.company?.id!==companyProfile?.id){
           return  ctx.send({
             posted: false,
-            message: "You don't have permission to update this job post.",
+            message: "You don't have permission to update this post.",
             // id:jobEntry.id,
             // companyId:companyProfile.id
           });
@@ -367,7 +295,7 @@ module.exports = {
         if (sponsoredPostEntry) {
         return  ctx.send({
             posted: true,
-            message: "Job Updated",
+            message: "Post Updated",
             id:sponsoredPostEntry.id,
             companyId:companyProfile.id
           });

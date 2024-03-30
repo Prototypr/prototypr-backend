@@ -7,7 +7,7 @@
  */
 
 const _ = require("lodash");
-const crypto = require("crypto");
+// const crypto = require("crypto");
 const {sanitize} = require('@strapi/utils');
 const {nanoid} = require("nanoid");
 const axios = require("axios");//prototypr
@@ -57,7 +57,6 @@ module.exports = (
         return false
       }
 
-
       const userSettings = await this.userSettings();
       const role = await strapi
         .query('plugin::users-permissions.role')
@@ -67,7 +66,7 @@ module.exports = (
 
       const newUser = {
         email: user.email,
-        username: user.username || user.email,
+        username: user.username || generateFriendlyUsername(user.email),
         role: {id: role.id},
         invite_code:checkResponse?.data?.token?.id//prototypr invite code
       };
@@ -81,6 +80,12 @@ module.exports = (
           used: true,
         },
       });
+
+      //more prototypr mod - create company and add all spnsored-posts to the company if invite was via payment 
+      if(checkResponse?.data?.token?.via=='payment'){
+        await createCompanyForSponsors({email:user?.email, user:res, inviteeEmail:checkResponse?.data?.token?.inviteeEmail})
+      }
+
 
       return res
 
@@ -210,3 +215,71 @@ module.exports = (
     }
   };
 };
+
+
+const createCompanyForSponsors = async({user, email, inviteeEmail}) =>{
+
+  const companyName = `${user.username}'s company`
+  const companyWebsite = ``
+  const contactEmail = `${email}`
+
+  // console.log('createcompnay for sponsors')
+  // console.log('user:', user)
+  try{
+    
+    //get all sponsored posts with user's email and no company to this company 
+    let sponsoredPostIds = []
+    const sponsoredPosts = await strapi.entityService.findMany(
+      "api::sponsored-post.sponsored-post",
+      {
+        populate: '*',
+        filters: {
+          $and: [
+            {
+              company: null,
+            },
+            {
+              email: inviteeEmail,
+            },
+          ],
+        },
+      }
+    );
+
+    // console.log('sponsoredPosts', sponsoredPosts)
+    for(var x = 0;x<sponsoredPosts.length;x++){
+      sponsoredPostIds.push(sponsoredPosts[x].id)
+    }
+    
+    // console.log('sponsoredPostIds', sponsoredPostIds)
+
+    // create a new companyProfile if it doesn't exist
+   const companyProfile = await strapi.entityService.create(
+      "api::company.company",
+      {
+        data: {
+          name: companyName,
+          url: companyWebsite,
+          email:contactEmail,
+          user:user?.id, //company owner
+          members:[user.id], //add first member,
+          sponsored_posts:sponsoredPostIds
+        },
+      }
+    );
+
+  }catch(e){
+    console.log(e)
+  }
+
+}
+
+function generateFriendlyUsername(email) {
+  const animals = ['Bear', 'Tiger', 'Lion', 'Eagle', 'Wolf', 'Fox', 'Deer', 'Owl', 'Hawk', 'Dolphin'];
+  const firstPart = email.split('@')[0]; // Get the part before '@'
+  const firstLetter = firstPart.charAt(0).toUpperCase(); // Get the first letter and make it uppercase
+  const randomAnimal = animals[Math.floor(Math.random() * animals.length)]; // Pick a random animal
+  const randomNumber = Math.floor(Math.random() * 100); // Generate a random number between 0 and 99
+
+  return `${firstLetter}${randomNumber}${randomAnimal}`; // Combine them to form the username
+}

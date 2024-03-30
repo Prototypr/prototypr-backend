@@ -1,7 +1,7 @@
 module.exports = {
     async generate(ctx) {
-      const { userId, quantity } = ctx.request.body;
-      const inviteToken = await strapi.plugin('invite-only').service('invite-token').generateInviteToken(userId, quantity);
+      const { userId, quantity, inviteeEmail, sendEmail, via} = ctx.request.body;
+      const inviteToken = await strapi.plugin('invite-only').service('invite-token').generateInviteToken(userId, quantity, inviteeEmail, sendEmail, via);
       ctx.body = { inviteToken };
     },
     async getUsersWithInvites(ctx) {

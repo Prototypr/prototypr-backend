@@ -1,23 +1,69 @@
 const { v4: uuidv4 } = require('uuid');
 
 module.exports = {
-  async generateInviteToken(userId, quantity) {
+  async generateInviteToken(userId, quantity, inviteeEmail=null, sendEmail=false, via) {
     
-    for(var x = 0 ; x<quantity;x++){
-      const token = uuidv4();
-      await strapi.entityService.create('plugin::invite-only.invite-code', {
-        data: {
-          code:token,
-          owner: userId,
-          used: false,
-        },
-      });
+    if(inviteeEmail){
+      let token = uuidv4();
+      //each email has only 1 invite
+      //check if invitee email already exists with an invite:
+      const entry = await strapi.db.query('plugin::invite-only.invite-code').findOne({
+        // select: ['title', 'description'],
+        where: { inviteeEmail:inviteeEmail},
+        // populate: { category: true },
+      });   
+
+      //if found invite
+      if(entry?.code){
+        //use existing code for token
+        token =  entry?.code;
+      }else{
+        //create new code with uuidv4 token
+        await strapi.entityService.create('plugin::invite-only.invite-code', {
+          data: {
+            code:token,
+            owner: userId,
+            used: false,
+            inviteeEmail:inviteeEmail,
+            via
+          },
+        });
+      }
+      if(sendEmail){
+        //send email here
+        await strapi.plugins['email'].services.email.send({
+          to: inviteeEmail,
+          from: 'hello@prototypr.io', //e.g. single sender verification in SendGrid
+          // cc: 'valid email address',
+          // bcc: 'valid email address',
+          replyTo: 'hello@prototypr.io',
+          subject: 'Your Prototypr Invite',
+          text: 'Thanks for supporting prototypr. Manage your ads by creating an account with this link:',
+          html: `<p>Thanks for supporting prototypr. Manage your ads by creating an account with this link:</p>
+          <p><a href="https://prototypr.io/sign-up">Join with invite</a> </p>
+          <p>or paste this into your browser: https://prototypr.io/sign-up </p>
+          `,
+        })
+      }
+      return token;
+      
+    }else{
+      for(var x = 0 ; x<quantity;x++){
+        const token = uuidv4();
+
+        await strapi.entityService.create('plugin::invite-only.invite-code', {
+          data: {
+            code:token,
+            owner: userId,
+            used: false,
+            via
+          },
+        });
+      }
+      return true;
     }
-    return true;
   },
   async getUsersWithInvites({ pageSize, currentPage, searchTerm }) {
-    console.log('searchterm')
-    console.log(searchTerm)
     //used in the admin route only
     const users = await strapi.entityService.findMany('plugin::users-permissions.user', {
       fields: ['id', 'username', 'email', 'firstName', 'secondName', 'slug'], // Include new fields in the selection
