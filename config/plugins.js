@@ -16,14 +16,6 @@ module.exports = ({ env }) => ({
       // user plugin config goes here
     },
   },
-  'strapi-stripe': {
-    // my-plugin is going to be the internal name used for this plugin
-    enabled: true,
-    resolve: './src/plugins/strapi-stripe',
-    config: {
-      // user plugin config goes here
-    },
-  },
   'invite-only': {
     enabled: true,
     resolve: './src/plugins/invite-only' // path to plugin folder

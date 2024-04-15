@@ -29,7 +29,8 @@
         "newsletter",
         "bite",
         "protobite",
-        "designspo"
+        "designspo",
+        "note"
       ],
       "required": true,
       "default": "tool"

@@ -23,7 +23,7 @@ module.exports = {
         return ctx.notFound('Invalid or used token');
       }
 
-      ctx.send({ valid: true, token: inviteToken });
+      ctx.send({ valid: true });
     },
 
     // Action to mark an invite token as used upon user registration

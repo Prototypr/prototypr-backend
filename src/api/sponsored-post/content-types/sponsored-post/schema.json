@@ -4,7 +4,7 @@
   "info": {
     "singularName": "sponsored-post",
     "pluralName": "sponsored-posts",
-    "displayName": "Sponsored Post",
+    "displayName": "Sponsorship",
     "description": ""
   },
   "options": {
@@ -69,19 +69,10 @@
     "link": {
       "type": "string"
     },
-    "weeks": {
-      "type": "json"
-    },
-    "payments": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "plugin::strapi-stripe.strapi-stripe-payment",
-      "mappedBy": "job"
-    },
     "active": {
       "type": "boolean"
     },
-    "productId": {
+    "productIds": {
       "type": "string"
     },
     "paid": {
@@ -93,6 +84,30 @@
     },
     "email": {
       "type": "email"
+    },
+    "fallback": {
+      "type": "boolean",
+      "default": false
+    },
+    "cardImage": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "weeks": {
+      "type": "json"
+    },
+    "products": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::product.product",
+      "mappedBy": "sponsorships"
     }
   }
 }

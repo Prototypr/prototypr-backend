@@ -1,4 +1,5 @@
 const { v4: uuidv4 } = require('uuid');
+const { checkTokenByEmail } = require('../controllers/invite-token-controller');
 
 module.exports = {
   async generateInviteToken(userId, quantity, inviteeEmail=null, sendEmail=false, via) {
@@ -13,6 +14,7 @@ module.exports = {
         // populate: { category: true },
       });   
 
+      console.log(entry)
       //if found invite
       if(entry?.code){
         //use existing code for token
@@ -40,8 +42,8 @@ module.exports = {
           subject: 'Your Prototypr Invite',
           text: 'Thanks for supporting prototypr. Manage your ads by creating an account with this link:',
           html: `<p>Thanks for supporting prototypr. Manage your ads by creating an account with this link:</p>
-          <p><a href="https://prototypr.io/sign-up">Join with invite</a> </p>
-          <p>or paste this into your browser: https://prototypr.io/sign-up </p>
+          <p><a href="https://prototypr.io/onboard?signin=true&inviteeemail=${encodeURIComponent(inviteeEmail)}">Join with invite</a> </p>
+          <p>or paste this into your browser: https://prototypr.io/onboard?signin=true&inviteeemail=${encodeURIComponent(inviteeEmail)} </p>
           `,
         })
       }
@@ -93,6 +95,12 @@ module.exports = {
   async checkInviteToken(code) {
     const inviteToken = await strapi.entityService.findMany('plugin::invite-only.invite-code', {
       filters: { code, used: false },
+    });
+    return inviteToken.length > 0 ? inviteToken[0] : null;
+  },
+  async checkTokenByEmail(email) {
+    const inviteToken = await strapi.entityService.findMany('plugin::invite-only.invite-code', {
+      filters: { inviteeEmail: email, used: false },
     });
     return inviteToken.length > 0 ? inviteToken[0] : null;
   },

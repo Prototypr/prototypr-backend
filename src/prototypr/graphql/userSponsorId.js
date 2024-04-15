@@ -12,14 +12,25 @@ module.exports = (strapi) => ({
       description: String
       link: String
       type: String
-      productId: String
+      productIds: String
       banner: String
       featuredImage: String
       company: ID,
       paid: Boolean,
       email: String,
-      #members: JSON,
       isMember: Boolean
+      products: [SponsorProduct]
+    }
+
+
+    type SponsorProduct {
+      id: ID
+      title: String
+      price: Float
+      description: String
+      image: String
+      url: String
+      type: String
     }
   `,
   resolvers: {
@@ -33,6 +44,9 @@ module.exports = (strapi) => ({
             {
               company:{
                 populate:["members", "payments", "id"]
+              },
+              products:{
+                popuplate:'*'
               },
               user:true,
               // payments:{
@@ -72,6 +86,8 @@ module.exports = (strapi) => ({
             }
 
             let active = false;
+            
+            console.log(data[0]?.products)
 
             if(hasAccess){
               //check if payment in last 30 days
@@ -95,7 +111,9 @@ module.exports = (strapi) => ({
                 paid:data[0].paid,
                 owner: data[0].user?.id,
                 link:data[0].link,
-                productId:data[0].productId,
+                // productId:data[0].productId,
+                productIds:data[0].productIds,
+                products:data[0].products,
                 type:data[0].type,
                 active,
                 banner:data[0].banner?.url,

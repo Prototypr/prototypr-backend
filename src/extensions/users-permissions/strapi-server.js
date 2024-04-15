@@ -3,7 +3,7 @@ const { updateMe, deleteAvatar, uploadAvatar } = require("./custom/updateMe");
 const { uploadImageToArticle } = require("./custom/uploadBlogImage");
 const { createJobPost, updateJobPost } = require("./custom/createJobPost");
 const { createCompany, updateCompany } = require("./custom/createCompany");
-const {createSponsoredPost, updateSponsoredPost, updateBookingWeeks} = require('./custom/createSponsoredPost')
+const {createSponsoredPost, updateSponsoredPost} = require('./custom/createSponsoredPost')
 const { fetchPlausibleStatsForUser } = require("./custom/fetchPlausibleStats");
 
 const { checkAdminRole } = require("./custom/checkAdminRole");
@@ -52,10 +52,6 @@ module.exports = (plugin) => {
   plugin.controllers.user.updateSponsoredPost = (ctx) => {
     ctx.params.id = ctx.state.user.id;
     return updateSponsoredPost(ctx);
-  };
-  plugin.controllers.user.updateBookingWeeks = (ctx) => {
-    ctx.params.id = ctx.state.user.id;
-    return updateBookingWeeks(ctx);
   };
   plugin.controllers.user.fetchPlausibleStatsForUser = (ctx) => {
     ctx.params.id = ctx.state.user.id;
@@ -123,11 +119,6 @@ module.exports = (plugin) => {
     method: "POST",
     path: "/users/updateSponsoredPost",
     handler: "user.updateSponsoredPost",
-  });
-  plugin.routes["content-api"].routes.push({
-    method: "POST",
-    path: "/users/updateBookingWeeks",
-    handler: "user.updateBookingWeeks",
   });
   //fetch post analytics for user
   plugin.routes["content-api"].routes.push({

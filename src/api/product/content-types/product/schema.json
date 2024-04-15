@@ -1,0 +1,44 @@
+{
+  "kind": "collectionType",
+  "collectionName": "products",
+  "info": {
+    "singularName": "product",
+    "pluralName": "products",
+    "displayName": "Product",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "price": {
+      "type": "integer"
+    },
+    "description": {
+      "type": "richtext"
+    },
+    "sponsorships": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::sponsored-post.sponsored-post",
+      "inversedBy": "products"
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "newsletter",
+        "website"
+      ]
+    },
+    "tagline": {
+      "type": "string"
+    },
+    "duration": {
+      "type": "string"
+    }
+  }
+}

@@ -65,12 +65,6 @@
     "expiry": {
       "type": "datetime"
     },
-    "payments": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "plugin::strapi-stripe.strapi-stripe-payment",
-      "mappedBy": "job"
-    },
     "promoted": {
       "type": "boolean"
     },
