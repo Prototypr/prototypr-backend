@@ -6,6 +6,7 @@ const FormData = require("form-data");
 // const got = require('got');
 const relatedPosts = require("./prototypr/graphql/relatedPosts");
 const relatedArticles = require("./prototypr/graphql/relatedArticles");
+const relatedNews = require("./prototypr/graphql/relatedNews");
 const relatedTools = require("./prototypr/graphql/relatedTools");
 const relatedNewsletters = require("./prototypr/graphql/relatedNewsletters");
 const adminArticles = require("./prototypr/graphql/adminArticles");
@@ -37,6 +38,8 @@ module.exports = {
     strapi.plugin("graphql").service("extension").use(relatedPostsExtension);
     const relatedArticlesExtension = relatedArticles(strapi);
     strapi.plugin("graphql").service("extension").use(relatedArticlesExtension);
+    const relatedNewsExtension = relatedNews(strapi);
+    strapi.plugin("graphql").service("extension").use(relatedNewsExtension);
     const relatedToolsExtension = relatedTools(strapi);
     strapi.plugin("graphql").service("extension").use(relatedToolsExtension);
     const relatedNewslettersExtension = relatedNewsletters(strapi);

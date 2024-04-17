@@ -1,0 +1,43 @@
+{
+  "collectionName": "components_shared_links",
+  "info": {
+    "displayName": "Links",
+    "icon": "manyToMany",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "url": {
+      "type": "string"
+    },
+    "thumbnail": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "text": {
+      "type": "string"
+    },
+    "imageUrl": {
+      "type": "string"
+    },
+    "siteName": {
+      "type": "string"
+    },
+    "rootDomain": {
+      "type": "string"
+    }
+  }
+}

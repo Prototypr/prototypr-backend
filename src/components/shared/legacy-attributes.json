@@ -2,7 +2,8 @@
   "collectionName": "components_shared_legacy_attributes",
   "info": {
     "displayName": "legacyAttributes",
-    "icon": "globe"
+    "icon": "globe",
+    "description": ""
   },
   "options": {},
   "attributes": {
@@ -19,6 +20,19 @@
       "type": "string"
     },
     "canonicalLink": {
+      "type": "string"
+    },
+    "sourceContent": {
+      "type": "richtext",
+      "private": true
+    },
+    "publishDate": {
+      "type": "datetime"
+    },
+    "rootDomain": {
+      "type": "string"
+    },
+    "author": {
       "type": "string"
     }
   }
