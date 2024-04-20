@@ -14,11 +14,6 @@ if(policyContext?.state?.auth?.credentials?.type=='full-access'){
     return false
   }
 
-  //can't create as someone else
-  if(policyContext.request.body?.data?.user!=policyContext.state?.user?.id){
-    return false
-  }
-
     // can't create with publish status
   if(policyContext.request.body?.data?.status=='publish'){
     return false
