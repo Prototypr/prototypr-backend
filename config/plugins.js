@@ -22,8 +22,8 @@ module.exports = ({ env }) => ({
   },
   'prototypr-assistant': {
     enabled: true,
+    //comment this out when deploying:
     // resolve: './src/plugins/prototypr-assistant' // path to plugin folder
-    // resolve: '@prototypr/prototypr-assistant' // path to plugin folder
   },
   'strapi-manage-spam': {
     enabled: true,
