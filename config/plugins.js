@@ -28,11 +28,11 @@ module.exports = ({ env }) => ({
   "strapi-image-enhance": {
     enabled: true,
     //comment this out when deploying:
-    resolve: './src/plugins/strapi-image-enhance', // path to plugin folder
+    // resolve: './src/plugins/strapi-image-enhance', // path to plugin folder
     // leave this uncommented:
     config: {
       regenerateOnUpdate: true,
-      forceRegenerateOnUpdate: true,
+      forceRegenerateOnUpdate: false,
     },
   },
   "strapi-manage-spam": {
