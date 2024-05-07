@@ -31,8 +31,8 @@ module.exports = ({ env }) => ({
     resolve: './src/plugins/strapi-image-enhance', // path to plugin folder
     // leave this uncommented:
     config: {
-      regenerateOnUpdate: false,
-      forceRegenerateOnUpdate: false,
+      regenerateOnUpdate: true,
+      forceRegenerateOnUpdate: true,
     },
   },
   "strapi-manage-spam": {
