@@ -263,20 +263,6 @@
       },
       "component": "shared.deal"
     },
-    "logoWide": {
-      "type": "media",
-      "multiple": false,
-      "required": false,
-      "allowedTypes": [
-        "images",
-        "videos"
-      ],
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
     "incomingLinks": {
       "type": "component",
       "repeatable": true,

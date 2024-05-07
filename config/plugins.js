@@ -1,89 +1,99 @@
 module.exports = ({ env }) => ({
-     // enable a custom plugin
-  'strapi-tiptap-editor': {
+  // enable a custom plugin
+  "strapi-tiptap-editor": {
     // my-plugin is going to be the internal name used for this plugin
-    resolve: './src/plugins/strapi-tiptap-editor',
+    resolve: "./src/plugins/strapi-tiptap-editor",
     enabled: true,
     config: {
       // user plugin config goes here
     },
   },
-  'passwordless': {
+  passwordless: {
     // my-plugin is going to be the internal name used for this plugin
     enabled: true,
-    resolve: './src/plugins/strapi-plugin-passwordless',
+    resolve: "./src/plugins/strapi-plugin-passwordless",
     config: {
       // user plugin config goes here
     },
   },
-  'invite-only': {
+  "invite-only": {
     enabled: true,
-    resolve: './src/plugins/invite-only' // path to plugin folder
+    resolve: "./src/plugins/invite-only", // path to plugin folder
   },
-  'prototypr-assistant': {
+  "prototypr-assistant": {
     enabled: true,
     //comment this out when deploying:
     // resolve: './src/plugins/prototypr-assistant' // path to plugin folder
   },
-  'strapi-manage-spam': {
+  "strapi-image-enhance": {
     enabled: true,
-    resolve: './src/plugins/strapi-manage-spam'
+    //comment this out when deploying:
+    resolve: './src/plugins/strapi-image-enhance', // path to plugin folder
+    // leave this uncommented:
+    config: {
+      regenerateOnUpdate: false,
+      forceRegenerateOnUpdate: false,
+    },
+  },
+  "strapi-manage-spam": {
+    enabled: true,
+    resolve: "./src/plugins/strapi-manage-spam",
   },
   meilisearch: {
     config: {
       post: {
         settings: {
-          filterableAttributes: ['type'],
+          filterableAttributes: ["type"],
         },
-        transformEntry({ entry }) { 
+        transformEntry({ entry }) {
           // remove sensitive user info
-          if(entry?.user){
+          if (entry?.user) {
             entry.user = {
-              firstName:entry?.user?.firstName,
-              secondName:entry?.user?.secondName,
-              username:entry?.user?.username,
-            }
+              firstName: entry?.user?.firstName,
+              secondName: entry?.user?.secondName,
+              username: entry?.user?.username,
+            };
           }
           return {
-            ...entry
-          }
+            ...entry,
+          };
         },
-      }
-    }
+      },
+    },
   },
-    email: {
-      config: {
-        provider: 'mailgun',
-        providerOptions: {
-          apiKey: env('MAILGUN_API_KEY'),
-          domain: env('MAILGUN_DOMAIN'), //Required if you have an account with multiple domains
-          host: env('MAILGUN_HOST', 'api.mailgun.net'), //Optional. If domain region is Europe use 'api.eu.mailgun.net'
-        },
-        settings: {
-          defaultFrom: 'hello@prototypr.io',
-          defaultReplyTo: 'hello@prototypr.io',
-        },
+  email: {
+    config: {
+      provider: "mailgun",
+      providerOptions: {
+        apiKey: env("MAILGUN_API_KEY"),
+        domain: env("MAILGUN_DOMAIN"), //Required if you have an account with multiple domains
+        host: env("MAILGUN_HOST", "api.mailgun.net"), //Optional. If domain region is Europe use 'api.eu.mailgun.net'
+      },
+      settings: {
+        defaultFrom: "hello@prototypr.io",
+        defaultReplyTo: "hello@prototypr.io",
       },
     },
-    sentry: {
-      enabled: true,
-      config: {
-        dsn: env('SENTRY_DSN'),
-        sendMetadata: true,
+  },
+  sentry: {
+    enabled: true,
+    config: {
+      dsn: env("SENTRY_DSN"),
+      sendMetadata: true,
+    },
+  },
+  // ...
+  upload: {
+    config: {
+      provider: "strapi-provider-upload-dos",
+      providerOptions: {
+        key: process.env.DO_SPACE_ACCESS_KEY,
+        secret: process.env.DO_SPACE_SECRET_KEY,
+        endpoint: process.env.DO_SPACE_ENDPOINT,
+        space: process.env.DO_SPACE_BUCKET,
+        directory: process.env.DO_SPACE_DIRECTORY,
+        cdn: process.env.DO_SPACE_CDN,
       },
     },
-    // ...
-    upload: {
-      config: {
-        provider: "strapi-provider-upload-dos",
-        providerOptions: {
-          key: process.env.DO_SPACE_ACCESS_KEY,
-          secret: process.env.DO_SPACE_SECRET_KEY,
-          endpoint: process.env.DO_SPACE_ENDPOINT,
-          space: process.env.DO_SPACE_BUCKET,
-          directory: process.env.DO_SPACE_DIRECTORY,
-          cdn: process.env.DO_SPACE_CDN,
-        },
-      },
-    },
-  });
+  },
+});

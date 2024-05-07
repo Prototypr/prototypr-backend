@@ -121,3 +121,4 @@ config/sync/
 # Private Plugins
 ##################
 src/plugins/prototypr-assistant/
+src/plugins/strapi-image-enhance/

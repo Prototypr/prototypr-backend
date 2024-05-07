@@ -108,6 +108,16 @@
       "relation": "manyToMany",
       "target": "api::product.product",
       "mappedBy": "sponsorships"
+    },
+    "logoWide": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false
     }
   }
 }

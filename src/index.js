@@ -92,6 +92,9 @@ module.exports = {
 
   //set user avatar after create for twitter
   bootstrap({ strapi }) {
+    strapi.contentType("plugin::upload.file").attributes.customFieldName = {
+      type: "text",
+    };
     strapi.db.lifecycles.subscribe({
       models: ["plugin::users-permissions.user"],
 
