@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@prototypr/prototypr-assistant": "0.0.60",
-    "@prototypr/strapi-image-enhance": "^0.0.6",
+    "@prototypr/strapi-image-enhance": "^0.0.7",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-popover": "^1.0.7",
     "@radix-ui/react-scroll-area": "^1.0.5",
