@@ -282,6 +282,18 @@
         }
       },
       "component": "shared.links"
+    },
+    "interviews": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::post.post",
+      "inversedBy": "tools"
+    },
+    "tools": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::post.post",
+      "inversedBy": "interviews"
     }
   }
 }
