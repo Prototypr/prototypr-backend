@@ -1,7 +1,7 @@
 module.exports = (strapi) => ({
   typeDefs: `
     type Query {
-      activeSponsors(pageSize: Int, offset: Int): ActiveSponsors
+      activeSponsors(pageSize: Int, offset: Int, active: Boolean): ActiveSponsors
       count: Int
       total: Int
     }
@@ -18,6 +18,8 @@ module.exports = (strapi) => ({
         publishedAt: DateTime
         featuredImage: String
         banner: String
+        cardImage: String
+        logoWide: String
         link: String
         active: Boolean
         #productId: String
@@ -42,7 +44,8 @@ module.exports = (strapi) => ({
                 "description",
                 "active",
                 // "productId",
-                "fallback"
+                "fallback",
+                "active"
               ],
               where: {
                 $or: [
@@ -66,6 +69,12 @@ module.exports = (strapi) => ({
                 featuredImage: {
                   populate: { url: true },
                 },
+                cardImage: {
+                  populate: { url: true },
+                },
+                logoWide: {
+                  populate: { url: true },
+                },
               },
             });
 
@@ -82,6 +91,8 @@ module.exports = (strapi) => ({
             type: post.type,
             featuredImage: post.featuredImage?.url,
             banner: post.banner?.url,
+            cardImage: post.cardImage?.url,
+            logoWide: post.logoWide?.url,
             link: post.link,
             active: post.active,
             // productId: post.productId,
