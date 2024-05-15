@@ -263,7 +263,7 @@
       },
       "component": "shared.deal"
     },
-    "incomingLinks": {
+    "extraLinks": {
       "type": "component",
       "repeatable": true,
       "pluginOptions": {
