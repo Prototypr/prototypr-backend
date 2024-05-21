@@ -44,11 +44,24 @@ module.exports = ({ strapi }) => {
       //check token is valid
       let inviteToken = false;
       if (invite_code) {
-        inviteToken = await strapi
-          .plugin("invite-only")
-          .service("invite-token")
-          .checkInviteToken(invite_code);
-          
+        //check secret code (bypassing invite token)
+        const pluginStore = strapi.store({
+          environment: strapi.config.environment,
+          type: "plugin",
+          name: "invite-only",
+        });
+        const pass = await pluginStore.get({ key: "secretPasscodeConfig" });
+
+        console.log("useInviteToken", invite_code, user, pass?.secretPasscode);
+        if (invite_code === pass?.secretPasscode) {
+          inviteToken = pass.secretPasscode;
+        } else {
+          //check invite token
+          inviteToken = await strapi
+            .plugin("invite-only")
+            .service("invite-token")
+            .checkInviteToken(invite_code);
+        }
       } else if (!invite_code && !inviteToken) {
         inviteToken = await strapi
           .plugin("invite-only")
@@ -75,22 +88,24 @@ module.exports = ({ strapi }) => {
         email: user.email,
         username: user.username || generateFriendlyUsername(user.email),
         role: { id: role.id },
-        invite_code: inviteToken?.id, //prototypr invite code
+        invite_code: inviteToken?.id?inviteToken?.id:null, //prototypr invite code
       };
       const res = await strapi
         .query("plugin::users-permissions.user")
         .create({ data: newUser, populate: ["role"] });
 
       //finally update prototypr invite code to used
-      const updatedToken = await strapi.entityService.update(
-        "plugin::invite-only.invite-code",
-        inviteToken?.id,
-        {
-          data: {
-            used: true,
-          },
-        }
-      );
+      if(inviteToken?.id){
+        await strapi.entityService.update(
+          "plugin::invite-only.invite-code",
+          inviteToken?.id,
+          {
+            data: {
+              used: true,
+            },
+          }
+        );
+      }
 
       //more prototypr mod - create company and add all spnsored-posts to the company if invite was via payment
       if (inviteToken?.via == "payment") {

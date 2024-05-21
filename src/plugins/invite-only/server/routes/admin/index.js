@@ -22,5 +22,21 @@ module.exports = {
           // policies: ["plugin::invite-only.isAdmin"],
       },
     },
+    {
+      method: "GET",
+      path: "/config",
+      handler: "inviteTokenController.getConfig",
+      config: {
+        policies: [],
+      },
+    },
+    {
+      method: "POST",
+      path: "/config/update",
+      handler: "inviteTokenController.updateConfig",
+      config: {
+        policies: [],
+      },
+    },
   ],
  };

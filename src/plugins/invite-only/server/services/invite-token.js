@@ -107,6 +107,19 @@ module.exports = {
 
   // Function to mark an invite token as used
   async useInviteToken(code, userId) {
+
+    const pluginStore = strapi.store({
+      environment: strapi.config.environment,
+      type: "plugin",
+      name: "invite-only",
+    });
+    const pass= await pluginStore.get({ key: "secretPasscodeConfig" })
+
+    console.log('useInviteToken', code, userId, pass?.secretPasscode)
+    if(code.code === pass?.secretPasscode){
+      return pass.secretPasscode
+    }
+
     const updatedToken = await strapi.entityService.update('plugin::invite-only.invite-code', code.id, {
       data: {
         used: true,
@@ -115,4 +128,50 @@ module.exports = {
     });
     return updatedToken;
   },
+  async getConfig() {
+    try {
+      const pluginStore = strapi.store({
+        environment: strapi.config.environment,
+        type: "plugin",
+        name: "invite-only",
+      });
+
+     const pass= await pluginStore.get({ key: "secretPasscodeConfig" })
+
+     return pluginStore.get({ key: "secretPasscodeConfig" });
+    } catch (error) {
+      strapi.log.error(error.message);
+      return {
+        error:
+          "An error occurred while fetching secret pascode config. Please try after some time",
+      };
+    }
+  },
+
+  updateConfig(ctx) {
+    try {
+      const reqBody = ctx.request.body;
+      const data = {
+        secretPasscode: reqBody.secretPasscode,
+      };
+      const pluginStore = strapi.store({
+        environment: strapi.config.environment,
+        type: "plugin",
+        name: "invite-only",
+      });
+
+      return pluginStore.set({
+        key: "secretPasscodeConfig",
+        value: data,
+      });
+    } catch (error) {
+      strapi.log.error(error.message);
+      return {
+        error:
+          "An error occurred while updting the OpenAI config. Please try after some time",
+      };
+    }
+  },
+
+
 };

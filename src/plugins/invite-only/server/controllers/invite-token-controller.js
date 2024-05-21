@@ -18,6 +18,18 @@ module.exports = {
         return ctx.badRequest('Token is required');
       }
 
+      //check if token is the secret code
+      const pluginStore = strapi.store({
+        environment: strapi.config.environment,
+        type: "plugin",
+        name: "invite-only",
+      });
+
+     const pass= await pluginStore.get({ key: "secretPasscodeConfig" })
+      if(token === pass?.secretPasscode){
+        return ctx.send({ valid: true });
+      }
+
       const inviteToken = await strapi.plugin('invite-only').service('invite-token').checkInviteToken(token);
       if (!inviteToken) {
         return ctx.notFound('Invalid or used token');
@@ -33,12 +45,35 @@ module.exports = {
         return ctx.badRequest('Token and userId are required');
       }
 
+      const pluginStore = strapi.store({
+        environment: strapi.config.environment,
+        type: "plugin",
+        name: "invite-only",
+      });
+      const pass= await pluginStore.get({ key: "secretPasscodeConfig" })
+
       const inviteToken = await strapi.plugin('invite-only').service('invite-token').checkInviteToken(token);
-      if (!inviteToken) {
+      if (!inviteToken || token === pass?.secretPasscode) {
         return ctx.notFound('Invalid or used token');
       }
 
       await strapi.plugin('invite-only').service('invite-token').useInviteToken(inviteToken, userId);
       ctx.send({ message: 'Token marked as used', token: inviteToken });
+    },
+
+    async getConfig(ctx) {
+      const config = await strapi
+        .plugin("invite-only")
+        .service("invite-token")
+        .getConfig();
+      ctx.send(config);
+    },
+  
+    async updateConfig(ctx) {
+      const config = await strapi
+        .plugin("invite-only")
+        .service("invite-token")
+        .updateConfig(ctx);
+      ctx.send(config);
     },
   };
