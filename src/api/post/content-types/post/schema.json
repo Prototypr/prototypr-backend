@@ -294,6 +294,12 @@
       "relation": "manyToMany",
       "target": "api::post.post",
       "inversedBy": "interviews"
+    },
+    "creators": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "post"
     }
   }
 }

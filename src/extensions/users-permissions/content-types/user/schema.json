@@ -479,6 +479,12 @@
       "relation": "oneToOne",
       "target": "plugin::invite-only.invite-code",
       "inversedBy": "invitee"
+    },
+    "post": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::post.post",
+      "inversedBy": "creators"
     }
   }
 }
