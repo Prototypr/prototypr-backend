@@ -485,6 +485,12 @@
       "relation": "manyToOne",
       "target": "api::post.post",
       "inversedBy": "creators"
+    },
+    "claimedPost": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::post.post",
+      "mappedBy": "claimedBy"
     }
   }
 }
