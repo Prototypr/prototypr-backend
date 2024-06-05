@@ -25,7 +25,7 @@ module.exports = (strapi) => ({
       legacyFeaturedImage: String
       gallery: JSON
       deal: JSON
-      createdBy: JSON
+      creators: JSON
     }
   `,
   resolvers: {
@@ -34,7 +34,7 @@ module.exports = (strapi) => ({
         resolve: async (parent, args, context) => {
           const data = await strapi.entityService.findMany("api::post.post", {
             // fields: ['id', 'slug', 'title', 'date', 'status', 'content'],
-            populate: ["localizations", "featuredImage", "user", "seo", "logo", "gallery", "legacyMedia","legacyAttributes", "deal", "createdBy"],
+            populate: ["localizations", "featuredImage", "user", "seo", "logo", "gallery", "legacyMedia","legacyAttributes", "deal", "creators"],
             limit: 1,
             filters: {
               $and: [
@@ -70,7 +70,7 @@ module.exports = (strapi) => ({
               logo:data[0].logo,
               gallery:data[0].gallery,
               legacyLogo:data[0]?.legacyMedia?.logoNew,
-              createdBy:data[0].createdBy,
+              creators:data[0].creators,
               legacyFeaturedImage:data[0]?.legacyAttributes?.imgUrl,
               deal:data[0]?.deal
             };
