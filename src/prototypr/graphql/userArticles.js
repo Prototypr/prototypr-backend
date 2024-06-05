@@ -15,6 +15,7 @@ module.exports = (strapi) => ({
 
       id: ID
       title: String
+      excerpt: String
       slug: String
       status: String
       date: String
@@ -34,7 +35,7 @@ module.exports = (strapi) => ({
           } 
           // https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/query-engine/single-operations.html#findwithcount
           const [entries, count] = await strapi.db.query('api::post.post').findWithCount({
-            select: ['id', 'slug', 'title', 'date', 'status', 'type'],
+            select: ['id', 'slug', 'title', 'date', 'status', 'type', 'excerpt'],
             where: where,
             limit:args.pageSize,
             offset:args.offset,
@@ -45,6 +46,7 @@ module.exports = (strapi) => ({
             id: post.id,
             title: post.title,
             slug: post.slug,
+            excerpt: post.excerpt,
             status: post.status,
             date:post.date,
             featuredImage:post.featuredImage?.url,
