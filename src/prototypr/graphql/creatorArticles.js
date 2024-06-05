@@ -29,7 +29,7 @@ module.exports = (strapi) => ({
     Query: {
       creatorPosts: {
         resolve: async (parent, args, context) => {
-          const where={status:args.status, creators_in:context.state.user?.id }
+          const where={status:args.status, creators:context.state.user?.id }
           if (args.type){
             where.type=args.type
           } 
