@@ -11,6 +11,7 @@ const relatedTools = require("./prototypr/graphql/relatedTools");
 const relatedNewsletters = require("./prototypr/graphql/relatedNewsletters");
 const adminArticles = require("./prototypr/graphql/adminArticles");
 const userArticles = require("./prototypr/graphql/userArticles");
+const creatorArticles = require("./prototypr/graphql/creatorArticles");
 const userArticle = require("./prototypr/graphql/userArticle");
 const userArticleId = require("./prototypr/graphql/userArticleId");
 const userJobId = require("./prototypr/graphql/userJobId");
@@ -50,6 +51,9 @@ module.exports = {
     // Going to be our custom query resolver to get all authors and their details.
     const userArticlesExtension = userArticles(strapi);
     strapi.plugin("graphql").service("extension").use(userArticlesExtension);
+    
+    const creatorArticlesExtension = creatorArticles(strapi);
+    strapi.plugin("graphql").service("extension").use(creatorArticlesExtension);
 
     const allJobsExtension = allJobs(strapi);
     strapi.plugin("graphql").service("extension").use(allJobsExtension);
