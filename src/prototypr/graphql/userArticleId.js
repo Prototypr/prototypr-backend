@@ -26,8 +26,8 @@ module.exports = (strapi) => ({
       gallery: JSON
       deal: JSON
       creators: JSON
-      interviews: [Post]
-      tools: [Post]
+      interviews: [JSON]
+      tools: [JSON]
     }
   `,
   resolvers: {

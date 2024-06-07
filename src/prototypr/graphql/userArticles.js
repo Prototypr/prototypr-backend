@@ -22,8 +22,8 @@ module.exports = (strapi) => ({
       tier: Int
       published_at: String
       type: String
-      interviews: [Post]
-      tools: [Post]
+      interviews: [JSON]
+      tools: [JSON]
     }
   `,
   resolvers: {
@@ -51,7 +51,15 @@ module.exports = (strapi) => ({
               limit: args.pageSize,
               offset: args.offset,
               orderBy: { date: "DESC" },
-              populate: { interviews: true, tools: true, featuredImage: true },
+              populate: {
+                interviews: true,
+                tools: {
+                  populate:{
+                    logo: true
+                  }
+                },
+                featuredImage: true,
+              },
             });
 
           let posts = entries.map((post) => {
