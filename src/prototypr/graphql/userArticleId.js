@@ -51,8 +51,10 @@ module.exports = (strapi) => ({
             },
           });
 
+          //check one of the data[0]?.creators array objects includes context.state.user?.id in its item.id field
+          const userIsCreator = data[0]?.creators.some(creator => creator.id === context.state.user?.id);
 
-          if(context.state.user?.id==data[0]?.user?.id || context.state.user.role.type === "admin"){
+          if(((context.state.user?.id==data[0]?.user?.id ) || userIsCreator==true)|| context.state.user.role.type === "admin"){
             const res = {
               id: data[0]?.id,
               title: data[0].title,
