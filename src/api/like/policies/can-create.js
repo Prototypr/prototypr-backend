@@ -9,9 +9,25 @@ module.exports = async (policyContext, config, { strapi }) => {
   if (policyContext?.state?.auth?.credentials?.type == "full-access") {
     return true;
   }
+  if (policyContext?.state?.user?.role?.type == "admin") {
+    return true;
+  }
   // must be logged in
   if (!policyContext.state?.user?.id) {
     return false;
+  }
+
+  //can't create a new like if it already exists
+  //likes must have a post id to create
+  const id = policyContext.request.url.split("?post=").pop();
+
+  const like = await strapi.entityService.findOne("api::like.like", id, {
+    populate: { user: true },
+  });
+
+  if(like?.id){
+    //like already exists for this post
+    return false
   }
 
   return true;
