@@ -46,7 +46,7 @@ module.exports = createCoreRouter('api::post.post', {
       "policies": ['api::post.can-create']
     },
     update: {
-        "policies": ['api::post.is-owner','api::post.can-save']
+        "policies": ['api::post.can-like','api::post.is-owner','api::post.can-save']
     },
     delete: {
         "policies": ['api::post.is-owner']

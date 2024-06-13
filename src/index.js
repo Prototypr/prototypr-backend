@@ -27,6 +27,8 @@ const activeSponsors = require("./prototypr/graphql/activeSponsors");
 const partnerPosts = require("./prototypr/graphql/partnerPosts");
 const partnerJobs = require("./prototypr/graphql/partnerJobs");
 
+const extendPostsWithLikeCount = require("./prototypr/graphql/extendPostsWithLikeCount");
+
 module.exports = {
   /**
    * An asynchronous register function that runs before
@@ -51,6 +53,9 @@ module.exports = {
     // Going to be our custom query resolver to get all authors and their details.
     const userArticlesExtension = userArticles(strapi);
     strapi.plugin("graphql").service("extension").use(userArticlesExtension);
+    
+    const extendPostsWithLikeCountExtension = extendPostsWithLikeCount(strapi);
+    strapi.plugin("graphql").service("extension").use(extendPostsWithLikeCountExtension);
     
     const creatorArticlesExtension = creatorArticles(strapi);
     strapi.plugin("graphql").service("extension").use(creatorArticlesExtension);

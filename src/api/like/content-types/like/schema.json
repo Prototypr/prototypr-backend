@@ -1,0 +1,46 @@
+{
+  "kind": "collectionType",
+  "collectionName": "likes",
+  "info": {
+    "singularName": "like",
+    "pluralName": "likes",
+    "displayName": "Like",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "post": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::post.post",
+      "inversedBy": "likes"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "total": {
+      "type": "integer"
+    },
+    "like": {
+      "type": "boolean",
+      "default": false
+    },
+    "love": {
+      "type": "boolean",
+      "default": false
+    },
+    "fire": {
+      "type": "boolean",
+      "default": false
+    },
+    "unicorn": {
+      "type": "boolean",
+      "default": false
+    }
+  }
+}
