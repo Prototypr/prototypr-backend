@@ -17,14 +17,10 @@ module.exports = (strapi) => ({
   resolvers: {
     Post: {
       async likeCount(post, args, ctx) {
-
         const entries = await strapi.entityService.findMany("api::like.like", {
           // populate: { user: ['id'] },
           fields: ["total", "fire", "unicorn", "like"],
-          //   populate: { user: true, status: true },
-          where: {
-            id: post.id,
-          },
+          filters: { post: { id: parseInt(post.id) } },
         });
 
         let totalCount = 0;
