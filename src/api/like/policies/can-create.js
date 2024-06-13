@@ -9,9 +9,9 @@ module.exports = async (policyContext, config, { strapi }) => {
   if (policyContext?.state?.auth?.credentials?.type == "full-access") {
     return true;
   }
-  if (policyContext?.state?.user?.role?.type == "admin") {
-    return true;
-  }
+  // if (policyContext?.state?.user?.role?.type == "admin") {
+  //   return true;
+  // }
   // must be logged in
   if (!policyContext.state?.user?.id) {
     return false;
