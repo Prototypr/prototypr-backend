@@ -53,10 +53,13 @@ module.exports = {
     // Going to be our custom query resolver to get all authors and their details.
     const userArticlesExtension = userArticles(strapi);
     strapi.plugin("graphql").service("extension").use(userArticlesExtension);
-    
+
     const extendPostsWithLikeCountExtension = extendPostsWithLikeCount(strapi);
-    strapi.plugin("graphql").service("extension").use(extendPostsWithLikeCountExtension);
-    
+    strapi
+      .plugin("graphql")
+      .service("extension")
+      .use(extendPostsWithLikeCountExtension);
+
     const creatorArticlesExtension = creatorArticles(strapi);
     strapi.plugin("graphql").service("extension").use(creatorArticlesExtension);
 
@@ -65,7 +68,7 @@ module.exports = {
 
     const randomPostsExtension = randomPosts(strapi);
     strapi.plugin("graphql").service("extension").use(randomPostsExtension);
-    
+
     const popularTagsExtension = popularTags(strapi);
     strapi.plugin("graphql").service("extension").use(popularTagsExtension);
 
@@ -77,7 +80,7 @@ module.exports = {
 
     const bookedSponsorsExtension = bookedSponsors(strapi);
     strapi.plugin("graphql").service("extension").use(bookedSponsorsExtension);
-    
+
     const activeSponsorsExtension = activeSponsors(strapi);
     strapi.plugin("graphql").service("extension").use(activeSponsorsExtension);
 
@@ -94,9 +97,12 @@ module.exports = {
 
     const userSponsorIdExtension = userSponsorId(strapi);
     strapi.plugin("graphql").service("extension").use(userSponsorIdExtension);
-    
+
     const sponsoredPostByPaymentIdExtension = sponsoredPostByPaymentId(strapi);
-    strapi.plugin("graphql").service("extension").use(sponsoredPostByPaymentIdExtension);
+    strapi
+      .plugin("graphql")
+      .service("extension")
+      .use(sponsoredPostByPaymentIdExtension);
   },
 
   //set user avatar after create for twitter
@@ -129,12 +135,12 @@ module.exports = {
           data: {
             password: "",
             legacySlug: slug,
-            approved:false,
+            approved: false,
             availability: false,
             mentor: false,
             collaborate: false,
-            pro:false,
-            publishedAt: new Date() 
+            pro: false,
+            publishedAt: new Date(),
           },
         });
 
@@ -151,39 +157,56 @@ module.exports = {
         // var config = {
         //   method: 'post',
         //   url: 'https://app.letter.so/api/mail/getTemplate',
-        //   headers: { 
-        //   'authorization': 'Bearer YOUR_TOKEN', 
+        //   headers: {
+        //   'authorization': 'Bearer YOUR_TOKEN',
         //   'Content-Type': 'application/json'
         //   },
         //   data : JSON.stringify({
         //   "documentId": "63e39a333aa8183acec58981",
-          
+
         //   })
         //   };
 
         //welcome email
-        // var emailConfig = {
-        //   method: "post",
-        //   url: `${process.env.LETTER_API_URL}/auth/basicAuth`,
-        //   // headers: {
-        //   //   'Authorization': `Bearer ${process.env.ADMIN_TOKEN}`,
-        //   //   ...fileData.getHeaders(),
-        //   // },
-        //   data: {
-        //     email: process.env.LETTER_USERNAME,
-        //     password: process.env.LETTER_PASSWORD,
-        //   },
-        // };
 
-        // console.log("hi");
-        // await axios(emailConfig)
-        //   .then(function (response) {
-        //     console.log(JSON.stringify(response.data));
-        //     (response) => response.json();
-        //   })
-        //   .catch(function (error) {
-        //     console.log(error.message);
-        //   });
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append(
+          "Authorization",
+          `Bearer ${process.env.LETTER_DEV_TOKEN}`
+        );
+
+        const raw = JSON.stringify({
+          documentId: 386
+        });
+
+        const requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: raw,
+          redirect: "follow",
+        };
+
+        try {
+          const letterResponse = await fetch("https://new.letter.so/api/mail/getTemplate", requestOptions);
+          const letterData = await letterResponse.json();
+          
+          if(letterData?.html){
+            //send email
+            const sendData = {
+              to: data.result?.email,
+              from:`Graeme @ Prototypr <hello@prototypr.io>`,
+              replyTo: 'hello@prototypr.io',
+              subject:'Get started 🎉',
+              // text,
+              html:letterData.html,
+            };
+            await strapi.plugin("email").service("email").send(sendData);
+          }
+        } catch (error) {
+          console.error(error);
+        }
+
 
         //insert twitter image
         if (
