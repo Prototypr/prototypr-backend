@@ -9,8 +9,7 @@
     "displayName": "User"
   },
   "options": {
-    "draftAndPublish": false,
-    "timestamps": true
+    "draftAndPublish": false
   },
   "attributes": {
     "username": {
@@ -491,6 +490,10 @@
       "relation": "manyToMany",
       "target": "api::post.post",
       "mappedBy": "claimedBy"
+    },
+    "creatorBadge": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

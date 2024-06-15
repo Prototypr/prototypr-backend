@@ -129,6 +129,9 @@
     if (_.has(ctx.request.body, 'blocked')) {
         throw new ApplicationError('Cannot changed blocked status');
     }
+    if (_.has(ctx.request.body, 'creatorBadge')) {
+        throw new ApplicationError('Cannot changed badge status');
+    }
 
     if (_.has(ctx.request.body, 'username')) {
       const userWithSameUsername = await strapi

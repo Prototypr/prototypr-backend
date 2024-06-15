@@ -110,25 +110,16 @@ module.exports = {
     strapi.contentType("plugin::upload.file").attributes.customFieldName = {
       type: "text",
     };
+    /**
+     * user hooks
+     */
     strapi.db.lifecycles.subscribe({
       models: ["plugin::users-permissions.user"],
 
       // your lifecycle hooks
       async afterCreate(data) {
         //clear password and add other profile data
-
         let slug = data.result.username.replace(/\W+/g, "-");
-
-        // await strapi.services.profile.create({
-        //   data: {
-        //     password: "",
-        //     legacySlug:slug,
-        //     availability:false,
-        //     mentor:false,
-        //     collaborate:false,
-        //  },
-        //   users_permissions_user: data.result.i
-        // });
 
         await strapi.query("plugin::users-permissions.user").update({
           where: { id: data.result.id },
@@ -144,31 +135,7 @@ module.exports = {
           },
         });
 
-        // let res = await axios.put(
-        //   `${process.env.STRAPI_URL}/api/users/${data.result.id}`,
-        //   { data: { password: "", legacySlug:slug } },
-        //   {
-        //     headers: {
-        //       Authorization: `Bearer ${process.env.ADMIN_TOKEN}`,
-        //     },
-        //   }
-        // );
-
-        // var config = {
-        //   method: 'post',
-        //   url: 'https://app.letter.so/api/mail/getTemplate',
-        //   headers: {
-        //   'authorization': 'Bearer YOUR_TOKEN',
-        //   'Content-Type': 'application/json'
-        //   },
-        //   data : JSON.stringify({
-        //   "documentId": "63e39a333aa8183acec58981",
-
-        //   })
-        //   };
-
         //welcome email
-
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append(
@@ -177,7 +144,7 @@ module.exports = {
         );
 
         const raw = JSON.stringify({
-          documentId: 386
+          documentId: 386,
         });
 
         const requestOptions = {
@@ -188,25 +155,27 @@ module.exports = {
         };
 
         try {
-          const letterResponse = await fetch("https://new.letter.so/api/mail/getTemplate", requestOptions);
+          const letterResponse = await fetch(
+            "https://new.letter.so/api/mail/getTemplate",
+            requestOptions
+          );
           const letterData = await letterResponse.json();
-          
-          if(letterData?.html){
+
+          if (letterData?.html) {
             //send email
             const sendData = {
               to: data.result?.email,
-              from:`Graeme @ Prototypr <hello@prototypr.io>`,
-              replyTo: 'hello@prototypr.io',
-              subject:'Get started 🎉',
+              from: `Graeme @ Prototypr <hello@prototypr.io>`,
+              replyTo: "hello@prototypr.io",
+              subject: "Get started 🎉",
               // text,
-              html:letterData.html,
+              html: letterData.html,
             };
             await strapi.plugin("email").service("email").send(sendData);
           }
         } catch (error) {
           console.error(error);
         }
-
 
         //insert twitter image
         if (
@@ -242,14 +211,124 @@ module.exports = {
         }
       },
     });
-  },
 
-  /**
-   * An asynchronous bootstrap function that runs before
-   * your application gets started.
-   *
-   * This gives you an opportunity to set up your data model,
-   * run jobs, or perform some special logic.
-   */
-  // bootstrap(/*{ strapi }*/) {},
+    /**
+     * post hooks
+     */
+
+    strapi.db.lifecycles.subscribe({
+      models: ["api::post.post"],
+      async beforeUpdate(event) {
+        const { params } = event;
+
+        //When a new person is added as creator
+        if (params?.data?.creators?.connect?.length) {
+          const creators = params.data.creators.connect;
+          for (const creator of creators) {
+            // const user = await strapi.query("plugin::users-permissions.user").findOne({ id: creator.id });
+            const user = await strapi.entityService.findOne(
+              "plugin::users-permissions.user",
+              creator.id,
+            );
+            //you've been added as a creator email
+            let templateID = "390";
+            let subject="You're been added as a creator!"
+
+            //add creator badge
+            let isNewCreator = false
+            if (!user.creatorBadge) {
+              await strapi.query("plugin::users-permissions.user").update({
+                where: { id: creator.id },
+                data: { creatorBadge: true },
+              });
+              //you've got a creator *badge* email
+              isNewCreator=true
+            }
+
+            const email = user.email;
+            //simple 'added you' template
+            // check if post has an interview done already
+            let interviewInvite= false
+            const interviews = await strapi.entityService.findOne(
+              "api::post.post",
+              params.data.id,
+              {
+                fields: ["id"],
+                populate: {
+                  interviews: {
+                    fields: ["id"],
+                  },
+                },
+              }
+            );
+            //if interview, use added you + do interview template
+            if (!interviews.length) {
+              // Post has an interview relation
+              interviewInvite = true
+            }
+
+            /**
+             * choose the template
+             */
+            if(interviewInvite && isNewCreator){
+              templateID="388"
+              subject="You're been added as a creator – tell your story! 🎙️"
+
+            }else if(interviewInvite && !isNewCreator){
+              templateID="389"
+              subject="You're been added as a creator – tell your story! 🎙️"
+            }else if(isNewCreator && !interviewInvite){
+              templateID="387"
+              subject="You're got a verified creator badge! ✅"
+            }
+
+
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+            myHeaders.append(
+              "Authorization",
+              `Bearer ${process.env.LETTER_DEV_TOKEN}`
+            );
+    
+            const raw = JSON.stringify({
+              documentId: templateID,
+              FNAME:user.firstName?user.firstName:user.username,
+              TOOL:params?.data?.title,
+              URL:`https://prototypr.io/toolbox/post/${params?.data?.id}/interview`
+            });
+            
+            const requestOptions = {
+              method: "POST",
+              headers: myHeaders,
+              body: raw,
+              redirect: "follow",
+            };
+    
+            try {
+              const letterResponse = await fetch(
+                "https://new.letter.so/api/mail/getTemplate",
+                requestOptions
+              );
+              const letterData = await letterResponse.json();
+    
+              if (letterData?.html) {
+                //send email
+                const sendData = {
+                  to: email,
+                  from: `Graeme @ Prototypr <hello@prototypr.io>`,
+                  replyTo: "hello@prototypr.io",
+                  subject: subject,
+                  // text,
+                  html: letterData.html,
+                };
+                await strapi.plugin("email").service("email").send(sendData);
+              }
+            } catch (error) {
+              console.error(error);
+            }
+          }
+        }
+      },
+    });
+  },
 };
