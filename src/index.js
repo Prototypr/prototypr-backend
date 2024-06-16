@@ -249,7 +249,7 @@ module.exports = {
             //simple 'added you' template
             // check if post has an interview done already
             let interviewInvite= false
-            const interviews = await strapi.entityService.findOne(
+            const post = await strapi.entityService.findOne(
               "api::post.post",
               params.data.id,
               {
@@ -262,7 +262,7 @@ module.exports = {
               }
             );
             //if interview, use added you + do interview template
-            if (!interviews.length) {
+            if (!post?.interviews.length) {
               // Post has an interview relation
               interviewInvite = true
             }
