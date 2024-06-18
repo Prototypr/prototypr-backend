@@ -1,3 +1,5 @@
+const { postCreatedNotification } = require("../../../../prototypr/notifications/postNotifications");
+
 module.exports = {
   async beforeUpdate(event) {
     const { params } = event;
@@ -26,16 +28,24 @@ module.exports = {
 
         const {user} = post
 
+        /**
+         * web notification
+         */
+       await postCreatedNotification({strapi, user, post})
+
+       
+       /**
+        * email notification
+       */
         let templateID = "391";
         let subject = "You're article has been published!";
         let url = `https://prototypr.io/post/${post.slug}`
-
+ 
         if(post.type=='tool'){
           templateID = "392";
           subject = "You're tool has been published!";
           url= `https://prototypr.io/toolbox/${post.slug}`
         }
-
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         myHeaders.append(

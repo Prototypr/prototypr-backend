@@ -11,6 +11,7 @@ const relatedTools = require("./prototypr/graphql/relatedTools");
 const relatedNewsletters = require("./prototypr/graphql/relatedNewsletters");
 const adminArticles = require("./prototypr/graphql/adminArticles");
 const userArticles = require("./prototypr/graphql/userArticles");
+const userNotifications = require("./prototypr/graphql/userNotifications");
 const creatorArticles = require("./prototypr/graphql/creatorArticles");
 const userArticle = require("./prototypr/graphql/userArticle");
 const userArticleId = require("./prototypr/graphql/userArticleId");
@@ -28,6 +29,7 @@ const partnerPosts = require("./prototypr/graphql/partnerPosts");
 const partnerJobs = require("./prototypr/graphql/partnerJobs");
 
 const extendPostsWithLikeCount = require("./prototypr/graphql/extendPostsWithLikeCount");
+const { createNewNotification } = require("./prototypr/notifications/createNewNotification");
 
 module.exports = {
   /**
@@ -53,6 +55,9 @@ module.exports = {
     // Going to be our custom query resolver to get all authors and their details.
     const userArticlesExtension = userArticles(strapi);
     strapi.plugin("graphql").service("extension").use(userArticlesExtension);
+    
+    const userNotificationsExtension = userNotifications(strapi);
+    strapi.plugin("graphql").service("extension").use(userNotificationsExtension);
 
     const extendPostsWithLikeCountExtension = extendPostsWithLikeCount(strapi);
     strapi
@@ -116,6 +121,85 @@ module.exports = {
     strapi.db.lifecycles.subscribe({
       models: ["plugin::users-permissions.user"],
 
+      /**
+       * todo! get change from approved to true
+       * @param {*} data 
+       */
+      async beforeUpdate(event){
+
+        
+        const {params} = event;
+        const id = params?.data?.id
+
+        const newApprovedValue = params?.data?.approved
+
+        if(id){
+          const existing = await strapi.entityService.findOne(
+            "plugin::users-permissions.user",
+            id,
+  
+          );
+  
+          if (existing?.approved != newApprovedValue) {
+            //do something when value changed
+            if(newApprovedValue==true){
+              //create notification
+              await createNewNotification({
+                strapi, user:existing, entity_type: "profile", action_type: "approve"
+                })
+  
+              
+  
+              //send email
+              const myHeaders = new Headers();
+              myHeaders.append("Content-Type", "application/json");
+              myHeaders.append(
+                "Authorization",
+                `Bearer ${process.env.LETTER_DEV_TOKEN}`
+              );
+      
+              const raw = JSON.stringify({
+                documentId: 394,
+                FNAME:params?.data.firstName?params?.data.firstName:params?.data.username,
+                URL:`${process.env.NEXT_URL}/people/${params?.data.slug}`
+              });
+      
+              const requestOptions = {
+                method: "POST",
+                headers: myHeaders,
+                body: raw,
+                redirect: "follow",
+              };
+      
+              try {
+                const letterResponse = await fetch(
+                  "https://new.letter.so/api/mail/getTemplate",
+                  requestOptions
+                );
+                const letterData = await letterResponse.json();
+      
+                if (letterData?.html) {
+                  //send email
+                  const sendData = {
+                    to: params?.data?.email,
+                    from: `Graeme @ Prototypr <hello@prototypr.io>`,
+                    replyTo: "hello@prototypr.io",
+                    subject: "Your profile has been approved 🙌",
+                    // text,
+                    html: letterData.html,
+                  };
+                  await strapi.plugin("email").service("email").send(sendData);
+                }
+              } catch (error) {
+                console.error(error);
+              }
+                
+            } 
+        }
+          
+        }
+      },
+
       // your lifecycle hooks
       async afterCreate(data) {
         //clear password and add other profile data
@@ -134,6 +218,10 @@ module.exports = {
             publishedAt: new Date(),
           },
         });
+
+        await createNewNotification({
+          strapi, user:data.result, entity_type: "profile", action_type: "request_completion"
+          })
 
         //welcome email
         const myHeaders = new Headers();
@@ -202,7 +290,7 @@ module.exports = {
 
           axios(config)
             .then(function (response) {
-              console.log(JSON.stringify(response.data));
+              // console.log(JSON.stringify(response.data));
               (response) => response.json();
             })
             .catch(function (error) {
@@ -232,7 +320,7 @@ module.exports = {
             );
             //you've been added as a creator email
             let templateID = "390";
-            let subject="You're been added as a creator!"
+            let subject="You've been added as a creator!"
 
             //add creator badge
             let isNewCreator = false
@@ -272,14 +360,37 @@ module.exports = {
              */
             if(interviewInvite && isNewCreator){
               templateID="388"
-              subject="You're been added as a creator – tell your story! 🎙️"
+              subject="You've got a new creator badge – tell your story! 🎙️"
+
+              await createNewNotification({
+                strapi, user, post, entity_type: "badge", action_type: "create"
+                })
+                await createNewNotification({
+                  strapi, user, post, entity_type: "interview", action_type: "invite"
+                })
 
             }else if(interviewInvite && !isNewCreator){
               templateID="389"
-              subject="You're been added as a creator – tell your story! 🎙️"
+              subject="You've been added as a creator – tell your story! 🎙️"
+
+              await createNewNotification({
+                strapi, user, post, entity_type: "claim", action_type: "approve"
+              })
+              await createNewNotification({
+                strapi, user, post, entity_type: "interview", action_type: "invite"
+              })
+
             }else if(isNewCreator && !interviewInvite){
               templateID="387"
               subject="You're got a verified creator badge! ✅"
+
+              await createNewNotification({
+                strapi, user, post, entity_type: "badge", action_type: "create"
+              })
+            }else if(!isNewCreator && !interviewInvite){
+              await createNewNotification({
+                strapi, user, post, entity_type: "claim", action_type: "approve"
+              })
             }
 
 
@@ -294,7 +405,7 @@ module.exports = {
               documentId: templateID,
               FNAME:user.firstName?user.firstName:user.username,
               TOOL:params?.data?.title,
-              URL:`https://prototypr.io/toolbox/post/${params?.data?.id}/interview`
+              URL:`${process.env.NEXT_URL}/toolbox/post/${params?.data?.id}/interview`
             });
             
             const requestOptions = {

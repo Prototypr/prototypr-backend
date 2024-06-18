@@ -394,11 +394,6 @@
       "type": "uid",
       "targetField": "username"
     },
-    "notifications": {
-      "type": "component",
-      "repeatable": false,
-      "component": "shared.notifications"
-    },
     "companies": {
       "type": "relation",
       "relation": "manyToMany",
@@ -494,6 +489,12 @@
     "creatorBadge": {
       "type": "boolean",
       "default": false
+    },
+    "notifications": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::notification.notification",
+      "mappedBy": "notifiers"
     }
   }
 }
