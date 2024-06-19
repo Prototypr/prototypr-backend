@@ -49,19 +49,19 @@ module.exports = {
         const { post } = likeEntry;
         const { creators } = post;
 
-        console.log(creators);
-
         /**
          * web notification
          */
-        await createNewNotification({
-          strapi,
-          creators,
-          post,
-          actor: likeEntry.user.id,
-          entity_type: "like",
-          action_type: "create",
-        });
+        for (const creator of creators) {
+          await createNewNotification({
+            strapi,
+            user: creator,
+            post,
+            actor: likeEntry.user.id,
+            entity_type: "like",
+            action_type: "create",
+          });
+        }
       }
     }
   },

@@ -1,7 +1,7 @@
 module.exports = (strapi) => ({
   typeDefs: `
       type Query {
-        userNotifications(pageSize: Int, offset: Int): UserNotifications
+        userNotifications(read:Boolean, pageSize: Int, offset: Int): UserNotifications
         count: Int
       }
   
@@ -27,7 +27,11 @@ module.exports = (strapi) => ({
       userNotifications: {
         resolve: async (parent, args, context) => {
             // console.log('userid',context.state.user?.id)
-          const where = { notifiers: context.state.user?.id };
+          const where = { notifiers: context.state.user?.id};
+
+          if (args.read===false || args.read===true) {
+            where.read = args.read;
+          }
 
           // https://docs.strapi.io/developer-docs/latest/developer-resources/database-apis-reference/query-engine/single-operations.html#findwithcount
           try {

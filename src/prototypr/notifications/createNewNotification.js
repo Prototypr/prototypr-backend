@@ -20,9 +20,7 @@ const createNewNotification = async ({
     notificationData.actor = actor.id;
   }
 
-  if(creators?.length){
-    notificationData.notifiers = creators.map((u) => u.id);
-  }else if (user?.id){
+ if (user?.id){
     notificationData.notifiers = [user.id]
   }
 
