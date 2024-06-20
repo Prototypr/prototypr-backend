@@ -97,6 +97,7 @@ module.exports = {
 
     let user;
     try {
+      console.log(params)
       //prototypr mod - add invite_code
       const invite_code = params.invite_code
       user = await passwordless.user(email, username, invite_code);
