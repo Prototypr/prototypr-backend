@@ -297,9 +297,9 @@
     },
     "creators": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToMany",
       "target": "plugin::users-permissions.user",
-      "mappedBy": "post"
+      "mappedBy": "created"
     },
     "claimedBy": {
       "type": "relation",

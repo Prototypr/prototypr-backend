@@ -474,12 +474,6 @@
       "target": "plugin::invite-only.invite-code",
       "inversedBy": "invitee"
     },
-    "post": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::post.post",
-      "inversedBy": "creators"
-    },
     "claimedPost": {
       "type": "relation",
       "relation": "manyToMany",
@@ -495,6 +489,12 @@
       "relation": "manyToMany",
       "target": "api::notification.notification",
       "mappedBy": "notifiers"
+    },
+    "created": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::post.post",
+      "inversedBy": "creators"
     }
   }
 }
