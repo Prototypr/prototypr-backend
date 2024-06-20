@@ -42,8 +42,8 @@ module.exports = {
           subject: 'Your Prototypr Invite',
           text: 'Thanks for supporting prototypr. Manage your ads by creating an account with this link:',
           html: `<p>Thanks for supporting prototypr. Manage your ads by creating an account with this link:</p>
-          <p><a href="https://prototypr.io/onboard?signin=true&inviteeemail=${encodeURIComponent(inviteeEmail)}&code=${encodeURIComponent(token)}">Join with invite</a> </p>
-          <p>or paste this into your browser: https://prototypr.io/onboard?signin=true&inviteeemail=${encodeURIComponent(inviteeEmail)}&code=${encodeURIComponent(token)} </p>
+          <p><a href="https://prototypr.io/onboard?signin=true&inviteeemail=${encodeURIComponent(inviteeEmail)}&invite_code=${encodeURIComponent(token)}">Join with invite</a> </p>
+          <p>or paste this into your browser: https://prototypr.io/onboard?signin=true&inviteeemail=${encodeURIComponent(inviteeEmail)}&invite_code=${encodeURIComponent(token)} </p>
           `,
         })
       }
