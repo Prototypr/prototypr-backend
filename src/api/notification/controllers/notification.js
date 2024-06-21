@@ -10,15 +10,12 @@ module.exports = createCoreController(
   "api::notification.notification",
   ({ strapi }) => ({
     async clear(ctx) {
-      console.log("hi clear");
-
       let body = ctx.request.body;
 
-      let ids = body.id;
+      let id = body.id;
       const userId = ctx.state.user.id;
 
-      console.log(ids);
-      if (ids == "*") {
+      if (id == "*") {
         let query = `
           UPDATE "notifications"
           SET "read" = true
@@ -29,37 +26,23 @@ module.exports = createCoreController(
           )
         `;
         await strapi.db.connection.raw(query);
-
-
-
-        // console.log(addressItems);
-        // await strapi.query("api::notification.notification").updateMany({
-        //   where: {
-        //     notifiers: {id: userId} ,
-
-        //     // notifiers: {
-        //     //   id: userId
-        //     // },
-        //   },
-        //   data: {
-        //     read: true,
-        //   },
-        // });
-
         ctx.send({ message: "All Notifications cleared" }, 200);
-      } else if (ids?.length > 0) {
-        console.log("idsss");
-        await strapi.db.query("api::notification.notification").updateMany({
-          where: {
-            notifiers: userId,
-            id_in: ids,
-          },
-          data: {
-            read: true,
-          },
-        });
+      } else if (id) {
+        //id = e.g. 30
 
-        ctx.send({ message: "Notifications cleared" }, 200);
+        let query = `
+          UPDATE "notifications"
+          SET "read" = true
+          WHERE "id" = ${id}
+            AND "id" IN (
+              SELECT "notification_id"
+              FROM "notifications_notifiers_links"
+              WHERE "user_id" = ${userId}
+            )
+        `;
+      await strapi.db.connection.raw(query);
+
+        ctx.send({ message: `Notification ${id} cleared` }, 200);
       } else {
         ctx.send({ message: "No Notifications cleared" }, 401);
       }
