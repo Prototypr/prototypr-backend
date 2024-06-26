@@ -20,7 +20,7 @@ module.exports = async (policyContext, config, { strapi }) => {
   );
   const post = posts[0]
     // if post is a draft, only owner can read it
-  if(post?.status=='draft'){
+  if(post?.status=='draft' || post?.status=='pending'){
     if(policyContext.state?.user?.id == post.user?.id){
       return true
     }else{

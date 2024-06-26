@@ -112,9 +112,12 @@ module.exports = {
 
   //set user avatar after create for twitter
   bootstrap({ strapi }) {
-    strapi.contentType("plugin::upload.file").attributes.customFieldName = {
+
+    //custom field
+    strapi.contentType("plugin::upload.file").attributes.gumletUrl = {
       type: "text",
     };
+    
     /**
      * user hooks
      */
