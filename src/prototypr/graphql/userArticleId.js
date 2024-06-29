@@ -12,6 +12,7 @@ module.exports = (strapi) => ({
       excerpt: String
       date: String
       content: String
+      draft_version: String
       localizations: JSON
       owner: String
       featuredImage: String
@@ -62,6 +63,7 @@ module.exports = (strapi) => ({
               status: data[0].status,
               date: data[0].date,
               content: data[0].content,
+              draft_version: data[0].draft_version,
               localizations: data[0].localizations,
               owner: data[0]?.user?.id,
               featuredImage:data[0].featuredImage?.url,
