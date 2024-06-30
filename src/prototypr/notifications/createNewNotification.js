@@ -16,8 +16,10 @@ const createNewNotification = async ({
     notificationData.post = post.id;
   }
 
-  if (actor) {
+  if (actor?.id) {
     notificationData.actor = actor.id;
+  }else if(actor){
+    notificationData.actor = actor
   }
 
  if (user?.id){

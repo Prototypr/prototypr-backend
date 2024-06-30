@@ -34,6 +34,12 @@ module.exports = {
                 ],
                 populate: {
                   featuredImage: true,
+                  user: {
+                    fields: ["id", "username", "firstName"],
+                    populate: {
+                      avatar: true,
+                    },
+                  },
                   creators: {
                     fields: ["id", "username", "firstName"],
                     populate: {
@@ -47,11 +53,15 @@ module.exports = {
         );
 
         const { post } = likeEntry;
-        const { creators } = post;
+        let { creators } = post;
 
         /**
          * web notification
          */
+        if(!creators?.length) {
+          creators = [ post.user ];
+        }
+
         for (const creator of creators) {
           await createNewNotification({
             strapi,
