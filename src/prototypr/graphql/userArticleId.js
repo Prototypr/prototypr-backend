@@ -7,12 +7,13 @@ module.exports = (strapi) => ({
     type UserPostId {
       id: ID
       title: String
+      draft_title: String
       slug: String
       status: String
       excerpt: String
       date: String
       content: String
-      draft_version: String
+      draft_content: String
       localizations: JSON
       owner: String
       featuredImage: String
@@ -59,11 +60,12 @@ module.exports = (strapi) => ({
             const res = {
               id: data[0]?.id,
               title: data[0].title,
+              draft_title: data[0].draft_title,
               slug: data[0].slug,
               status: data[0].status,
               date: data[0].date,
               content: data[0].content,
-              draft_version: data[0].draft_version,
+              draft_content: data[0].draft_content,
               localizations: data[0].localizations,
               owner: data[0]?.user?.id,
               featuredImage:data[0].featuredImage?.url,

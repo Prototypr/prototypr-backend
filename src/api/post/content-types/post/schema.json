@@ -313,13 +313,21 @@
       "target": "api::like.like",
       "mappedBy": "post"
     },
-    "draft_version": {
+    "draft_content": {
       "pluginOptions": {
         "i18n": {
           "localized": true
         }
       },
       "type": "richtext"
+    },
+    "draft_title": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
     }
   }
 }
