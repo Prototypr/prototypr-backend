@@ -15,6 +15,7 @@ module.exports = (strapi) => ({
 
       id: ID
       title: String
+      draft_title: String
       excerpt: String
       slug: String
       status: String
@@ -46,6 +47,7 @@ module.exports = (strapi) => ({
                 "id",
                 "slug",
                 "title",
+                "draft_title",
                 "date",
                 "status",
                 "type",
@@ -66,6 +68,7 @@ module.exports = (strapi) => ({
             return {
               id: post.id,
               title: post.title,
+              draft_title: post.draft_title,
               slug: post.slug,
               excerpt: post.excerpt,
               status: post.status,
