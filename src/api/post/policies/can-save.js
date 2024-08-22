@@ -29,11 +29,19 @@ module.exports = async (policyContext, config, { strapi }) => {
     (post?.status == "draft" || post?.status == "pending") &&
     policyContext.request.body?.data?.status == "publish"
   ) {
+    //if it's a note, allow it to be published
+    if(post?.type=='note'){
+      return true
+    }
     return false;
   } else if (
     !post?.status &&
     policyContext.request.body?.data?.status == "publish"
   ) {
+    //if it's a note, allow it to be published
+    if(post?.type=='note'){
+      return true
+    }
     return false;
   }
   
