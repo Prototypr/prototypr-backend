@@ -4,10 +4,14 @@ module.exports = {
   async beforeUpdate(event) {
     const { params } = event;
 
+    const existing = await strapi.entityService.findOne(
+      "api::post.post",
+      params.where.id,
+    );
     /**
      * on published, send email
      */
-    if (params.data.publishedAt) {
+    if (!existing.publishedAt && params.data.publishedAt) {
       console.log("just published");
       let postId = params.where.id;
 
