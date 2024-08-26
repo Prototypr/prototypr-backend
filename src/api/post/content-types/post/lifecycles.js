@@ -44,6 +44,11 @@ module.exports = {
         let templateID = "391";
         let subject = "You're article has been published!";
         let url = `https://prototypr.io/post/${post.slug}`
+
+        if(post.type=='note'){
+          subject = "You're note is live!";
+          url= `https://prototypr.io/note/${post.slug}`
+        }
  
         if(post.type=='tool'){
           templateID = "392";
