@@ -10,7 +10,16 @@ module.exports = ({ env }) => {
           database: env("DATABASE_NAME", process.env.DATABASE_NAME),
           user: env("DATABASE_USERNAME", process.env.DATABASE_USERNAME),
           password: env("DATABASE_PASSWORD", process.env.DATABASE_PASSWORD),
-          ssl: env.bool("DATABASE_SSL", false),
+          // ssl: {
+          //   rejectUnauthorized: false,
+          //   // sslmode: 'require'
+          // },
+          pool: {
+            min: 0,
+            max: 5,
+            idleTimeoutMillis: 60000,
+            acquireTimeoutMillis: 60000,
+          }
         },
       },
     };
@@ -25,11 +34,9 @@ module.exports = ({ env }) => {
           database: env("DATABASE_NAME", process.env.DATABASE_NAME),
           user: env("DATABASE_USERNAME", process.env.DATABASE_USERNAME),
           password: env("DATABASE_PASSWORD", process.env.DATABASE_PASSWORD),
-          // ssl
-          // ssl: { rejectUnauthorized: true},
-          ssl: {
-            rejectUnauthorized: env.bool("DATABASE_SSL_SELF", false), // For self-signed certificates
-          },
+          // ssl: {
+          //   rejectUnauthorized: env.bool("DATABASE_SSL_SELF", false), // For self-signed certificates
+          // },
           pool: {
             min: 0,
             max: 10,
